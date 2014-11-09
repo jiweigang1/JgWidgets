@@ -1,0 +1,14 @@
+.main-doc{
+	max-width:1000px;
+}
+.header{
+	clear: both;
+}
+.main-doc .header ul{
+	list-style: none ;
+}
+
+.main-doc .header ul li{
+	float:left;
+	margin-left:5px;
+}
