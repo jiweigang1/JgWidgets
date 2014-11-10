@@ -81,6 +81,7 @@ $.JgWidgets = {
 		$.JgWidgets.addPlugin(function($content){
 			$content.find(".page").jgPage();
 			$content.find(".page-button").jgPageButton();
+			$content.find(".accordion").jgAccordion();
 		});
 	})();
 	

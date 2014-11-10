@@ -1,0 +1,63 @@
+.jg-accordion {
+	font-size: 13px;
+	background: #ffffff;
+	border: 1px solid #cccccc;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-moz-box-shadow: 0 5px 15px #cccccc;
+	-webkit-box-shadow: 0 5px 15px #cccccc;
+	box-shadow: 0 5px 15px #cccccc;
+}
+
+.jg-accordion .jg-accordion-header {
+	font-size: 16px;
+	background: #ebebeb;
+	border: 1px solid #cccccc;
+	cursor: pointer;
+	color: #666666;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	margin: 0 auto;
+	height: 30px;
+}
+
+.jg-accordion .active-header {
+	-moz-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+	border-radius: 5px 5px 0 0;
+	background: url(images/active-header.gif) #cef98d;
+	background-repeat: no-repeat;
+	background-position: right 50%;
+}
+
+.jg-accordion .active-header:hover {
+	background: url(images/active-header.gif) #c6f089;
+	background-repeat: no-repeat;
+	background-position: right 50%;
+}
+
+.jg-accordion .inactive-header {
+	background: url(images/inactive-header.gif) #ebebeb;
+	background-repeat: no-repeat;
+	background-position: right 50%;
+}
+
+.jg-accordion .inactive-header:hover {
+	background: url(images/inactive-header.gif) #f5f5f5;
+	background-repeat: no-repeat;
+	background-position: right 50%;
+}
+
+.jg-accordion .jg-accordion-content {
+	display: none;
+	background: #ffffff;
+	border: 1px solid #cccccc;
+	border-top: 0;
+	-moz-border-radius: 0 0 5px 5px;
+	-webkit-border-radius: 0 0 5px 5px;
+	border-radius: 0 0 5px 5px;
+	overflow:hidden;
+	margin: 0 auto;
+}

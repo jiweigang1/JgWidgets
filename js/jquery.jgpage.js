@@ -114,6 +114,13 @@
                                 self.options.opened.call(null, $page, this);
                             }
                             $el.trigger("opened", [$page]);
+							if($.JgWidgets){
+								try{
+									$.JgWidgets._initContent($page);
+								}catch(e){
+								
+								}
+							}
 							$page.trigger("onload",[$page]);
 							$page.trigger("onOpen",[$page]);
 						});
@@ -135,6 +142,8 @@
 					self.element.trigger("opened",$oldPage);
 					if (self.options.opened) {
 						self.options.opened.call(null, $oldPage);
+						$oldPage.trigger("onload",[$page]);
+						$oldPage.trigger("onOpen",[$page]);
 					}	
 			});
 			
@@ -142,41 +151,32 @@
 		
         goBack: function (reload) {
             var self = this;
+			var $oldPage = this.opt.historyPage.pop();
+			if(!$oldPage||$oldPage.length==0){
+				return;
+			}
             var $el = this.element;
             if (self.options.beforeBack) {
                 self.options.beforeBack.call(null, this.opt.activePage, this);
             }
             $el.trigger("beforeBack");
-
-            var $oldPage = this.opt.historyPage.pop();
-            
             if(reload){
             	var pageData = $oldPage.data("pageData");
 				this._ajaxLoad($oldPage,pageData.url,pageData.params,function(){
-					
+					self._toggle($oldPage,self.opt.activePage,"left",function(){
+							$oldPage.trigger("onload",[$oldPage]);
+							$oldPage.trigger("onOpen",[$oldPage]);
+							$el.trigger("backed", [$(this).data("pageData")]);
+							self.opt.activePage = $oldPage;
+					});
 				});
-            }
-            
-            if (this.opt.activePage && $oldPage) {
-                this.opt.activePage.css({ position: "absolute"}).hide("slide", {direction: "right"}, 500, function () {
-                    $(this).css({ position: ""});
-                    $(this).remove();
-                });
-                this.opt.activePage = $oldPage;
-                this.opt.activePage.css({ position: "absolute"}).show("slide", 500, function () {
-                    $(this).css({ position: ""});
-                    if (self.options.backed) {
-                        self.options.backed.call(null, $(this), this);
-                    }
-                    if(reload){
-                    	  $el.trigger("opened", $oldPage);
-						  self.options.opened.call(null, $oldPage, this);
-						  $(this).trigger("onOpen",[$(this)]);	
-					}
-                    $el.trigger("backed", $(this).data("pageData"));
-
-                });
-            }
+            }else{
+				self._toggle($oldPage,self.opt.activePage,"left",function(){
+							$el.trigger("backed", [$(this).data("pageData")]);
+							self.opt.activePage = $oldPage;
+				});
+			}
+			
         },
 		
 		_toggle:function(toShow,toHide,direction,fn){
@@ -186,8 +186,9 @@
 			}
 			if(this.options.animation){
 				if(toHide&&toHide.length>0){
-					toHide.css("position","absolute").hide("slide",{direction: direction=='left'?'left':'right'},500,function(){
+					toHide.addClass("animation").css("position","absolute").hide("slide",{direction: direction=='left'?'left':'right'},500,function(){
 						toHide.css("position","");
+						toHide.removeClass("animation");
 					});
 				}
 				if(toShow&&toShow.length>0){

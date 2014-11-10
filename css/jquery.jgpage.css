@@ -3,8 +3,12 @@
 	overflow:hidden;
 	position: relative;
 	border: 1px solid #d3d3d3;
+	text-align: left;
 }
 .jg-page-doc .jg-page{
 	width:100%;
-	
+	overflow-x: auto;
+}
+.jg-page-doc .jg-page.animation{
+	overflow: hidden;
 }

@@ -1,14 +1,45 @@
+body{
+	text-align:center
+} 
 .main-doc{
 	max-width:1000px;
+	margin:0 auto;
 }
 .header{
+	text-align:left;
+	border-top: 1px solid #d3d3d3;
+	border-left: 1px solid #d3d3d3;
+	border-right: 1px solid #d3d3d3;
 	clear: both;
+	height:40px;
+	margin:0;
+}
+.body{
+	border: 0px solid #d3d3d3;
+	width:100%;
 }
 .main-doc .header ul{
 	list-style: none ;
+	
 }
 
 .main-doc .header ul li{
-	float:left;
+	display: inline-block;
 	margin-left:5px;
+	height:40px;
+}
+.body .content{
+	height:800px;
+	width:100%;
+}
+.body .content .left-content{
+	width:200px;
+	float:left;
+	border-right: 1px solid #d3d3d3;
+	height:100%;
+}
+.body .content .right-content{
+	float:left;
+	height:100%;
+	width:790px;
 }
