@@ -1,11 +1,8 @@
 /**
  *
  * jg-accordion
- *
  * Licensed  Apache Licence 2.0
- * 
  * Version : 1.0.0
- *
  * Author JiGang 2014-10-31
  *
 */
@@ -16,9 +13,9 @@
         },
 		_create:function(){
 			var $this = this.element;
-			var width = $(this.element).width()-20;
-			$this.find('.jg-accordion-header').addClass('inactive-header').removeClass("active-header").width(width);
-			$this.find('.jg-accordion-content').css({'width' : width ,'display':'none'});
+			$(this.element).width($(this.element).width()-22);
+			$this.find('.jg-accordion-header').addClass('inactive-header').removeClass("active-header");
+			$this.find('.jg-accordion-content').css({'display':'none'});
 			$this.find('.jg-accordion-header').click(function () {
 				if($(this).hasClass('inactive-header')) {
 					$('.active-header',$this).addClass('inactive-header').removeClass('active-header').next(".jg-accordion-content").slideToggle().removeClass('open-content');

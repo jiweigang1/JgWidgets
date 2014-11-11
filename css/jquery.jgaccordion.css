@@ -1,6 +1,7 @@
-.jg-accordion {
+.jg-accordion{
 	font-size: 13px;
 	background: #ffffff;
+	padding: 5px 10px 10px 10px;
 	border: 1px solid #cccccc;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -10,20 +11,21 @@
 	box-shadow: 0 5px 15px #cccccc;
 }
 
-.jg-accordion .jg-accordion-header {
-	font-size: 16px;
+.jg-accordion .jg-accordion-header{
+	font-size:14px;
+	font-family:"Î¢ÈíÑÅºÚ";
 	background: #ebebeb;
+	margin: 5px 0 0 0;
+	padding: 5px 10px;
 	border: 1px solid #cccccc;
 	cursor: pointer;
 	color: #666666;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	margin: 0 auto;
-	height: 30px;
 }
 
-.jg-accordion .active-header {
+.jg-accordion .active-header{
 	-moz-border-radius: 5px 5px 0 0;
 	-webkit-border-radius: 5px 5px 0 0;
 	border-radius: 5px 5px 0 0;
@@ -32,13 +34,13 @@
 	background-position: right 50%;
 }
 
-.jg-accordion .active-header:hover {
+.jg-accordion .active-header:hover{
 	background: url(images/active-header.gif) #c6f089;
 	background-repeat: no-repeat;
 	background-position: right 50%;
 }
 
-.jg-accordion .inactive-header {
+.jg-accordion .inactive-header{
 	background: url(images/inactive-header.gif) #ebebeb;
 	background-repeat: no-repeat;
 	background-position: right 50%;
@@ -50,8 +52,9 @@
 	background-position: right 50%;
 }
 
-.jg-accordion .jg-accordion-content {
-	display: none;
+.jg-accordion .jg-accordion-content{
+	display:none;
+	padding:0px 10px;
 	background: #ffffff;
 	border: 1px solid #cccccc;
 	border-top: 0;
@@ -59,5 +62,34 @@
 	-webkit-border-radius: 0 0 5px 5px;
 	border-radius: 0 0 5px 5px;
 	overflow:hidden;
-	margin: 0 auto;
 }
+
+.jg-accordion .jg-accordion-content ul{
+    maigin:0px;
+	padding:0px;
+	list-style:none;
+}
+
+.jg-accordion .jg-accordion-content ul li{
+    maigin:0px;
+	padding:0px;
+	height:24px;
+	line-height:24px;
+}
+.jg-accordion .jg-accordion-content ul li a{
+    font-size:12px;
+    color:#797979;
+    font-size:14px;
+	text-decoration:none;
+	cursor: pointer;
+}
+
+.jg-accordion .jg-accordion-content ul li a:hover{
+	
+	color:#85c721; 
+}
+
+.jg-accordion .jg-accordion-content ul li a:active{
+	text-decoration:none;
+}
+
