@@ -41,7 +41,7 @@
             this.opt={
 				historyPage: [],
 				activePage: null,
-				page_no: 1,
+				pageNo: 1,
 				overlay: null
 			};
 			this._initOptions();
@@ -71,40 +71,38 @@
 				$page.append(html);
 				
 		},
-        openPage: function (url, params, page_no) {
+        openPage: function (url,params,clearCache,pageNo) {
             var self = this;
             var newPage = true;
-
+			
+			if(typeof clearCache==="undefined"){
+				clearCache = true;
+			}
+			
             var $page;
-            if (!page_no) {
-                $page = $('<div class="jg-page" pageNo="' + (this.opt.page_no++) + '" ></div>').hide();
+            if (!pageNo) {
+                $page = $('<div class="jg-page" pageNo="' + (this.opt.pageNo++) + '" ></div>').hide();
             } else {
-                $page = this.element.find('.jg-page[pageNno=' + page_no + ']:first');
+                $page = this.element.find('.jg-page[pageNno=' + pageNo + ']:first');
                 if ($page.length == 0) {
-                    $page = $('<div class="jg-page" pageNo="' + page_no + '" ></div>').hide();
+                    $page = $('<div class="jg-page" pageNo="' + pageNo + '" ></div>').hide();
                 } else {
                     newPage = false;
                     $page.empty();
                 }
             }
-			
+	
 			this.element.append($page);
-
-            var pageData = {url: url, params: params, page_no: page_no};
-
+            var pageData = {url: url, params: params, pageNo: pageNo};
             $page.data("pageData",pageData);	
-
             var $el = this.element;
-
             if (self.options.beforeOpen) {
                 self.options.beforeOpen.call(null, $page, this);
             }
             $el.trigger("beforeOpen", pageData);
-
             if (!params) {
                 params = {};
             }
-			
 			this._ajaxLoad($page,url,params,function(){
 					    if (self.opt.activePage) {
                             self._addHistory(self.opt.activePage);
@@ -123,8 +121,12 @@
 							}
 							$page.trigger("onload",[$page]);
 							$page.trigger("onOpen",[$page]);
+							self.opt.activePage = $page;
+							if(clearCache){
+								self._clearCache();
+							}
 						});
-						self.opt.activePage = $page;
+						
 			});
             $page.data("pageData", pageData);
         },
@@ -254,7 +256,16 @@
 		},
         _addHistory: function ($page) {
             this.opt.historyPage.push($page);
-        }
+        },
+		//Çå¿Õ»º´æ
+		_clearCache:function(){
+			if(this.opt.historyPage&&this.opt.historyPage.length>0){
+				$.each(this.opt.historyPage,function(k,v){
+					$(v).remove();
+				});
+				this.opt.historyPage = [];
+			}
+		}
     });
 	
 	/**
