@@ -26,16 +26,18 @@
 }
 
 .jg-accordion .active-header{
+
 	-moz-border-radius: 5px 5px 0 0;
 	-webkit-border-radius: 5px 5px 0 0;
 	border-radius: 5px 5px 0 0;
-	background: url(images/active-header.gif) #cef98d;
+	background: url(images/active-header.gif) #4da2c6;
 	background-repeat: no-repeat;
 	background-position: right 50%;
+	color:#fff;
 }
 
 .jg-accordion .active-header:hover{
-	background: url(images/active-header.gif) #c6f089;
+	background: url(images/active-header.gif) #5cbce4;
 	background-repeat: no-repeat;
 	background-position: right 50%;
 }
@@ -84,9 +86,8 @@
 	cursor: pointer;
 }
 
-.jg-accordion .jg-accordion-content ul li a:hover{
-	
-	color:#85c721; 
+.jg-accordion .jg-accordion-content ul li a:hover{	
+	color:#4da2c6; 
 }
 
 .jg-accordion .jg-accordion-content ul li a:active{
