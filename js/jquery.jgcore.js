@@ -78,13 +78,32 @@ $.JgWidgets = {
 	
 	(function defaultPlugins(){
 		//add jgPage plugin
-		$.JgWidgets.addPlugin(function($content){
-			$content.find(".page").jgPage();
-			$content.find(".page-button").jgPageButton();
-			$content.find(".tabs").jgTabs();
-			$content.find(".tabs-button").jgTabsButton();
-			$content.find(".accordion").jgAccordion();
-		});
+		if($.fn.jgPage){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".page").jgPage();
+			});
+		}
+		if($.fn.jgPageButton){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".page-button").jgPageButton();
+			});
+		}
+		if($.fn.jgTabs){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".tabs").jgTabs();
+			});
+		}
+		if($.fn.jgTabsButton){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".tabs-button").jgTabsButton();
+			});
+		}
+		if($.fn.jgAccordion){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".accordion").jgAccordion();
+			});
+		}
+		
 	})();
 	
 	
