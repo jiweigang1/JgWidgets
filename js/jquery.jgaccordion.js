@@ -13,7 +13,7 @@
         },
 		_create:function(){
 			var $this = this.element;
-			$(this.element).width($(this.element).width()-22);
+			$(this.element).width(this.element.width()-22);
 			$this.find('.jg-accordion-header').addClass('inactive-header').removeClass("active-header");
 			$this.find('.jg-accordion-content').css({'display':'none'});
 			$this.find('.jg-accordion-header').click(function () {
