@@ -188,7 +188,7 @@
 			}
 			this._showTab($li);
 		},
-		_getHeader(tabId){
+		_getHeader:function(tabId){
 			if(!tabId){
 				return null;
 			}
