@@ -124,6 +124,9 @@
 			if(!direction){
 				direction="left";
 			}
+			if(!toHide||toHide.length==0){
+				direction="right";
+			}
 			if(this.options.animation){
 				//this.$content.addClass("animation");
 				if(toHide&&toHide.length>0){
