@@ -169,7 +169,7 @@
 				var $li = this._getHeader(tabId);
 				if($li&&$li.length>0){
 					$li.data("content").remove();
-					$li.html('<span>'+name+'</span>');
+					$li.html('<span>'+name+'</span>').removeClass("active");
 					$li.data("data",{ajax:true,init:false,url:url});
 					this._showTab($li);
 				}else{
