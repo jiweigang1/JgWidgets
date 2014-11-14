@@ -85,3 +85,88 @@ body{
 	border-top: 1px solid #cccccc;
 }
 
+
+
+
+
+
+
+/*Api Css*/
+
+.method-name{
+    background: none repeat scroll 0 0 #4f4e4e;
+    border: 1px solid #111;
+    border-radius: 5px 5px 0 0;
+    color: white;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    padding: 8px 15px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+.method-name .returns{
+	float: right;
+    font-style: italic;
+}
+.method-doc-title{
+	font-size: 36px;
+    line-height: 36px;
+}
+.method-desc-wrapper{
+	-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color #ccc #ccc;
+    border-image: none;
+    border-radius: 0 0 5px 5px;
+    border-right: 1px solid #ccc;
+    border-style: none solid solid;
+    border-width: 0 1px 1px;
+    padding: 10px;
+}	
+.method-desc-wrapper .desc{
+	color: #666;
+    font-size: 16px;
+    font-style: italic;
+    padding: 5px 15px 0;
+}
+.method-desc-wrapper  ul{
+	list-style: outside none none;
+}
+.method-desc-wrapper .methods{
+	background: none repeat scroll 0 0 #eee;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    color: #333;
+    margin: 0 auto 15px;
+    max-width: 750px;
+    text-shadow: 0 1px 0 #fff;
+	padding: 0;
+}
+.method-desc-wrapper .methods >li{
+	padding-bottom: 0;
+}
+.method-desc-wrapper .methods li h4 {
+    background: none repeat scroll 0 0 #4da2c6;
+}
+
+.method-desc-wrapper .methods h4 {
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: 0;
+    margin: -10px -10px 0;
+    padding: 8px 10px;
+    text-shadow: 0 1px 0 #444;
+}
+.method-desc-wrapper .method-name-op {
+    color: inherit;
+    text-decoration: none;
+}
+.method li {
+	 border-top: 1px solid #ccc;
+	 padding-bottom: 20px;
+}
+
