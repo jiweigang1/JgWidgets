@@ -10,20 +10,23 @@
  *
 */
 (function ($) {
-    $.widget("JgWidgets.jgPage", {
+    $.widget("jgWidgets.jgPage", {
         options: {
             url: null,
-			
             beforeOpen: null,
             opened: null,
             beforeBack: null,
             backed: null,
+			//是否显示等待图标
+			showLoading:false,
 			//返回值 true 执行 false中断 string 替换返回的请求
 			validate:null,
 			//执行动画
 			animation:true,
+			ajaxType:"post"
 			//自定义高度
-			_autoHeight:true
+			_autoHeight:true,
+			_waitting:false,
         },
         _initOptions: function () {
             var $el = this.element;
@@ -45,9 +48,10 @@
 				overlay: null
 			};
 			this._initOptions();
-            this.element.addClass("jg-page-doc");
-            
+			this.element.addClass("jg-page-doc");
 			var html = this.element.html();
+            this.$pageLoading = $('<div class="page-loading"></div>');
+			this.element.append(this.$pageLoading)
 			if(html&&$.trim(html)!=""){
 				self.addPage(html,this.element.attr("orginPageId"));
 			}
@@ -71,14 +75,21 @@
 				$page.append(html);
 				
 		},
-        openPage: function (url,params,clearCache,pageNo) {
-            var self = this;
-            var newPage = true;
-			
-			if(typeof clearCache==="undefined"){
-				clearCache = true;
+        openPage: function (url,params,clearCache,direction,animation,pageNo) {
+			if(this.options._waitting){
+				return;
+			}else{
+				this.options._waitting = true;
+			}
+            var self 	   = this;
+				clearCache = toBoolean(clearCache,true);
+				animation  = toBoolean(animation,true);
+			if(!direction||(direction!=="left"&&direction!=="right")){
+				direction = "left";
 			}
 			
+			
+			var newPage    = true;
             var $page;
             if (!pageNo) {
                 $page = $('<div class="jg-page" pageNo="' + (this.opt.pageNo++) + '" ></div>').hide();
@@ -107,7 +118,10 @@
 					    if (self.opt.activePage) {
                             self._addHistory(self.opt.activePage);
                         }
-                        self._toggle($page,self.opt.activePage,"right",function(){
+                        self._toggle($page,self.opt.activePage,direction,function(){
+							if(clearCache){
+								self._clearCache();
+							}
 							if(self.options.opened) {
                                 self.options.opened.call(null, $page, this);
                             }
@@ -122,10 +136,9 @@
 							$page.trigger("onload",[$page]);
 							$page.trigger("onOpen",[$page]);
 							self.opt.activePage = $page;
-							if(clearCache){
-								self._clearCache();
-							}
-						});
+							
+							self.options._waitting = false;
+						},animation);
 						
 			});
             $page.data("pageData", pageData);
@@ -140,19 +153,28 @@
 			if(!url){
 				url = pageData.url;
 			}
-			$oldPage.load(url,params,function(){
+			this._ajaxLoad($oldPage,url,params,function(){
 					self.element.trigger("opened",$oldPage);
 					if (self.options.opened) {
 						self.options.opened.call(null, $oldPage);
-						$oldPage.trigger("onload",[$page]);
-						$oldPage.trigger("onOpen",[$page]);
-					}	
+					}
+					if($.JgWidgets){
+						try{
+							$.JgWidgets._initContent($oldPage);
+						}catch(e){
+						
+						}
+					}
+					$oldPage.trigger("onload",[$oldPage]);
+					$oldPage.trigger("onOpen",[$oldPage]);
 			});
 			
 		},
 		
-        goBack: function (reload) {
+        goBack: function (reload,remove) {
             var self = this;
+			reload 	= toBoolean(reload,false);
+			remove	= toBoolean(remove,true);
 			var $oldPage = this.opt.historyPage.pop();
 			if(!$oldPage||$oldPage.length==0){
 				return;
@@ -165,28 +187,48 @@
             if(reload){
             	var pageData = $oldPage.data("pageData");
 				this._ajaxLoad($oldPage,pageData.url,pageData.params,function(){
-					self._toggle($oldPage,self.opt.activePage,"left",function(){
+					self._toggle($oldPage,self.opt.activePage,"right",function(){
+							if($.JgWidgets){
+								try{
+									$.JgWidgets._initContent($oldPage);
+								}catch(e){
+								
+								}
+							}
 							$oldPage.trigger("onload",[$oldPage]);
 							$oldPage.trigger("onOpen",[$oldPage]);
 							$el.trigger("backed", [$(this).data("pageData")]);
+							if(remove){
+								self.opt.activePage.remove();
+							}
+							
 							self.opt.activePage = $oldPage;
 					});
 				});
             }else{
-				self._toggle($oldPage,self.opt.activePage,"left",function(){
+				self._toggle($oldPage,self.opt.activePage,"right",function(){
 							$el.trigger("backed", [$(this).data("pageData")]);
+							if(remove){
+								self.opt.activePage.remove();
+							}
 							self.opt.activePage = $oldPage;
 				});
 			}
 			
         },
 		
-		_toggle:function(toShow,toHide,direction,fn){
+		_toggle:function(toShow,toHide,direction,fn,animation){
 			var self = this;
 			if(!direction){
 				direction="left";
 			}
-			if(this.options.animation){
+			if(!toHide||toHide.length==0){
+				direction="right";
+			}
+			if(typeof animation =="undefined"){
+				animation = true;
+			}
+			if(this.options.animation&&animation){
 				if(toHide&&toHide.length>0){
 					toHide.addClass("animation").css("position","absolute").hide("slide",{direction: direction=='left'?'left':'right'},500,function(){
 						toHide.css("position","");
@@ -224,10 +266,12 @@
 			if(!$dom||$dom.length==0){
 				return;
 			}
+			self._showLoading();
 			$.ajax({
 				 url : url,
                  data: params,
 				 cache:false,
+				 type:self.options.ajaxType,
 				 success:function(data){
 					if(self.options.validate&&$.isFunction(self.options.validate)){
 						var v = self.options.validate.call(null,data);
@@ -248,6 +292,7 @@
 					if($.removeEventHolder){
 						$.removeEventHolder("onload");
 					}
+					self._hideLoading();
 					if(success&&$.isFunction(success)){
 						success.call(null,data)
 					}
@@ -265,8 +310,33 @@
 				});
 				this.opt.historyPage = [];
 			}
+		},
+		_showLoading:function(){
+			if(!this.options.showLoading){
+				return;
+			}
+			var x =	this.element.width()/2-this.$pageLoading.width()/2
+			var y = this.element.height()/2-this.$pageLoading.height()/2
+			this.$pageLoading.css({x:x,y:y}).show();
+		},
+		_hideLoading:function(){
+			this.$pageLoading.hide();
 		}
+		
     });
+	
+	function toBoolean(value,dv){
+		if(typeof value =="string"){
+			if("true"===value){
+				return true;
+			}else if("false"===value){
+				return false;
+			}
+		}else if(typeof value==="boolean"){
+			return value;
+		}
+		return dv||false;
+	}
 	
 	/**
 		注册加载的事件，作用域是当前的Page
@@ -288,55 +358,64 @@
 	
 })(jQuery);
 
-
-
-(function($){
-	var plugName = "_jgPageButton_";
-	$.fn.jgPageButton = function(){
-		return  this.each(function(){
-			var $this = $(this);
-			if($this.data(plugName)){
-				return true;
-			}
-			
-			var action = $this.attr("action");
-			if(!action){
-				action = "reload";
-			}
-			
-			var params =[];
-				params.push(action);
-			if(action=="openPage"||action=="reload"){
-				var url	;  
-				if(this.tagName.toUpperCase() == "A"){
-					url = $this.attr("href");
-				}else{
-					url = $this.attr("url");
-				}
-				if(!url){
-					return true;
-				}
-				params.push(url);
-			}else if(action=="goBack"){
-				
-			}else{
-				return true;
-			}
-			
+(function ($) {
+    $.widget("JgWidgets.jgPageButton", {
+        options: {
+           
+        },
+		_create:function(){
+			var $this = this.element;
 			$this.click(function(){
-				var target = $this.attr("target");
-				var $page;
-				if(target){
-					$page = $(target);
+				var action = $this.attr("action");
+				if(!action){
+					action = "reload";
 				}
+				var params =[];
+					params.push(action);
+				if(action=="openPage"){
+					//(url,params,clearCache,pageNo)
+					var url	;  
+					if($this[0].tagName.toUpperCase() == "A"){
+						url = $this.attr("href");
+					}else{
+						url = $this.attr("url");
+					}
+					if(!url){
+						return true;
+					}
+					params.push(url);
+					params.push({});
+					var clearCache = true;
+					if($this.attr("clearCache")=="false"){
+						clearCache = false;
+					}
+					params.push(clearCache);
+					params.push($this.attr("direction"));
+					params.push($this.attr("animation"));
+					params.push($this.attr("pageNo"));
+					
+				}else if(action=="reload"){
+					
+				}else if(action=="goBack"){
+					var reload = false;
+					if($this.attr("reload")=="true"){
+						reload = true;
+					}
+					params.push(reload);
+				}else{
+					return false;
+				}
+				var $page = $($this.attr("target"));
 				if($page.length==0){
-					$page = $this.parents(".rum-page-doc:first");
+					$page = $this.parents(".jg-page-doc:first");
 				}
 				if($page.length>0){
 					$page.jgPage.apply($page,params);
 				}
 				return false;
 			});
-		});
-	}
-})(jQuery)
+		}
+	})
+})(jQuery);	
+
+
