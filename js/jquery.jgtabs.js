@@ -192,7 +192,7 @@
 			if(!tabId){
 				return null;
 			}
-			return 	this.$header.find('li[tid=="'+tabId+'"]');
+			return 	this.$header.find('li[tid="'+tabId+'"]');
 		}
 	})
 	
