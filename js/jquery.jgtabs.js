@@ -2,7 +2,8 @@
  $.widget( "jgWidgets.jgTabs", {
 		options: {
 			animation:true,
-			
+			//ajax访问类型
+			ajaxType:"post",
 			////
 			_autoHeight:true
 		},		
@@ -98,9 +99,10 @@
 		_ajaxLoad:function($dom,url,params,fn){
 			var self = this;
 			$.ajax({
-				type:"post",
+				type:self.options.ajaxType,
 				data:params,
-				url:url	
+				url:url,
+				cache:false,
 			}).done(function(data, textStatus, jqXHR){
 				$.jgTabs[TAB_HOLDER] = $dom;
 				if($.addEventHolder){
