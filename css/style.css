@@ -14,7 +14,7 @@ body{
 	clear: both;
 	height:40px;
 	margin:0;
-	background: none repeat scroll 0 0 #4da2c6;
+	background: url("./imgs/header_bg.jpg") repeat-x scroll 0 0 #4f4e4e;
     direction: ltr;
     text-align: center;
 	height:70px;
