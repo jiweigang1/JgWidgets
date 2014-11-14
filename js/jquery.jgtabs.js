@@ -5,8 +5,9 @@
 			//ajax访问类型
 			ajaxType:"post",
 			////
-			_autoHeight:true
-		},		
+			_autoHeight:true,
+			_tabId:0
+		},
 		_create: function() {
 			this._initOptions();
 			this._initHtml();
@@ -157,11 +158,41 @@
 				fn.call(this);
 			}
 		},
-		add:function(name,url){
-		   var $li = $('<li url="'+url+'" ><span>'+name+'</span></li>');
-			   $li.appendTo(this.$header);
-			   $li.data("data",{ajax:true,init:false,url:url});
-			   this._showTab($li);
+		add:function(name,url,tabId){
+			if(!tabId){
+				tabId = this.options._tabId++;
+				var $li = $('<li url="'+url+'" tid="'+tabId+'" ><span>'+name+'</span></li>');
+					$li.appendTo(this.$header);
+					$li.data("data",{ajax:true,init:false,url:url});
+				this._showTab($li);
+			}else{
+				var $li = this._getHeader(tabId);
+				if($li&&$li.length>0){
+					$li.data("content").remove();
+					$li.html('<span>'+name+'</span>');
+					$li.data("data",{ajax:true,init:false,url:url});
+					this._showTab($li);
+				}else{
+					var $li = $('<li url="'+url+'" tid="'+tabId+'" ><span>'+name+'</span></li>');
+					$li.appendTo(this.$header);
+					$li.data("data",{ajax:true,init:false,url:url});
+					this._showTab($li);
+				}
+			}
+		   
+		},
+		show:function(tabId){
+			var $li = this._getHeader(tabId);
+			if(!$li||$li.length==0){
+				return false;
+			}
+			this._showTab($li);
+		},
+		_getHeader(tabId){
+			if(!tabId){
+				return null;
+			}
+			return 	this.$header.find('li[tid=="'+tabId+'"]');
 		}
 	})
 	
@@ -217,6 +248,8 @@
 						return false;
 					}
 					params.push(url);
+					var tabId = $this.attr("relId");
+					params.push(tabId);
 				}else{
 					return false;
 				}
