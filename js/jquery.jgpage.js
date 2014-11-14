@@ -23,7 +23,7 @@
 			validate:null,
 			//执行动画
 			animation:true,
-			ajaxType:"post"
+			ajaxType:"post",
 			//自定义高度
 			_autoHeight:true,
 			_waitting:false,
