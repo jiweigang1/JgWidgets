@@ -104,6 +104,23 @@ $.JgWidgets = {
 			});
 		}
 		
+		if($.fn.jgForm){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".form").jgForm();
+			});
+		}
+		
+		if($.fn.ajaxButton){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".ajax-button").ajaxButton({callBack:onAjaxButtonCallBackInPage});
+			});
+		}
+		if($.fn.jgTable){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".table").jgTable();
+			});
+		}
+		
 	})();
 	
 	
