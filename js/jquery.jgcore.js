@@ -120,6 +120,11 @@ $.JgWidgets = {
 				$content.find(".table").jgTable();
 			});
 		}
+		if($.fn.jgWindowButton){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".window-button").jgWindowButton();
+			});
+		}
 		
 	})();
 	
