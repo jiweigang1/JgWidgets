@@ -1,0 +1,186 @@
+/*jquery ui*/
+.ui-resizable { position: relative;}
+.ui-resizable-handle { position: absolute;font-size: 0.1px; display: block; }
+.ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
+.ui-resizable-n { cursor: n-resize; height: 7px; width: 100%; top: -5px; left: 0; }
+.ui-resizable-s { cursor: s-resize; height: 7px; width: 100%; bottom: -5px; left: 0; }
+.ui-resizable-e { cursor: e-resize; width: 7px; right: -5px; top: 0; height: 100%; }
+.ui-resizable-w { cursor: w-resize; width: 7px; left: -5px; top: 0; height: 100%; }
+.ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
+.ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
+.ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
+.ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}
+
+
+/*主体样式*/
+.jg-window{
+	border	:1px #F4F4F4 solid;
+	position:absolute;
+	background:#FFFFFF;
+}
+.jg-window.dragging{
+	opacity: 0.6;
+}
+.jg-window p{
+	padding:0xp;
+	margin:0px;
+}
+.jg-window .jg-window-tool-bar{
+	background-color: #F4F4F4;
+	height: 46px;
+	cursor: move;
+}
+.jg-window .jg-window-tool-container{
+    float: right;
+    padding: 2px 2px 0 0;
+}
+.jg-window .jg-window-title-container{
+	float:left;
+	height: 20px;
+    padding: 0 5px;
+	white-space: nowrap;
+	line-height: 1.5em;	
+}
+.jg-window .jg-window-tool-close{ 
+	background: url("images/icon-sprite.jpg") 16px 0 repeat no-repeat;
+	cursor: pointer;
+    float: right;
+    height: 20px;
+    margin-left: 3px;
+    overflow: hidden;
+    width: 16px;	
+}
+.jg-window .jg-window-tool-max.normal{ 
+	background: url("images/icon-sprite.jpg") 32px 0 repeat no-repeat; 
+	cursor: pointer;
+    float: right;
+    height: 20px;
+    margin-left: 3px;
+    overflow: hidden;
+    width: 16px;
+}
+.jg-window .jg-window-tool-max.alternate{ 
+	background: url("images/icon-sprite.jpg") 48px 0 repeat no-repeat;
+	cursor: pointer;
+    float: right;
+    height: 20px;
+    margin-left: 3px;
+    overflow: hidden;
+    width: 16px;
+}
+.jg-window .jg-window-tool-min{ 
+	background: url("images/icon-sprite.jpg") 64px 0 repeat no-repeat; 
+	cursor: pointer;
+    float: right;
+    height: 20px;
+    margin-left: 3px;
+    overflow: hidden;
+    width: 16px;
+}
+.jg-window-min-container{
+    bottom: 0;
+    height: 26px;
+    left: 0;
+    position: fixed;
+    width: 100%;	
+}
+.jg-window-min-container .jg-window-min-bar{
+	background-color: #F4F4F4;
+	height: 26px;
+	width:200px;
+	float:left;
+	cursor: pointer;
+	margin-left:2px;
+}
+.jg-window-min-container .jg-window-min-title-container{
+	float: left;
+    height: 20px;
+    line-height: 1.5em;
+    padding: 0 5px;
+    white-space: nowrap;
+}
+.jg-window-min-container .jg-window-min-title{
+	line-height: 1.5em;
+    white-space: nowrap;
+}
+.jg-window-min-container .jg-window-min-tool-container{
+	float: right;
+    padding: 2px 2px 0 0;
+}
+
+
+.jg-window-min-container .jg-window-min-tool-close{ 
+	background: url("images/icon-sprite.jpg") 32px 0 repeat no-repeat; 
+	cursor: pointer;
+    float: right;
+    height: 20px;
+    margin-left: 3px;
+    overflow: hidden;
+    width: 16px;
+}
+.jg-window-min-container .jg-window-min-tool-max{ 
+	background: url("images/icon-sprite.jpg") 48px 0 repeat no-repeat;
+	cursor: pointer;
+    float: right;
+    height: 20px;
+    margin-left: 3px;
+    overflow: hidden;
+    width: 16px;
+}
+.jg-window-min-container .jg-window-min-tool-min{ 
+	background: url("images/icon-sprite.jpg") 64px 0 repeat no-repeat; 
+	cursor: pointer;
+    float: right;
+    height: 20px;
+    margin-left: 3px;
+    overflow: hidden;
+    width: 16px;
+}
+.jg-window .jg-window-content-resizable-e{
+	cursor: e-resize;
+    height: 100%;
+    right: -5px;
+    top: 0;
+    width: 7px;
+	position: absolute;
+}
+.jg-window 	.jg-window-content-container{
+	overflow: auto;
+	margin: 0;
+    padding: 0;
+}
+.jg-window 	.jg-window-content-container.scroll{
+	overflow: hidden;
+	position: relative;
+}
+
+.jg-window.dragging 	.jg-window-content{
+	visibility: hidden;
+}
+.jg-window.sizzing 	.jg-window-content{
+	display:none;
+}
+
+.jg-window-min-container p{
+	padding:0xp;
+	margin:0px;
+}
+.jg-window-resize-box{
+	position: absolute;
+	background-color: #F4F4F4;
+	opacity: 0.5;
+	border:1px #000000 dashed;
+	cursor: sw-resize;
+}
+.jg-window-cover{
+	background-color: #e3e3e3;
+    bottom: 0;
+    left: 0;
+    opacity: 0.5;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
+
+

@@ -1,4 +1,4 @@
-(function($){
+Ôªø(function($){
 
 $.jgWindow = function(options){
 	$("<div></div>").jgWindow(options);
@@ -8,7 +8,7 @@ $.widget( "jgWidgets.jgWindow", {
 		 options:{
 			minHeight:300,
 			minWidth:400,
-			title	:'–¬Ω®¥∞ø⁄',
+			title	:'Êñ∞Âª∫Á™óÂè£',
 			content	:null,
 			left	:null,
 			top		:null,
@@ -236,7 +236,7 @@ $.widget( "jgWidgets.jgWindow", {
 						success.call(null,data)
 					}
 				 },
-				 //«Î«Û ß∞‹
+				 //ËØ∑Ê±ÇÂ§±Ë¥•
 				 error:function(){
 					if(success&&$.isFunction(success)){
 						success.call(null,"")
