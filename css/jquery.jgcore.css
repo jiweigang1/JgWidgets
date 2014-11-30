@@ -1,0 +1,86 @@
+¡/*»ù±¾ÑùÊ½*/
+.clear{
+     clear:both;
+}
+/*»ù±¾»ú¹¹ÑùÊ½*/
+.panel-content-wrapper{
+     padding:20px;
+}
+/*Form ÑùÊ½ start*/
+.panel-form-content{
+     font-family:"ËÎÌå"; 
+     font-size:12px;
+	 
+}
+.panel-form-content p{
+     width:580px; 
+	 float:left; 
+	 height:30px; 
+	 padding:5px 0px;
+	 margin:0px;
+}
+.panel-form-content.single p{
+    float:none; 
+}
+.panel-form-content p .label{
+     display:block;
+	 width:95px; 
+	 padding:0px 5px;
+	 margin:0px; 
+	 height:30px; 
+	 line-height:30px; 
+	 float:left; 
+	 color:#666; 
+	 text-align:right;
+}
+.panel-form-content p .text{
+     width:270px; 
+	 padding:0px 5px; 
+	 margin:0px; 
+	 height:30px; 
+	 line-height:30px; 
+	 float:left; 
+	 border:1px solid #d7d7d7; 
+	 color:#d7d7d7;
+}
+.panel-form-content p .checkbox{
+     height:30px; 
+	 line-height:30px;
+}
+.panel-form-content p .tips{
+     color:#ff5400;
+	 line-height:30px; 
+	 display:block; 
+	 float:left; 
+	 margin-left:10px;
+}
+.panel-form-content .button{
+     width:187px; 
+	 height:37px; 
+	 line-height:37px;
+	 margin-top:20px;
+	 background:#0078d7; 
+	 color:#fff; 
+	 font-family:"Î¢ÈíÑÅºÚ";
+	 text-decoration:none;
+	 cursor:pointer;
+	 font-size:16px;
+	 text-align:center;
+	 border:none;
+}
+.panel-form-content .button:hover{
+      background:#0071cb;
+      text-decoration:none;
+}
+
+.panel-form-content .divider{
+     height:1px;
+     margin-top:20px;
+     border-bottom:1px dotted  #71addc;
+}
+
+/*Form ÑùÊ½ end*/
+
+
+
+
