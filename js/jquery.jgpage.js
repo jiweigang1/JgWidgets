@@ -13,10 +13,12 @@
     $.widget("jgWidgets.jgPage", {
         options: {
             url: null,
+			//事件
             beforeOpen: null,
             opened: null,
             beforeBack: null,
             backed: null,
+			
 			//是否显示等待图标
 			showLoading:false,
 			//返回值 true 执行 false中断 string 替换返回的请求
@@ -118,6 +120,15 @@
 					    if (self.opt.activePage) {
                             self._addHistory(self.opt.activePage);
                         }
+						$page.css("opacity",0).show();
+						if($.JgWidgets){
+							try{
+								$.JgWidgets._initContent($page,$.JgWidgets.g_befor);
+							}catch(e){
+							
+							}
+						}
+						$page.hide().css("opacity",1);
                         self._toggle($page,self.opt.activePage,direction,function(){
 							if(clearCache){
 								self._clearCache();
@@ -128,7 +139,7 @@
                             $el.trigger("opened", [$page]);
 							if($.JgWidgets){
 								try{
-									$.JgWidgets._initContent($page);
+									$.JgWidgets._initContent($page,$.JgWidgets.g_after);
 								}catch(e){
 								
 								}
@@ -260,7 +271,9 @@
 				fn.call(this);
 			}
 		},
-		
+		/*
+			success(data,success);
+		**/
 		_ajaxLoad:function($dom,url,params,success){
 			var self = this;
 			if(!$dom||$dom.length==0){
@@ -295,6 +308,12 @@
 					self._hideLoading();
 					if(success&&$.isFunction(success)){
 						success.call(null,data)
+					}
+				 },
+				 //请求失败
+				 error:function(){
+					if(success&&$.isFunction(success)){
+						success.call(null,"")
 					}
 				 }
 			});

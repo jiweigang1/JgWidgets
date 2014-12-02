@@ -1,33 +1,27 @@
 ﻿ <div class="panel-content-wrapper">
+	<form action="" class="form" >
 	 <div class="panel-form-content single">
 	  <p>
 	   <span class="label">姓名:</span>
-	   <input class="text" type="text" id="regName" name="regName" value="请输入你的姓名"/>
-	   <span class="tips">用户名或者密码错误</span>	  
+	   <input class="text"  name="name"	errRel="nameErr"  required  data-msg-required="填写姓名！" />
+	   <span class="tips" id="nameErr" ></span>	  
 	  </p>
 	  
 	  <p>
-	   <span class="label">数据库:</span>
-	   <label class="radio"><input type="radio" name="" value=""/>MySQL</label>
-	   <label class="radio"><input type="radio" name="" value=""/>Oracle</label>
-	  </p>
-	  
-	  
-	  <p>
-	   <span class="label">编程语言:</span>
-	   <label class="checkbox"><input  name="" type="checkbox" value="" />Java（Windows）</label>
-	   <label class="checkbox"><input  name="" type="checkbox" value="" />Java（Windows）</label>
-	   <label class="checkbox"><input  name="" type="checkbox" value="" />Java（Windows）</label>
-	   <label class="checkbox"><input  name="" type="checkbox" value="" />Java（Windows）</label>
+	   <span class="label">电话:</span>
+	   <input class="text"  name="name"	errRel="phoneErr"  phone data-msg-required="邮箱格式非法！" />
+	   <span class="tips" id="phoneErr"></span>
 	  </p>
 	  
 	  <p>
-	   <span class="label">非关系型数据库:</span>
-	   <input class="text" type="text" id="regName" name="regName" value="请输入你的姓名"/>
-	   <span class="tips">用户名或者密码错误</span>	  </p>
-	  
+	   <span class="label">邮箱:</span>
+	   <input class="text"  name="email"	errRel="emailErr"  email data-msg-required="邮箱格式非法！" />
+	   <span class="tips" id="emailErr"></span>
+	  </p>
+	  	  
        <div class="clear"></div>
        <div class="divider"></div>
-	   <input type="button" value="提交申请" class="button"/>
+	   <input type="submit" value="提交申请" class="button"/>
 	 </div>	
+	</form>
 </div>

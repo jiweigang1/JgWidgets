@@ -33,13 +33,19 @@
 	
 ////////////////////////////////////
 $.JgWidgets = {
+		g_before:1,
+		g_after:2,
+		
 		_debug:false,
 		_init:false,
-		_plugins:[],
-		addPlugin :function(fn){
-			this._plugins.push(fn);
+		_plugins:[], //{fn:fn,group:group}
+		addPlugin :function(fn,group){
+			if(!group){
+				group = this.g_after;
+			}
+			this._plugins.push({fn:fn,group:group});
 		},
-		_initContent:function(content){
+		_initContent:function(content,group){
 			var $content;
 			if(!content){
 				$content = $(document);
@@ -47,12 +53,11 @@ $.JgWidgets = {
 				$content = $(content);
 			}
 			$.each(this._plugins,function(k,v){
-				if($.isFunction(v)){
-					v.call(null,$content);
-				}else if(typeof v =="object"){
-					if(v.doPlugin&&$.isFunction(v.doPlugin)){
-						v.doPlugin.call(null,$content);
-					}
+				if(group&&group!==v.group){
+					return true;
+				}
+				if($.isFunction(v.fn)){
+					v.fn.call(null,$content);
 				}
 			});
 		},
@@ -65,6 +70,7 @@ $.JgWidgets = {
 			if(this._init){
 				return;
 			}
+			/**
 			$.each(this._plugins,function(k,v){
 				if(typeof v =="object"){
 					if(v.init&&$.isFunction(v.init)){
@@ -72,9 +78,23 @@ $.JgWidgets = {
 					}
 				}
 			});
+			**/
 			this._init = true;
 		}
 	};
+	
+	(function(){
+		//Ä¬ÈÏº¯Êý----
+		window.onAjaxButtonCallBackInPage = function($button,respons){
+				var data = $.parseJSON(respons);
+				jgAlertify.alert(data.message,function(){
+					if(data.status==200){
+						$button.parents(".jg-page-doc:first").jgPage("reload");
+					}
+				});
+		}
+	//---
+	})();
 	
 	(function defaultPlugins(){
 		//add jgPage plugin
@@ -91,7 +111,7 @@ $.JgWidgets = {
 		if($.fn.jgTabs){
 			$.JgWidgets.addPlugin(function($content){
 				$content.find(".tabs").jgTabs();
-			});
+			},$.JgWidgets.g_after);
 		}
 		if($.fn.jgTabsButton){
 			$.JgWidgets.addPlugin(function($content){
@@ -146,3 +166,5 @@ $.JgWidgets = {
 	
 	
 })(jQuery)
+
+
