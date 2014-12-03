@@ -111,7 +111,7 @@ $.JgWidgets = {
 		if($.fn.jgTabs){
 			$.JgWidgets.addPlugin(function($content){
 				$content.find(".tabs").jgTabs();
-			},$.JgWidgets.g_after);
+			},$.JgWidgets.g_before);
 		}
 		if($.fn.jgTabsButton){
 			$.JgWidgets.addPlugin(function($content){
@@ -138,7 +138,7 @@ $.JgWidgets = {
 		if($.fn.jgTable){
 			$.JgWidgets.addPlugin(function($content){
 				$content.find(".table").jgTable();
-			});
+			},$.JgWidgets.g_before);
 		}
 		if($.fn.jgWindowButton){
 			$.JgWidgets.addPlugin(function($content){

@@ -123,7 +123,7 @@
 						$page.css("opacity",0).show();
 						if($.JgWidgets){
 							try{
-								$.JgWidgets._initContent($page,$.JgWidgets.g_befor);
+								$.JgWidgets._initContent($page,$.JgWidgets.g_before);
 							}catch(e){
 							
 							}
