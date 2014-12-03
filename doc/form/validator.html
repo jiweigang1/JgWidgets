@@ -8,14 +8,26 @@
 	  </p>
 	  
 	  <p>
+	   <span class="label">密码:</span>
+	   <input class="text"  name="pw"	errRel="pwErr"  required  data-msg-required="填写密码！" />
+	   <span class="tips" id="pwErr" ></span>	  
+	  </p>
+	  
+	  <p>
+	   <span class="label">确认密码:</span>
+	   <input class="text"  name="pw1"	errRel="pwErr1"   required  data-msg-required="填写确认密码！" />
+	   <span class="tips" id="pwErr1" ></span>	  
+	  </p>
+	  
+	  <p>
 	   <span class="label">电话:</span>
-	   <input class="text"  name="name"	errRel="phoneErr"  phone data-msg-required="邮箱格式非法！" />
+	   <input class="text"  name="phone"	errRel="phoneErr"  required  data-msg-required="填写电话！"  phone data-msg-required="填写正确的电话号码！" />
 	   <span class="tips" id="phoneErr"></span>
 	  </p>
 	  
 	  <p>
 	   <span class="label">邮箱:</span>
-	   <input class="text"  name="email"	errRel="emailErr"  email data-msg-required="邮箱格式非法！" />
+	   <input class="text"  name="email"	errRel="emailErr" required  data-msg-required="填写邮箱！"  data-rule-email="true" data-msg-email="邮箱格式非法！" />
 	   <span class="tips" id="emailErr"></span>
 	  </p>
 	  	  
