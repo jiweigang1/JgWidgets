@@ -42,6 +42,14 @@
 		if(this.element.attr("cloneHeadToFoot")==="true"){
 			this.options.cloneHeadToFoot=true;
 		}
+		var boxWidth = this.element.attr("boxWidth");
+		if(boxWidth){
+			this.options.boxWidth = boxWidth;
+		}
+		var boxHeight = this.element.attr("boxHeight");
+		if(boxHeight){
+			this.options.boxHeight = boxHeight;
+		}
 		
 	 },
 	 _initFixedColumns:function(){

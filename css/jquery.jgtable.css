@@ -163,12 +163,14 @@
     color: #121517;
     font-size: 12px;
     font-weight: bold;
+	text-align: center;
 }
 .jg-table-wrapper  .jg-table tfoot th,
 .jg-table-wrapper  .jg-table tfoot td{
     color: #121517;
     font-size: 12px;
     font-weight: bold;
+	text-align: center;
 }
 .jg-table-wrapper  .jg-table tbody th,
 .jg-table-wrapper  .jg-table tbody td{

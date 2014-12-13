@@ -32,7 +32,8 @@
 				railContainer:null,
 				dragEnable:true,
 				//监听高度和宽度的变化，自动update
-				autoUpdate:false
+				autoUpdate:false,
+				autoShow:true
         },
 		_create:function(){
 			this._$this = this.element;
@@ -45,15 +46,7 @@
 			this._wheelScrollbarShow = -1;
 			this._supportsTouch = (('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch);
 			this._initHtml();
-			
-			var ieMatch = navigator.userAgent.toLowerCase().match(/(msie) ([\w.]+)/);
-			if (ieMatch && ieMatch[1] === 'msie') {
-			  // must be executed at first, because 'ieSupport' may addClass to the container
-			  this._ieSupport(parseInt(ieMatch[2], 10));
-			}
-			
 			this._updateBarSizeAndPosition();
-			
 			this._initEvent();
 		},
 		_initHtml:function(){
@@ -104,6 +97,17 @@
 			
 		},
 		_initEvent:function(){
+			if(this.options.autoShow){
+				this._$railContainer.hover(function(){
+					$(this).addClass("hover")
+				},function(){
+					$(this).removeClass("hover")
+				});
+			}else{
+				this._$railContainer.addClass("hover")
+			}
+			
+		
 			this._bindScrollHandler();
 			this._bindMouseScrollXHandler();
 			this._bindMouseScrollYHandler();
@@ -121,7 +125,6 @@
 			if(this.options.autoUpdate){
 				this._initAutoUpdateEvent();
 			}
-			
 		},
 		//监听高度和宽度变化
 		_initAutoUpdateEvent:function(){
@@ -675,56 +678,7 @@
         this._scrollbarYLeft =
         this._isRtl =
         eventClassName = null;
-      },
-	  _ieSupport : function (version) {
-		var self = this;
-        this._$this.addClass('ie').addClass('ie' + version);
-
-        var bindHoverHandlers = function () {
-          var mouseenter = function () {
-            $(this).addClass('hover');
-          };
-          var mouseleave = function () {
-            $(this).removeClass('hover');
-          };
-          self._$railContainer.bind('mouseenter.' + self._eventClassName, mouseenter).bind('mouseleave.' + self._eventClassName, mouseleave);
-          self._$scrollbarXRail.bind('mouseenter.' + self._eventClassName, mouseenter).bind('mouseleave.' + self._eventClassName, mouseleave);
-          self._$scrollbarYRail.bind('mouseenter.' + self._eventClassName, mouseenter).bind('mouseleave.' + self._eventClassName, mouseleave);
-          self._$scrollbarX.bind('mouseenter.' + self._eventClassName, mouseenter).bind('mouseleave.' + self._eventClassName, mouseleave);
-          self._$scrollbarY.bind('mouseenter.' + self._eventClassName, mouseenter).bind('mouseleave.' + self._eventClassName, mouseleave);
-        };
-
-        var fixIe6ScrollbarPosition = function () {
-           JgScrollbar.prototype._updateScrollbarCss = function () {
-            var scrollbarXStyles = {left: self._scrollbarXLeft +  self._$this.scrollLeft(), width:  self._scrollbarXWidth};
-            if (self._isScrollbarXUsingBottom) {
-              scrollbarXStyles.bottom =  self._scrollbarXBottom;
-            } else {
-              scrollbarXStyles.top =  self._scrollbarXTop;
-            }
-            self._$scrollbarX.css(scrollbarXStyles);
-
-            var scrollbarYStyles = {top:  self._scrollbarYTop +  self._$this.scrollTop(), height:  self._scrollbarYHeight};
-            if (self._isScrollbarYUsingRight) {
-              scrollbarYStyles.right =  self._scrollbarYRight;
-            } else {
-              scrollbarYStyles.left =  self._scrollbarYLeft;
-            }
-
-            self._$scrollbarY.css(scrollbarYStyles);
-            self._$scrollbarX.hide().show();
-            self._$scrollbarY.hide().show();
-          };
-        };
-
-        if (version === 6) {
-          bindHoverHandlers();
-          fixIe6ScrollbarPosition();
-        }
-      }
-		
-		
-		
+      }	
 	});
  });
 

@@ -59,7 +59,7 @@ body{
 	width:100%;
 }
 .body .content .left-content{
-	width:200px;
+	width:240px;
 	float:left;
 	border-right: 1px solid #d3d3d3;
 	height:100%;
@@ -67,7 +67,7 @@ body{
 .body .content .right-content{
 	float:left;
 	height:100%;
-	width:790px;
+	width:750px;
 }
 
 .widgets{
@@ -168,5 +168,12 @@ body{
 .method li {
 	 border-top: 1px solid #ccc;
 	 padding-bottom: 20px;
+}
+.text-content{
+	background:#fafafa;
+	font-size:16px;
+	line-height:150%;
+	padding:10px;
+	margin:10px;
 }
 
