@@ -121,7 +121,7 @@ $.JgWidgets = {
 		if($.fn.jgAccordion){
 			$.JgWidgets.addPlugin(function($content){
 				$content.find(".accordion").jgAccordion();
-			});
+			},$.JgWidgets.g_before);
 		}
 		
 		if($.fn.jgForm){
