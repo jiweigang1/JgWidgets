@@ -127,7 +127,7 @@
 		var w  = this._calculate(this.options.width	 ,this._$this.parent().width()			,this._$this.parent().width());
 		
 		this._settings._width 	= w-2;
-		this.options._boxWidth	= Math.min(bw,w); 
+		this.options._boxWidth	= Math.min(bw,w)-2; 
 		
 		this.options._height 	= h;
 		this.options._boxHeight	= Math.min(bh,h); 
