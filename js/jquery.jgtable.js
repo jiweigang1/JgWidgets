@@ -40,6 +40,10 @@
 		if(this.element.attr("autoScroll")==="false"){
 			this.options.autoScroll=false;
 		}
+		if(this.element.attr("cloneHeadToFoot")==="true"){
+			this.options.cloneHeadToFoot=true;
+		}
+		
 	 },
 	 _initFixedColumns:function(){
 		var $fixeds =	this._$theadTable.find('thead tr>*[fixed="true"],thead tr>*[fixed]');
