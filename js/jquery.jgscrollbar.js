@@ -8,91 +8,13 @@
  * Author JiGang 2014-6-4
  */
  $(function(){
- 
-	
-	
-	 'use strict';
-  var  oldScrollHeightName 			= "___oldScrollHeightName___";
-  var  scrollHeightListenerName		= "__scrollHeightListenerName___";
-  
-  
-  var ScrollHeightListener = function(handler){
-		this._$els 	  = $([]);
-		this._tid 	  = 0
-		if(handler){
-			this._handler = handler;
-		}
-		
-  }
-  
-  $.extend(ScrollHeightListener.prototype,{
-		add:function($el){	
-			this._$els=this._$els.add($el);
-			this._run();
-		},
-		remove:function($el){
-			this._$els = this._$els.not($el);
-		},
-		_run:function(){
-			var self = this;
-			//console.log(this._$els.length);
-			if(this._$els.length==0){
-				return false;
-			}
-			$.each(this._$els,function(k,v){
-				//console.log("check");
-				v = $(v);
-				//console.log(v.data(oldScrollHeightName));
-				if(v.data(oldScrollHeightName)){
-					var ns = v[0].scrollHeight;
-					if(ns!=v.data(oldScrollHeightName)){
-						v.data(oldScrollHeightName ,v[0].scrollHeight);
-						if(self._handler){
-							//console.log("change");
-							self._handler.call(null,v);
-						}
-					}
-				}else{
-					v.data(oldScrollHeightName ,v[0].scrollHeight);
-				}	
-			});
-			if(this._tid>0){
-				clearTimeout(this._tid);
-			}
-			this._tid = setTimeout(function(){
-				self._run();
-			},250);
-		}
-  });
-
-  $(document).data(scrollHeightListenerName,new ScrollHeightListener(function($el){
-		$el.perfectScrollbar("update");
-  }))
-  
-  
-  
-  
-  
-  
-  
-  var getEventClassName = (function () {
-    var incrementingId = 0;
-    return function () {
-      var id = incrementingId;
-      incrementingId += 1;
-      return '.perfect-scrollbar-' + id;
-    };
-  }());
- 
- 
- 
- 
- 
- 
-    $.widget("jgWidgets.jgScrollbar", {
+  $.widget("jgWidgets.jgScrollbar", {
         options: {
 				wheelSpeed: 10,
 				wheelPropagation: false,
+				//使用滚轮
+				usemouseWheel:true,
+				
 				minScrollbarLength: null,
 				useBothWheelAxes: false,
 				useKeyboard: true,
@@ -101,14 +23,16 @@
 				scrollXMarginOffset: 0,
 				scrollYMarginOffset: 0,
 				includePadding: false,
-				autoUpdate	  : false,
 				autoPreventEvent: true,
 				scrollYPanddingTop:0,
 				scrollYPanddingButtom:0,
 				scrollXPanddingLeft:0,
 				scrollXPanddingRight:0,
+				//存放滚动条的容器
 				railContainer:null,
-				dragEnable:true
+				dragEnable:true,
+				//监听高度和宽度的变化，自动update
+				autoUpdate:false
         },
 		_create:function(){
 			this._$this = this.element;
@@ -176,7 +100,7 @@
          this._isScrollbarYUsingRight =  this._scrollbarYRight ===  this._scrollbarYRight; // !isNaN
          this._scrollbarYLeft =  this._isScrollbarYUsingRight ? null: parseInt(this._$scrollbarYRail.css('left'), 10);
          this._isRtl = this._$this.css('direction') === "rtl";
-		 this._eventClassName = getEventClassName();
+		 this._eventClassName = "jgScrollbar";
 			
 		},
 		_initEvent:function(){
@@ -184,15 +108,31 @@
 			this._bindMouseScrollXHandler();
 			this._bindMouseScrollYHandler();
 			this._bindRailClickHandler();
-			if(this._opts.dragEnable){
+			
+			if(this.options.dragEnable){
 				this._bindDragHandler();
 			}
-			if (this._$this.mousewheel) {
+			if (this.options.usemouseWheel) {
 				this._bindMouseWheelHandler();
 			}
-			if (this._opts.useKeyboard) {
+			if (this.options.useKeyboard) {
 				this._bindKeyboardHandler();
 			}
+			if(this.options.autoUpdate){
+				this._initAutoUpdateEvent();
+			}
+			
+		},
+		//监听高度和宽度变化
+		_initAutoUpdateEvent:function(){
+			var self = this;
+			this._$railContainer.on("mouseenter",function(){
+				$(self.element).on("resize",function(){
+					self.update();
+				});
+			}).on("mouseleave",function(){
+				$(this).off("resize");
+			})
 		},
 		_updateContentScrollTop:function(currentTop, deltaY) {
 			var self =this;
@@ -286,11 +226,6 @@
 			},20);
 	  
 	  },
-	  
-	 
-	  
-	  
-	  
 	  _getSettingsAdjustedThumbSize:function(thumbSize) {
         if (this._opts.minScrollbarLength) {
 			 thumbSize = Math.max(this._thumbSize, this._opts.minScrollbarLength);
@@ -367,14 +302,11 @@
 
         this._$scrollbarX.css({left: this._scrollbarXLeft, width: this._scrollbarXWidth});
         this._$scrollbarY.css({top: this._scrollbarYTop, height: this._scrollbarYHeight});
-      }, 	
-	
+      },
 	  update:function(){
 		this._updateBarSizeAndPosition();
 	  },	
-	
 	  _updateBarSizeAndPosition : function () {
-	  
         this._containerWidth  = this._opts.includePadding ? this._$this.innerWidth() : this._$this.width() ;
         this._containerHeight = this._opts.includePadding ? this._$this.innerHeight() : this._$this.height();
 		
@@ -454,25 +386,6 @@
 		var self = this;
         var currentTop  = null;
 		var oldPageY 	= null;
-		/*
-        this._$scrollbarY.on('dragstart', function (e) {
-          currentTop = self._$scrollbarY.position().top;
-          self._$scrollbarYRail.addClass('in-scrolling');
-        });
-
-        this._$scrollbarY.on('drag', function (e,t) {
-          if (self._$scrollbarYRail.hasClass('in-scrolling')) {
-            self._updateContentScrollTop(currentTop, t.deltaY);
-          }
-        });
-
-        this._$scrollbarY.on('dragend',{click:true}, function (e) {
-          if (self._$scrollbarYRail.hasClass('in-scrolling')) {
-				self._$scrollbarYRail.removeClass('in-scrolling');
-          }
-		   currentTop = null;
-        });
-		*/
 		this._$scrollbarY.draggable({
 			axis:"y",
 			helper:function(){
@@ -648,10 +561,6 @@
           default:
             return;
           }
-
-          //self._$this.scrollTop( self._$this.scrollTop() - deltaY);
-          //self._$this.scrollLeft( self._$this.scrollLeft() + deltaX);
-
 		  self._updateContentScrollLeftByDrag(self._$this.scrollLeft() , deltaX);
 		  self._updateContentScrollTopByDrag(self._$this.scrollTop() , deltaY);
 		  
@@ -737,7 +646,7 @@
         });
       },
 	  destroy : function () {
-        this._$this.unbind(this._eventClassName);
+        this._$this.unbind("."+this._eventClassName);
         this._$scrollbarX.remove();
         this._$scrollbarY.remove();
         this._$scrollbarXRail.remove();
@@ -778,11 +687,11 @@
           var mouseleave = function () {
             $(this).removeClass('hover');
           };
-          self._$railContainer.bind('mouseenter' + self._eventClassName, mouseenter).bind('mouseleave' + self._eventClassName, mouseleave);
-          self._$scrollbarXRail.bind('mouseenter' + self._eventClassName, mouseenter).bind('mouseleave' + self._eventClassName, mouseleave);
-          self._$scrollbarYRail.bind('mouseenter' + self._eventClassName, mouseenter).bind('mouseleave' + self._eventClassName, mouseleave);
-          self._$scrollbarX.bind('mouseenter' + self._eventClassName, mouseenter).bind('mouseleave' + self._eventClassName, mouseleave);
-          self._$scrollbarY.bind('mouseenter' + self._eventClassName, mouseenter).bind('mouseleave' + self._eventClassName, mouseleave);
+          self._$railContainer.bind('mouseenter.' + self._eventClassName, mouseenter).bind('mouseleave.' + self._eventClassName, mouseleave);
+          self._$scrollbarXRail.bind('mouseenter.' + self._eventClassName, mouseenter).bind('mouseleave.' + self._eventClassName, mouseleave);
+          self._$scrollbarYRail.bind('mouseenter.' + self._eventClassName, mouseenter).bind('mouseleave.' + self._eventClassName, mouseleave);
+          self._$scrollbarX.bind('mouseenter.' + self._eventClassName, mouseenter).bind('mouseleave.' + self._eventClassName, mouseleave);
+          self._$scrollbarY.bind('mouseenter.' + self._eventClassName, mouseenter).bind('mouseleave.' + self._eventClassName, mouseleave);
         };
 
         var fixIe6ScrollbarPosition = function () {
