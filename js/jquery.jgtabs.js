@@ -1,34 +1,52 @@
-﻿(function($){
+﻿/**
+ *
+ * jg-tabs
+ *
+ * Licensed  Apache Licence 2.0
+ * 
+ * Version : 1.0.0
+ *
+ * Author JiGang 2014-10-31
+ *
+*/
+(function($){
  $.widget( "jgWidgets.jgTabs", {
 		options: {
 			animation:true,
 			//ajax访问类型
 			ajaxType:"post",
-			////
+			closeable:false,
 			_autoHeight:true,
 			_tabId:0
 		},
 		_create: function() {
-			this._initOptions();
+			this._initParams();
 			this._initHtml();
 			this._initEvent();
 		},
-		_initOptions:function(){
+		_initParams:function(){
 			if(this.element.attr("animation")=="false"){
 				this.options.animation = false;
 			}
+			if(this.element.attr("ajaxType")=="get"){
+				this.options.ajaxType = "get";
+			}
+			if(this.element.attr("closeable")=="true"){
+				this.options.closeable = "true";
+			}
+			
 		},
 		_initHtml:function(){
 			var self = this;
 			this.element.addClass("jg-tabs");
 			
-			this.$header  = this.element.find("ul");
+			this.$header  = this.element.find(">ul");
 			if(this.$header.length==0){
 				this.$header = $("<ul></ul>");
 				this.element.append(this.$header);
 			}
 			
-			var $divs = this.element.find("div");
+			var $divs = this.element.find(">div");
 			if($divs.length>0){
 				$divs.hide().addClass("jg-tabs-content-element").wrapAll('<div class="jg-tabs-content" ></div>');
 			}else{
@@ -38,15 +56,26 @@
 			
 			
 			this.$header.wrap('<div class="jg-tabs-warpHeader" ></div>')
-			this.$content = $(".jg-tabs-content",this.element).find(".jg-tabs-content-element").hide().end();
+			this.$content = $(">.jg-tabs-content",this.element).find(">.jg-tabs-content-element").hide().end();
+			//去除空格
+			this.$header.find("li").each(function(){
+				self.$header.append(this);
+			});
+			
 			this.$header.find("li").not("[url]").each(function(i,v){
-				$(this).data("content",self.$content.find(".jg-tabs-content-element").eq(i));
+				$(this).data("content",self.$content.find(">.jg-tabs-content-element").eq(i));
 				$(this).data("data",{ajax:false});
 				$(this).wrapInner("<span></span>");
+				if(self.options.closeable){
+					$(this).append('<span class="close-button" ></span>')
+				}
 			});
 			this.$header.find("li[url]").each(function(i,v){
 				$(this).data("data",{ajax:true,init:false,url:$(this).attr("url")});
 				$(this).wrapInner("<span></span>");
+				if(self.options.closeable){
+					$(this).append('<span class="close-button" ></span>')
+				}
 			});
 			var $li = this.$header.find("li:first"); 
 			if($li.length>0){
@@ -56,9 +85,27 @@
 		},
 		_initEvent:function(){
 			var self = this;
-			this.$header.on("click","li",function(){
+			this.$header.on("click","li",function(e){
 				self._showTab($(this));
+				e.stopPropagation();
+				return false;
+			});
+			this.$header.on("click",".close-button",function(e){
+				self._closeTab($(this).closest("li"));
+				e.stopPropagation();
+				return false;
 			})
+		},
+		_closeTab:function($li){
+			var $tsl = $li.prev("li");
+			if($tsl.length==0){
+				$tsl = $li.next("li");
+			}
+			$li.data("content").remove();
+			$li.remove();
+			if($tsl.length>0){
+				this._showTab($tsl)
+			}
 		},
 		_showTab:function($li){
 			var self = this;
@@ -117,6 +164,11 @@
 				if(fn&&$.isFunction(fn)){
 					fn.call(self);
 				}
+			}).fail(function(){
+				$dom.append("加载失败");
+				if(fn&&$.isFunction(fn)){
+					fn.call(self);
+				}
 			});
 		},
 		_toggle:function(toShow,toHide,direction,fn){
@@ -165,6 +217,9 @@
 			if(!tabId){
 				tabId = this.options._tabId++;
 				var $li = $('<li url="'+url+'" tid="'+tabId+'" ><span>'+name+'</span></li>');
+					if(this.options.closeable){
+						$li.append('<span class="close-button" ></span>')
+					}
 					$li.appendTo(this.$header);
 					$li.data("data",{ajax:true,init:false,url:url});
 				this._showTab($li);
@@ -172,11 +227,15 @@
 				var $li = this._getHeader(tabId);
 				if($li&&$li.length>0){
 					$li.data("content").remove();
-					$li.html('<span>'+name+'</span>').removeClass("active");
+					$li.find("span:first").html(name);
+					$li.removeClass("active");
 					$li.data("data",{ajax:true,init:false,url:url});
 					this._showTab($li);
 				}else{
 					var $li = $('<li url="'+url+'" tid="'+tabId+'" ><span>'+name+'</span></li>');
+					if(this.options.closeable){
+						$li.append('<span class="close-button" ></span>')
+					}
 					$li.appendTo(this.$header);
 					$li.data("data",{ajax:true,init:false,url:url});
 					this._showTab($li);
