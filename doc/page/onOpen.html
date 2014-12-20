@@ -1,7 +1,7 @@
-﻿<div class="page-doc-content" >
-	<div class="explain">
+﻿<div class="panel-content-wrapper" >
+	<div class="text-content">
 	$.jgPage("onOpen",function($page){</br>
-		alert($page.html());</br>
+		$.jgAlert("页面加载完成执行："+$page.find(".text-content").html());</br>
 	});</br>
 	
 	如果需要使用自定义的脚本,可以使用jgPage onOpen方法,</br>
@@ -14,6 +14,6 @@
 </div>
 <script>
 	$.jgPage("onOpen",function($page){
-		alert($page.find(".explain").html());
+		$.jgAlert("页面加载完成执行："+$page.find(".text-content").html());
 	});
 </script>
