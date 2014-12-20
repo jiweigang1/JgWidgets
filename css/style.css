@@ -6,6 +6,9 @@ body{
 	margin: 0px;
     padding: 0px;
 } 
+ul{
+	list-style: none ;
+}
 .main-doc{
 	width:100%;
 }
@@ -36,11 +39,6 @@ body{
 	margin:0 auto;
 }
 
-.widgets ul{
-	list-style: none ;
-	
-}
-
 .widgets ul li{
 	display: block;
     float: left;
@@ -48,6 +46,7 @@ body{
     margin: 0;
     padding: 0;
     min-width: 100px;
+	margin-top:10px;
 }
 .widgets ul li a{
 	color: #444;

@@ -1,5 +1,6 @@
 .jg-tabs{
-	
+	overflow:hidden;
+	border: 1px solid #d3d3d3;
 }
 .jg-tabs .jg-tabs-warpHeader{
 	width:100%;
@@ -7,15 +8,17 @@
 	margin: 0;
     padding: 0;
 	background: none repeat scroll 0 0 #fff;
-    border: 1px solid #d3d3d3;
+	border-bottom: 1px solid #d3d3d3;
     height: 40px;
-	overflow:hidden;
+	position: relative;
 }
 .jg-tabs .jg-tabs-warpHeader ul {
 	list-style-type:none;
 	margin: 0;
     padding: 0;
 	white-space: nowrap;
+	position: absolute;
+	
 }
 .jg-tabs .jg-tabs-warpHeader ul li {
     height: 40px;
@@ -25,6 +28,7 @@
 	background: url("./images/tab_bg.gif") repeat-x scroll left top rgba(0, 0, 0, 0);
 	cursor: pointer;
 	display: inline-block;
+	position: relative;
 }
 
 .jg-tabs .jg-tabs-warpHeader ul li span{
@@ -52,15 +56,23 @@
     padding-bottom: 1px;
 }
 
+.jg-tabs .jg-tabs-warpHeader ul li span.close-button{
+	height:16px;
+	width:16px;
+	position: absolute;
+	left:90px;
+	top:2px;
+	background-image: url("images/close.png");
+	border: 0px;
+	border-right:0px;
+}
 .jg-tabs .jg-tabs-content {
 	width:100%;
 	float:left;
-	border-right: 1px solid #d3d3d3;
-	border-left: 1px solid #d3d3d3;
-	border-bottom: 1px solid #d3d3d3;
 	margin:  0px;
     padding: 0px;
 	position:relative;
+	border: 0px;
 }
 .jg-tabs .jg-tabs-content.animation {
 	border-bottom: 0px;
