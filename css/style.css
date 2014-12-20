@@ -61,13 +61,16 @@ body{
 .body .content .left-content{
 	width:240px;
 	float:left;
-	border-right: 1px solid #d3d3d3;
+	
+	min-height:800px;
 	height:100%;
 }
 .body .content .right-content{
 	float:left;
+	min-height:800px;
 	height:100%;
 	width:750px;
+	border-left: 1px solid #d3d3d3;
 }
 
 .widgets{
