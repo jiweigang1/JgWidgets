@@ -55,7 +55,7 @@ body{
     text-decoration: none
 }
 .body .content{
-	height:800px;
+	min-height:800px;
 	width:100%;
 }
 .body .content .left-content{
@@ -80,6 +80,7 @@ body{
 	text-align: left;
 }
 .footer{
+	margin-top:5px;
 	padding: 20px;
     text-align: center;
 	border-top: 1px solid #cccccc;
