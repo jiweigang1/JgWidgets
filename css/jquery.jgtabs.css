@@ -12,6 +12,14 @@
     height: 40px;
 	position: relative;
 }
+.jg-tabs .jg-tabs-warpHeader .scroll-bar{
+	border: 1px solid #d3d3d3;
+	height: 30px;
+	margin-top:5px;
+	position:absolute;
+	display:none;
+	width:10px;
+}
 .jg-tabs .jg-tabs-warpHeader ul {
 	list-style-type:none;
 	margin: 0;
@@ -90,7 +98,18 @@
 	border-right: 1px solid #d3d3d3;
 	border-left: 1px solid #d3d3d3;
 }
-
+.jg-tabs .scroll-bar{
+	background:#FFFFFF;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor:pointer;
+}
+.jg-tabs .scroll-bar.r{
+	background-image: url('images/icon-right.png');
+}
+.jg-tabs .scroll-bar.l{
+	background-image: url('images/icon-left.png');
+}
 
 
 

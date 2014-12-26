@@ -16,6 +16,7 @@
 			//ajax访问类型
 			ajaxType:"post",
 			closeable:false,
+			scrollable:true,
 			_autoHeight:true,
 			_tabId:0
 		},
@@ -32,7 +33,10 @@
 				this.options.ajaxType = "get";
 			}
 			if(this.element.attr("closeable")=="true"){
-				this.options.closeable = "true";
+				this.options.closeable = true;
+			}
+			if(this.element.attr("scrollable")=="false"){
+				this.options.scrollable = false;
 			}
 			
 		},
@@ -56,6 +60,36 @@
 			
 			
 			this.$header.wrap('<div class="jg-tabs-warpHeader" ></div>')
+			this.$scrollBarL = $('<span class="scroll-bar l" ></span>');
+			this.$scrollBarR = $('<span class="scroll-bar r" ></span>');
+			
+			
+			
+			
+			this.element.find(">.jg-tabs-warpHeader").append(this.$scrollBarL).append(this.$scrollBarR);
+			
+			this.$scrollBarR.on("click",function(){
+				 var oleft = cssParseInt(self.$header.css("left"));
+					 oleft -=100;
+				 var width  = self.$header.width();
+				 var bwidth = self.element.width();	
+					 if(width - (-1*oleft) < bwidth){
+						oleft =  bwidth - width;
+					 }
+				 self.$header.animate({"left":oleft},200);
+			});
+			
+			this.$scrollBarL.on("click",function(){
+				 var oleft = cssParseInt(self.$header.css("left"));
+					 oleft+=100;
+					 if(oleft>0){
+						oleft = 0;
+					 }
+				 self.$header.animate({"left":oleft},200);
+			});
+			
+			
+			
 			this.$content = $(">.jg-tabs-content",this.element).find(">.jg-tabs-content-element").hide().end();
 			//去除空格
 			this.$header.find("li").each(function(){
@@ -125,6 +159,7 @@
 				}
 				
 				$li.addClass("active");
+				this._fixActiveHead();
 				var data = $li.data("data"); 
 				if(data.ajax&&!data.init){
 					var  $element = $('<div class="jg-tabs-content-element" ></div>').hide();
@@ -132,8 +167,27 @@
 					this._ajaxLoad($element,data.url,{},function(){
 							data.init=true;
 							$li.data("content",$element);
+							
+							$element.css("opacity",0).show();
+							if($.JgWidgets){
+								try{
+									$.JgWidgets._initContent($element,$.JgWidgets.g_before);
+								}catch(e){
+								
+								}
+							}
+							$element.hide().css("opacity",1);
+							
 							self._toggle($element,$toHide,direction,function(){
 								$element.trigger("onOpen",[$element]).trigger("onload",[$element]);
+								
+								if($.JgWidgets){
+									try{
+										$.JgWidgets._initContent($element,$.JgWidgets.g_after);
+									}catch(e){
+									
+									}
+								}
 							});
 					});
 					
@@ -213,6 +267,32 @@
 				fn.call(this);
 			}
 		},
+		_fixHeadScroll:function(){
+			var bwidth = this.element.width();
+			var hwidth = this.$header.width(); 		
+			if(this.options.scrollable&&bwidth<hwidth){
+				this.$scrollBarL.show();
+				this.$scrollBarR.css("left",bwidth-10).show();
+			}			
+		},
+		_fixActiveHead:function($ali){
+			var bwidth = this.element.width(); 		
+			if(!$ali){
+				$ali = this._getActiveHeader();
+			}
+			var aleft 	= $ali.offset().left
+			var awidth	= $ali.width();
+			var bleft	= this.element.offset().left
+			var hleft	= this.$header.css("left");
+				hleft 	= cssParseInt(hleft);
+			if($ali.length>0){
+				if(aleft+awidth - bleft > bwidth){
+					this.$header.css("left",hleft -(aleft+awidth - bleft - bwidth));
+				}else if(aleft+awidth - bleft < awidth ) {
+					this.$header.css("left",hleft +(awidth - (aleft+awidth - bleft)));
+				}
+			}
+		},
 		add:function(name,url,tabId){
 			if(!tabId){
 				tabId = this.options._tabId++;
@@ -222,6 +302,7 @@
 					}
 					$li.appendTo(this.$header);
 					$li.data("data",{ajax:true,init:false,url:url});
+				this._fixHeadScroll();	
 				this._showTab($li);
 			}else{
 				var $li = this._getHeader(tabId);
@@ -238,6 +319,7 @@
 					}
 					$li.appendTo(this.$header);
 					$li.data("data",{ajax:true,init:false,url:url});
+					this._fixHeadScroll();
 					this._showTab($li);
 				}
 			}
@@ -255,8 +337,23 @@
 				return null;
 			}
 			return 	this.$header.find('li[tid="'+tabId+'"]');
+		},
+		_getActiveHeader:function(){
+			return 	this.$header.find('li.active');
 		}
 	})
+	
+	function cssParseInt(value){
+		try{
+			value =	parseInt(value.substring(0,value.length-2));
+		}catch(e){
+			value = 0;
+		}
+		if(isNaN(value)){
+			value =0;
+		}
+		return value;
+	}
 	
 	/**
 		注册加载的事件，作用域是当前的Tab
