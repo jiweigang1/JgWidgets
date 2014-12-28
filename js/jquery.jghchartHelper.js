@@ -778,7 +778,7 @@
 		return $.toJSON(extAttr);	 
 	},
 	isMaxY:function(point){
-		var self = this;
+		var self = this; 
 		if(this._maxPoint){
 			return point    === this._maxPoint;
 		}else{
