@@ -37,7 +37,7 @@
 		},
 		_create:function(){
 			this.__initParams();
-			
+			this.element.addClass("jg-hchart-helper");
 			this.el			= this.element;
 			this.$el		= this.el;
 			this.$elC		= null;
