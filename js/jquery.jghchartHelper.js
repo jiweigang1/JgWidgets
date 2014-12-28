@@ -777,7 +777,7 @@
 			 extAttr.push({name:"addLegendHeight",value:this.options.addLegendHeight});
 		return $.toJSON(extAttr);	 
 	},
-	isMaxY(point){
+	isMaxY:function(point){
 		var self = this;
 		if(this._maxPoint){
 			return point    === this._maxPoint;
