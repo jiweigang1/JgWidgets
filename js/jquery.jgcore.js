@@ -145,6 +145,11 @@ $.JgWidgets = {
 				$content.find(".window-button").jgWindowButton();
 			});
 		}
+		if($.fn.jgHchartHelper){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".hchart").jgHchartHelper();
+			});
+		}
 		
 	})();
 	

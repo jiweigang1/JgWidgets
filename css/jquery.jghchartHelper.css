@@ -1,0 +1,34 @@
+.waitting_box {
+    background: none repeat scroll 0 0 #FAFAFA;
+    border: 1px dashed #D4D4D4;
+    text-align: center;
+}
+
+.waitting_box .waitting_icon{
+	width:31px;
+	height:31px;
+	background:url(images/loading.gif) 0px 0px no-repeat;
+	float:left;
+}
+
+.err_box {
+    background: none repeat scroll 0 0 #FAFAFA;
+    border: 1px dashed #D4D4D4;
+    text-align: center;
+}
+.err_message_box{
+	float: left;
+}
+.err_box .err_message{
+   float	  :left;	
+   height	  :32px;
+   line-height:32px;
+   margin-left:10px;
+}
+
+.err_box .err_icon{
+   background:url(images/icon_warning.png) 0px 0px no-repeat;
+   float:left;	
+   height:32px;
+   width:32px;
+}
