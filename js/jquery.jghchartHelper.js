@@ -16,6 +16,7 @@
 	$.widget("jgWidgets.jgHchartHelper",{
 		options:{
 			chartType 		  :null,
+			ajaxType		  :"post",
 			chartId	  		  :null,
 			chartWidth		  :null,
 			chartHight		  :null,
@@ -641,7 +642,7 @@
 				   url = this.options.webContext + url;	
 			   }
 			   $.ajax({
-					type:"post",
+					type:this.options.ajaxType,
 					url:  url,
 					data:this.setting.data||{},
 					dataType:"text",
