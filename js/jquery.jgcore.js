@@ -154,6 +154,13 @@ $.JgWidgets = {
 	})();
 	
 	
+	(function thPlugins(){
+		if($.fn.chosen){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".jg-chosen").chosen();
+			},$.JgWidgets.g_before);
+		}
+	})();
 	
 	
 	

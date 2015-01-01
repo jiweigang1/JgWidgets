@@ -43,6 +43,17 @@
 	 border:1px solid #d7d7d7; 
 	 color:#d7d7d7;
 }
+.panel-form-content p select{
+     width:270px; 
+	 padding:0px 5px; 
+	 margin:0px; 
+	 height:30px; 
+	 line-height:30px; 
+	 float:left; 
+}
+.panel-form-content .chosen-container{
+	float:left;
+}
 .panel-form-content p .checkbox{
      height:30px; 
 	 line-height:30px;

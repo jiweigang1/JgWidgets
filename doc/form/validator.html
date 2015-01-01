@@ -1,4 +1,4 @@
-﻿ <div class="panel-content-wrapper">
+﻿ <div class="panel-content-wrapper" style="min-height:800px" >
 	<form action="" class="form" >
 	 <div class="panel-form-content single">
 	  <p>
@@ -30,8 +30,18 @@
 	   <input class="text"  name="email"	errRel="emailErr" required  data-msg-required="填写邮箱！"  data-rule-email="true" data-msg-email="邮箱格式非法！" />
 	   <span class="tips" id="emailErr"></span>
 	  </p>
-	  	  
-       <div class="clear"></div>
+	  
+	  <p>
+	   <span class="label">型号:</span>
+	   <select class="jg-chosen" name="model" required  errRel="modelErr" data-msg-required="选择型号！" >
+			<option value="">请选择</option>
+			<option value="1">型号1</option>
+			<option value="2">型号2</option>
+	   </select>
+	   <span class="tips" id="modelErr"></span>
+	  </p>	  
+       
+	   <div class="clear"></div>
        <div class="divider"></div>
 	   <input type="submit" value="提交申请" class="button"/>
 	 </div>	
