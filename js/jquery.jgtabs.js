@@ -17,10 +17,14 @@
 			ajaxType:"post",
 			closeable:false,
 			scrollable:true,
+			
 			_autoHeight:true,
 			_tabId:0
 		},
 		_create: function() {
+			this._settings = {
+				watting:false
+			};
 			this._initParams();
 			this._initHtml();
 			this._initEvent();
@@ -144,6 +148,7 @@
 		_showTab:function($li){
 			var self = this;
 			if($li.hasClass("active")){
+				this._settings.watting=false;
 				return ;
 			}else{
 				var $toHide;
@@ -188,12 +193,15 @@
 									
 									}
 								}
+								self._settings.watting = false;
 							});
+							
+							
 					});
 					
 				}else{	
 					self._toggle($li.data("content"),$toHide,direction,function(){
-								
+						self._settings.watting = false;
 					});
 				}
 			}
@@ -294,6 +302,11 @@
 			}
 		},
 		add:function(name,url,tabId){
+			if(this._settings.watting){
+				return;
+			}else{
+				this._settings.watting = true;
+			}
 			if(!tabId){
 				tabId = this.options._tabId++;
 				var $li = $('<li url="'+url+'" tid="'+tabId+'" ><span>'+name+'</span></li>');
