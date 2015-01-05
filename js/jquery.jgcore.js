@@ -160,6 +160,12 @@ $.JgWidgets = {
 				$content.find(".jg-chosen").chosen();
 			},$.JgWidgets.g_before);
 		}
+		
+		if($.fn.chosen){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".jg-ddlist").ddlist();
+			},$.JgWidgets.g_before);
+		}
 	})();
 	
 	
