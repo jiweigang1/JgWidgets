@@ -151,6 +151,18 @@ $.JgWidgets = {
 			});
 		}
 		
+		if($.fn.jgLoader){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".loader").jgLoader();
+			});
+		}
+		
+		if($.fn.jgSelect){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".select").jgSelect();
+			});
+		}
+		
 	})();
 	
 	
@@ -158,12 +170,6 @@ $.JgWidgets = {
 		if($.fn.chosen){
 			$.JgWidgets.addPlugin(function($content){
 				$content.find(".jg-chosen").chosen();
-			},$.JgWidgets.g_before);
-		}
-		
-		if($.fn.chosen){
-			$.JgWidgets.addPlugin(function($content){
-				$content.find(".jg-ddlist").ddlist();
 			},$.JgWidgets.g_before);
 		}
 	})();
