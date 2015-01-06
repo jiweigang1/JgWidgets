@@ -160,7 +160,7 @@ $.JgWidgets = {
 		if($.fn.jgSelect){
 			$.JgWidgets.addPlugin(function($content){
 				$content.find(".select").jgSelect();
-			});
+			},$.JgWidgets.g_before);
 		}
 		
 	})();
