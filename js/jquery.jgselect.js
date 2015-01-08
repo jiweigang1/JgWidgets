@@ -93,7 +93,11 @@
 				e.preventDefault();
 			});
 			this.$options.on("click.jg-select","li",function(e){
-				self._selectIndex($(this).attr("index"));
+				var index = $(this).attr("index");
+				if(!index){
+					return false;
+				}
+				self._selectIndex(index);
 				self._closeOptions();
 			})
 			this.$selectContainer.on("click.jg-select",function(e){
@@ -144,9 +148,18 @@
            
 			var optionsHtml = "";
 			var i=0;
-            this.element.find("option").each(function () {
-				optionsHtml += '<li index="'+i+'">'+$(this).text()+'</li>';
-				i++;
+            this.element.children().each(function () {
+				if(this.tagName.toLowerCase()=="optgroup"){
+					optionsHtml += '<li>'+$(this).attr("label")+'</li>';
+					$(this).find("option").each(function(){
+						optionsHtml += '<li index="'+i+'">'+$(this).text()+'</li>';
+						i++;
+					})
+				}else if(this.tagName.toLowerCase()=="option"){
+					optionsHtml += '<li index="'+i+'">'+$(this).text()+'</li>';
+					i++;
+				}
+				
 			});
 			this.$options.html(optionsHtml);
             if (!this.options.disabled) {
