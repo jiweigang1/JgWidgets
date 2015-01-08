@@ -1,8 +1,6 @@
 ﻿(function($){
 
-$.jgWindow = function(options){
-	$("<div></div>").jgWindow(options);
-}
+
 
 $.widget( "jgWidgets.jgWindow", {
 		 options:{
@@ -224,11 +222,12 @@ $.widget( "jgWidgets.jgWindow", {
 							data = v;	
 						}
 					}
-					
+					$.jgWindow[EVENT_HOLDER]=$dom;
 					if($.addEventHolder){
 						$.addEventHolder("onload",$dom);
 					}
 					$dom.empty().append(data);
+					$.jgWindow[EVENT_HOLDER]=null;
 					if($.removeEventHolder){
 						$.removeEventHolder("onload");
 					}
@@ -245,8 +244,34 @@ $.widget( "jgWidgets.jgWindow", {
 			});
 	},
 	loadContent:function(url,params){
-		this._ajaxLoad(this._$content,url,params,function(){
-			
+		var self 		= this;
+		var $content	= this._$content;
+		this._ajaxLoad($content,url,params,function(){
+			$content.css("opacity",0);
+			if($.JgWidgets){
+				try{
+					$.JgWidgets._initContent($content,$.JgWidgets.g_before);
+				}catch(e){
+					if(console){
+						console.log(e);
+					}
+				}
+			}
+			$content.css("opacity",1);
+			if(self.options.onOpen) {
+				self.options.onOpen.call(null, $content);
+            }
+			$el.trigger("onOpen", [$content]);
+			if($.JgWidgets){
+				try{
+					$.JgWidgets._initContent($content,$.JgWidgets.g_after);
+				}catch(e){
+					if(console){
+						console.log(e);
+					}
+				}
+			}
+			$content.trigger("onOpen",[$content]);
 		});
 	},
 	getWid:function(){
@@ -374,6 +399,30 @@ $.widget( "jgWidgets.jgWindow", {
 		}
 	 }
 		
+		
+		
+	/**
+		注册加载的事件，作用域是当前的Window Content
+	*/
+	var EVENT_HOLDER = "window_holder";
+	$.jgWindow = function(options){
+		if(!(arguments.length==2&&typeof arguments[0]==="string" && $.isFunction(arguments[1]))){
+			$("<div></div>").jgWindow(options);
+		}else{
+			var event = arguments[0]
+			var fn	  = arguments[1];
+			if(!$.jgWindow[EVENT_HOLDER]||!fn||!$.isFunction(fn)){
+				return;
+			}
+			if(event!=="onOpen"){
+				return;
+			}
+			$.jgWindow[EVENT_HOLDER].one(event,function(event,$content){
+				fn.call(window,$content);
+			});
+		}
+		
+	}	
 });
 })(jQuery);
 (function ($) {
