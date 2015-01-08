@@ -17,6 +17,10 @@
 	border	:1px #F4F4F4 solid;
 	position:absolute;
 	background:#FFFFFF;
+	overflow: hidden;
+}
+.jg-window.max{
+   position:fixed;
 }
 .jg-window.dragging{
 	opacity: 0.6;

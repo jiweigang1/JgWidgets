@@ -53,18 +53,18 @@ ul{
     padding: 0 5px 0 20px;
     text-decoration: none
 }
-.body .content{
+.content{
 	min-height:800px;
 	width:100%;
 }
-.body .content .left-content{
+.content .left-content{
 	width:240px;
 	float:left;
 	
 	min-height:800px;
 	height:100%;
 }
-.body .content .right-content{
+.content .right-content{
 	float:left;
 	min-height:800px;
 	height:100%;

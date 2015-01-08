@@ -171,6 +171,10 @@ $.widget( "jgWidgets.jgWindow", {
 	 _adjustContentContainer:function(){
 		this._$contentContainer.css({"height":this._$window.height()-this._$toolBar.height()-6,"width":this._$window.width()-6});
 	 },
+	 _adjustContent(){
+		this._$content.css({"min-height":this._$content.parent().height(),"min-width":this._$content.parent().width()});
+		this._$contentContainer.jgScrollbar("update");
+	 },
 	_frontWindow:function(){
 		var zi = 0;
 		var w  = null;
@@ -261,7 +265,7 @@ $.widget( "jgWidgets.jgWindow", {
 			if(self.options.onOpen) {
 				self.options.onOpen.call(null, $content);
             }
-			$el.trigger("onOpen", [$content]);
+			$content.trigger("onOpen", [$content]);
 			if($.JgWidgets){
 				try{
 					$.JgWidgets._initContent($content,$.JgWidgets.g_after);
@@ -315,7 +319,9 @@ $.widget( "jgWidgets.jgWindow", {
 			woW = $( window ).outerWidth();
 		self.element.addClass("sizzing");	
         this.element.animate( {left: wsL+5+'px' , top: wsT+5+'px' , width: woW-12 , height: woH-12+'px' },function(){
-			self.element.removeClass("sizzing");
+			self.element.removeClass("sizzing").addClass("max");
+			self._adjustContentContainer();
+			self.element.resizable("disable").draggable("disable");
 		} );
 	 },
 	 normalSize:function(){
@@ -324,6 +330,9 @@ $.widget( "jgWidgets.jgWindow", {
 			self.element.addClass("sizzing");		
 		this._$window.animate( {left: oldSize.left , top: oldSize.top , width: oldSize.width , height: oldSize.height},function(){
 			self.element.removeClass("sizzing");
+			self.element.removeClass("sizzing max");
+			self._adjustContentContainer();
+			self.element.resizable("enable").draggable("enable");
 		});
 	 },
 	 minSize:function(){
@@ -398,9 +407,8 @@ $.widget( "jgWidgets.jgWindow", {
 			this._adjustContentContainer();
 		}
 	 }
-		
-		
-		
+});
+	
 	/**
 		注册加载的事件，作用域是当前的Window Content
 	*/
@@ -421,9 +429,7 @@ $.widget( "jgWidgets.jgWindow", {
 				fn.call(window,$content);
 			});
 		}
-		
-	}	
-});
+	}
 })(jQuery);
 (function ($) {
     $.widget("JgWidgets.jgWindowButton", {
