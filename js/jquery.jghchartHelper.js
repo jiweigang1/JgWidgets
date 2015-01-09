@@ -34,7 +34,11 @@
 			addLegendHeight	  :false,	
 			hchartSetting	  :null,
 			logoUrl			  :null,
-			showWaitting	  :true	
+			showWaitting	  :true,
+			
+			onReceiveData	  :null
+			
+			
 		},
 		_create:function(){
 			this.__initParams();
@@ -79,6 +83,8 @@
 		  this.options.hchartSetting	 	 = getValue(this.element,"hchartSetting",this.options.hchartSetting,"object");
 		  this.options.logoUrl	 	 		 = getValue(this.element,"logoUrl",this.options.logoUrl);
 		  this.options.showWaitting	 	 	 = getValue(this.element,"showWaitting",this.options.showWaitting,"boolean"); 
+		  
+		  this.options.onReceiveData		 = getValue(this.element,"onReceiveData",this.options.onReceiveData,"function");
 		},
 		//初始化url
 		_initUrl:function(){
@@ -309,7 +315,7 @@
 																		p = params;
 																	}
 																}
-																self.setting.events.pointClick.call(self.$el,this,p);
+																self.setting.events.pointClick.call(self.$el,this,p,self);
 															}
 														}
 													}
@@ -650,8 +656,6 @@
 					  if(self.options.showWaitting){
 						 self._showWaitting();
 					  }	
-						
-					
 					},
 					error:function(){
 						self._showErr("加载图片错误！");	
@@ -659,15 +663,24 @@
 					success:function(chart){
 						try{
 							chart = eval("("+chart+")");
+							if(self.options.onReceiveData){
+									self.options.onReceiveData.call(null,chart);
+									self.element.trigger("onReceiveData");
+							}
 						}catch(e){
 							try{
 								chart = eval(chart);
 								this.dataChartSetting = chart;
+								if(self.options.onReceiveData){
+									self.options.onReceiveData.call(null,chart);
+									self.element.trigger("onReceiveData");
+								}
 							}catch(e){
-								//self.$el.append("data is illegal :"+e.message);
+								if(console){
+									console.log(e);
+								}
 								self._showErr("加载图片错误！");	
 							}
-							 
 							return;
 						}
 						if(!chart.series||chart.series.length==0){
@@ -763,7 +776,32 @@
 			 extAttr.push({name:"showYRangeBar",value:this.options.showYRangeBar});
 			 extAttr.push({name:"addLegendHeight",value:this.options.addLegendHeight});
 		return $.toJSON(extAttr);	 
-	}	
+	},
+	isMaxY(point){
+		var self = this;
+		if(this._maxPoint){
+			return point    === this._maxPoint;
+		}else{
+			var max, x , y;
+			for(var i=0;i<self.highChart.series.length;i++){
+				for(var k=0;k<self.highChart.series[i].yData.length;k++){
+					if(max){
+						if(max<self.highChart.series[i].yData[k]){
+							max = self.highChart.series[i].yData[k];
+							x=i;
+							y=k;
+						}
+					}else{
+							max = self.highChart.series[i].yData[k];
+							x=i;
+							y=k;
+					}
+				}
+			}
+			this._maxPoint = self.highChart.series[x].data[y];
+			return point    === this._maxPoint;
+		}
+	}
 });
 	
 	function getValue($el,name,defaultValue,type){

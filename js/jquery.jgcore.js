@@ -145,11 +145,7 @@ $.JgWidgets = {
 				$content.find(".window-button").jgWindowButton();
 			});
 		}
-		if($.fn.jgHchartHelper){
-			$.JgWidgets.addPlugin(function($content){
-				$content.find(".hchart").jgHchartHelper();
-			});
-		}
+		
 		
 		if($.fn.jgLoader){
 			$.JgWidgets.addPlugin(function($content){
@@ -161,6 +157,13 @@ $.JgWidgets = {
 			$.JgWidgets.addPlugin(function($content){
 				$content.find(".select").jgSelect();
 			},$.JgWidgets.g_before);
+		}
+		
+		
+		if($.fn.jgHchartHelper){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".hchart").jgHchartHelper();
+			});
 		}
 		
 	})();
