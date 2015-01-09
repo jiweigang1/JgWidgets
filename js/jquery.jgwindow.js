@@ -171,7 +171,7 @@ $.widget( "jgWidgets.jgWindow", {
 	 _adjustContentContainer:function(){
 		this._$contentContainer.css({"height":this._$window.height()-this._$toolBar.height()-6,"width":this._$window.width()-6});
 	 },
-	 _adjustContent(){
+	 _adjustContent:function(){
 		this._$content.css({"min-height":this._$content.parent().height(),"min-width":this._$content.parent().width()});
 		this._$contentContainer.jgScrollbar("update");
 	 },
