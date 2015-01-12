@@ -46,7 +46,7 @@
 	line-height: 1.5em;	
 }
 .jg-window .jg-window-tool-close{ 
-	background: url("images/icon-sprite.jpg") 16px 0 repeat no-repeat;
+	background: url("images/icon-sprite.png") -38px 0  no-repeat;
 	cursor: pointer;
     float: right;
     height: 20px;
@@ -54,17 +54,26 @@
     overflow: hidden;
     width: 16px;	
 }
+.jg-window .jg-window-tool-close:hover{ 
+    background: url("images/icon-sprite.png") -110px 0  no-repeat;
+	background-color:#d74e54;
+}
 .jg-window .jg-window-tool-max.normal{ 
-	background: url("images/icon-sprite.jpg") 32px 0 repeat no-repeat; 
+	background: url("images/icon-sprite.png") -20px 0  no-repeat; 
 	cursor: pointer;
     float: right;
     height: 20px;
     margin-left: 3px;
     overflow: hidden;
     width: 16px;
+
+}
+.jg-window .jg-window-tool-max.normal:hover{
+    background: url("images/icon-sprite.png") -92px 0  no-repeat; 
+	background-color:#499df4;
 }
 .jg-window .jg-window-tool-max.alternate{ 
-	background: url("images/icon-sprite.jpg") 48px 0 repeat no-repeat;
+	background: url("images/icon-sprite.png") -56px 0  no-repeat;
 	cursor: pointer;
     float: right;
     height: 20px;
@@ -72,14 +81,23 @@
     overflow: hidden;
     width: 16px;
 }
+.jg-window .jg-window-tool-max.alternate:hover{
+   background: url("images/icon-sprite.png") -128px 0  no-repeat;
+   background-color:#499df4;
+}
 .jg-window .jg-window-tool-min{ 
-	background: url("images/icon-sprite.jpg") 64px 0 repeat no-repeat; 
+	background: url("images/icon-sprite.png") 2px 0  no-repeat; 
 	cursor: pointer;
     float: right;
     height: 20px;
     margin-left: 3px;
     overflow: hidden;
     width: 16px;
+}
+.jg-window .jg-window-tool-min:hover{ 
+     background: url("images/icon-sprite.png") -74px  0  no-repeat; 
+	
+	 background-color:#499df4;
 }
 .jg-window-min-container{
     bottom: 0;
@@ -114,7 +132,7 @@
 
 
 .jg-window-min-container .jg-window-min-tool-close{ 
-	background: url("images/icon-sprite.jpg") 32px 0 repeat no-repeat; 
+	background: url("images/icon-sprite.png") 32px 0 repeat no-repeat; 
 	cursor: pointer;
     float: right;
     height: 20px;
@@ -132,7 +150,7 @@
     width: 16px;
 }
 .jg-window-min-container .jg-window-min-tool-min{ 
-	background: url("images/icon-sprite.jpg") 64px 0 repeat no-repeat; 
+	background: url("images/icon-sprite.png") 64px 0 repeat no-repeat; 
 	cursor: pointer;
     float: right;
     height: 20px;
