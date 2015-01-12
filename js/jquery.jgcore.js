@@ -159,6 +159,18 @@ $.JgWidgets = {
 			},$.JgWidgets.g_before);
 		}
 		
+		if($.fn.jgCard){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".card").jgCard();
+			},$.JgWidgets.g_before);
+		}
+		
+		if($.fn.jgCard){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".card-button").jgCardButton();
+			});
+		}
+		
 		
 		if($.fn.jgHchartHelper){
 			$.JgWidgets.addPlugin(function($content){
