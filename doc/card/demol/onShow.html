@@ -1,0 +1,23 @@
+<div class="panel-content-wrapper" >
+	<div class="panel-content-wrapper" >
+		<input class="card-button" target="#cardId" cardId="card1" type="button" value="cardId1" >
+		<input class="card-button" target="#cardId" cardId="card2" type="button" value="cardId2" >
+		<input class="card-button" target="#cardId" cardId="card3" type="button" value="cardId3" >
+	</div>
+	<div id="cardId" class="card" onShow="onShow" >
+			<div cardId="card1" style="height:600px;background:#eeeeee" >
+				card1
+			</div>
+			<div cardId="card2" style="height:600px;background:#bbbbbb" >
+				card2
+			</div>
+			<div cardId="card3" style="height:600px;background:#cccccc" >
+				card3
+			</div>
+	</div>
+</div>
+<script>
+	function onShow($card){
+		$.jgAlert($card.attr("cardId")+"显示完成")
+	}
+</script>
