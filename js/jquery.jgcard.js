@@ -19,11 +19,17 @@
 			this.element.find(">div:not(:first)").hide();
 		},
 		open:function(cardId){
-			var $toHide = this.element.find(".jg-card-open").removeClass("jg-card-open");
-			var $toOpen = this.element.find('>div[cardId="'+cardId+'"]').addClass("jg-card-open");
-			if($toOpen.length>0){
+			var $toHide = this.element.find(".jg-card-open");
+			var $toOpen = this.element.find('>div[cardId="'+cardId+'"]');
+			if($toOpen.length==0||$toOpen.hasClass("jg-card-open")){
+				return false;
+			}
+			$toHide.removeClass("jg-card-open");
+			$toOpen.addClass("jg-card-open");
+			if($toHide.length>0){
 				$toHide.slideUp();
-			}else{
+			}
+			if($toOpen.length>0){
 				$toOpen.slideDown();
 			}
 		}
