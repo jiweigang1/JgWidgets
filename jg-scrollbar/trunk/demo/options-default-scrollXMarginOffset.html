@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>perfect-scrollbar example</title>
+      <link href="../css/jquery.jgscrollbar.css" rel="stylesheet">
+      <script src="../../../../lib/jquery-1.10.2.js"></script>
+      <script src="../../../../lib/jquery.mousewheel.js"></script>
+	  <script src="../../../../jquery-ui/jquery-ui.js"></script>
+	  <script src="../../../../lib/jquery.resize.js"></script>
+      <script src="../js/jquery.jgscrollbar.js"></script>
+      <style>
+        .contentHolder { position:relative; margin:0px auto; padding:0px; width: 600px; height: 400px; overflow: hidden; }
+        .contentHolder .content { background-image: url('./azusa.jpg'); width: 1280px; height: 720px; }
+        .spacer { text-align:center }
+      </style>
+    <script>
+      jQuery(document).ready(function ($) {
+        
+		$("#Default").on("click",function(){
+			$(".content").width($(".content").width()+200);
+			return false;
+		})
+		
+        $('#Default').jgScrollbar({scrollXMarginOffset:11200,autoUpdate:true});
+      });
+    </script>
+  </head>
+  <body>
+	<input id="add" type="button" value="增加宽度" >
+    <div id="Default" class="contentHolder">
+      <div class="content">
+			asdadasd
+      </div>
+    </div>
+  </body>
+</html>
+

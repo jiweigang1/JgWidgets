@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>alertify.js - example page</title>
+	<link rel="stylesheet" href="../css/jquery.jgalertify.css" />
+	<meta name="viewport" content="width=device-width">
+	<style>
+		.alertify-log-custom {
+			background: blue;
+		}
+	</style>
+</head>
+<body>
+
+	<h2>Dialogs</h2>
+	<a href="#" id="alert">Alert Dialog</a><br>
+	<a href="#" id="confirm">Confirm Dialog</a><br>
+	<a href="#" id="prompt">Prompt Dialog</a><br>
+	<a href="#" id="labels">Custom Labels</a><br>
+	<a href="#" id="focus">Button Focus</a><br>
+	<a href="#" id="order">Button Order</a>
+
+	<h2>Ajax</h2>
+	<a href="#" id="ajax">Ajax - Multiple Dialog</a>
+
+	<h2>Logs</h2>
+	<a href="#" id="notification">Standard Log</a><br>
+	<a href="#" id="success">Success Log</a><br>
+	<a href="#" id="error">Error Log</a><br>
+	<a href="#" id="custom">Custom Log</a><br>
+	<a href="#" id="delay">Hide in 10 seconds</a><br>
+	<a href="#" id="forever">Persistent Log</a>
+
+	<h2>Themes</h2>
+	<a href="#" id="bootstrap">Bootstrap Theme</a>
+
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="../js/jquery.jgalertify.js"></script>
+	<script>
+		function reset () {
+			//$("#toggleCSS").attr("href", "../themes/alertify.default.css");
+			jgAlertify.set({
+				labels : {
+					ok     : "OK",
+					cancel : "Cancel"
+				},
+				delay : 5000,
+				buttonReverse : false,
+				buttonFocus   : "ok"
+			});
+		}
+
+		// ==============================
+		// Standard Dialogs
+		$("#alert").on( 'click', function () {
+			reset();
+			jgAlertify.alert("This is an alert dialog","erooe");
+			return false;
+		});
+
+		$("#confirm").on( 'click', function () {
+			reset();
+			jgAlertify.confirm("This is a confirm dialog", function (e) {
+				if (e) {
+					jgAlertify.success("You've clicked OK",null,"eroor");
+				} else {
+					jgAlertify.error("You've clicked Cancel");
+				}
+			});
+			return false;
+		});
+
+		$("#prompt").on( 'click', function () {
+			reset();
+			jgAlertify.prompt("This is a prompt dialog", function (e, str) {
+				if (e) {
+					jgAlertify.success("You've clicked OK and typed: " + str);
+				} else {
+					jgAlertify.error("You've clicked Cancel");
+				}
+			}, "Default Value");
+			return false;
+		});
+
+		// ==============================
+		// Ajax
+		$("#ajax").on("click", function () {
+			reset();
+			jgAlertify.confirm("Confirm?", function (e) {
+				if (e) {
+					alert(1);
+					jgAlertify.alert("Successful AJAX after OK");
+				} else {
+					jgAlertify.alert("Successful AJAX after Cancel");
+				}
+			});
+		});
+
+		// ==============================
+		// Standard Dialogs
+		$("#notification").on( 'click', function () {
+			reset();
+			jgAlertify.log("Standard log message");
+			return false;
+		});
+
+		$("#success").on( 'click', function () {
+			reset();
+			jgAlertify.success("Success log message");
+			return false;
+		});
+
+		$("#error").on( 'click', function () {
+			reset();
+			jgAlertify.error("Error log message");
+			return false;
+		});
+
+		// ==============================
+		// Custom Properties
+		$("#delay").on( 'click', function () {
+			reset();
+			jgAlertify.set({ delay: 10000 });
+			jgAlertify.log("Hiding in 10 seconds");
+			return false;
+		});
+
+		$("#forever").on( 'click', function () {
+			reset();
+			jgAlertify.log("Will stay until clicked", "", 0);
+			return false;
+		});
+
+		$("#labels").on( 'click', function () {
+			reset();
+			jgAlertify.set({ labels: { ok: "Accept", cancel: "Deny" } });
+			jgAlertify.confirm("Confirm dialog with custom button labels", function (e) {
+				if (e) {
+					jgAlertify.success("You've clicked OK");
+				} else {
+					jgAlertify.error("You've clicked Cancel");
+				}
+			});
+			return false;
+		});
+
+		$("#focus").on( 'click', function () {
+			reset();
+			jgAlertify.set({ buttonFocus: "cancel" });
+			jgAlertify.confirm("Confirm dialog with cancel button focused", function (e) {
+				if (e) {
+					jgAlertify.success("You've clicked OK");
+				} else {
+					jgAlertify.error("You've clicked Cancel");
+				}
+			});
+			return false;
+		});
+
+		$("#order").on( 'click', function () {
+			reset();
+			jgAlertify.set({ buttonReverse: true });
+			jgAlertify.confirm("Confirm dialog with reversed button order", function (e) {
+				if (e) {
+					jgAlertify.success("You've clicked OK");
+				} else {
+					jgAlertify.error("You've clicked Cancel");
+				}
+			});
+			return false;
+		});
+
+		// ==============================
+		// Custom Log
+		$("#custom").on( 'click', function () {
+			reset();
+			jgAlertify.custom = jgAlertify.extend("custom");
+			jgAlertify.custom("I'm a custom log message");
+			return false;
+		});
+
+		// ==============================
+		// Custom Themes
+		$("#bootstrap").on( 'click', function () {
+			reset();
+			$("#toggleCSS").attr("href", "../themes/alertify.bootstrap.css");
+			jgAlertify.prompt("Prompt dialog with bootstrap theme", function (e) {
+				if (e) {
+					jgAlertify.success("You've clicked OK");
+				} else {
+					jgAlertify.error("You've clicked Cancel");
+				}
+			}, "Default Value");
+			return false;
+		});
+	</script>
+
+</body>
+</html>

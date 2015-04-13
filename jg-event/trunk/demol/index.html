@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		<script src="../js/jquery.jgevent.js"></script>
+        <script>
+			$(function(){
+				$(".jgpage").on("attrChange",{width:true,height:true},function(){
+					alert(1)
+				})
+			});
+			
+			
+		</script>
+    </head>
+    <body>
+    	<div  class="jgpage" style="width:400px;height:200px" url="1.html" >	
+		
+		</div>
+    </body>
+</html>

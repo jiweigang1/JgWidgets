@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Checkboxes and radio buttons customization (jQuery and Zepto) plugin</title>
+  <link href="../css/minimal.css" rel="stylesheet">
+  <script src="../../lib/jquery-1.10.2.js"></script>
+  <script src="../js/icheck.js"></script>
+  <script src="../js/jg-icheck.js"></script>
+</head>
+<body>
+  <input type ="checkbox" id ="c" autoTriggerChange="true">
+  <script>
+	$(function(){
+		$("#c").jgIcheck({
+		});
+		$("#c").on("change",function(){
+			alert(1);
+		});
+	});
+  </script>
+</body>
+</html>

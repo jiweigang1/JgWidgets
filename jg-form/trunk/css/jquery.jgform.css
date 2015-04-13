@@ -1,0 +1,4 @@
+select.error,
+input.error {
+    border: 1px dotted red !important;
+}

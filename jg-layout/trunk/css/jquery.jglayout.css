@@ -1,0 +1,42 @@
+.jg-layout-container{
+	bottom: 0;
+    height: auto;
+    left: 0;
+    margin: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+.jg-layout-north{
+	position:absolute;
+	margin:0px;
+	padding:0px;
+	overflow: auto;
+}
+.jg-layout-west{
+	position:absolute;
+	margin:0px;
+	padding:0px;
+	overflow: auto;
+}
+.jg-layout-south{
+	position:absolute;
+	margin:0px;
+	padding:0px;
+	overflow: auto;
+}
+.jg-layout-east{
+	position:absolute;
+	margin:0px;
+	padding:0px;
+	overflow: auto;
+}
+.jg-layout-centor{
+	position:absolute;
+	overflow:auto;
+	margin:0px;
+	padding:0px;
+	overflow: auto;
+}

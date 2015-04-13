@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+        <link href="../css/jquery.jgpage.css" rel="stylesheet" media="screen" />
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		<script src="../../../lib/velocity.js"></script>
+		<script src="../../../jquery-ui/jquery-ui.js"></script>
+		<script src="../js/jquery.jgpage.js"></script>
+        <script>
+			$(function(){
+				$(".jgpage").jgPage({validate:function(){
+					//alert(1);
+					//return false;
+					//return true;
+					//return "111";
+					//window.location.href='./1.html';
+					return true
+				},opened:function($page){
+						
+						$page.find(".pageButton").jgPageButton();
+				}});
+				$("#open").on("click",function(){
+					$(".jgpage").jgPage("openPage","1.html");
+				})
+				$("#goBack").on("click",function(){
+					$(".jgpage").jgPage("goBack");
+				});
+				$("#goBackReload").on("click",function(){
+					$(".jgpage").jgPage("goBack",true);
+				})
+			});
+			
+			
+		</script>
+    </head>
+    <body>
+		<input id="open" clearCache="false"	 type="button" value="打开" >
+		<input id="goBack" 		 type="button" value="返回" >
+		<input id="goBackReload" type="button" value="返回重新加载" >
+    	<div  class="jgpage" style="width:400px;height:200px"  >
+				<div>adasdasdadas</div>
+		</div>
+		
+    </body>
+</html>

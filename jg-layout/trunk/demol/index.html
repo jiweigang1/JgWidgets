@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+        <link href="../css/jquery.jglayout.css" rel="stylesheet" media="screen" />
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		<script src="../../../jquery-ui/jquery-ui.js"></script>
+		<script src="../js/jquery.jglayout.js"></script>
+        <script>
+			$(function(){
+				$("body").jgLayout();
+			});
+			function close1(part){
+				$("body").jgLayout("close",part)
+			}
+			
+			function open1(part){
+				$("body").jgLayout("open",part)
+			}
+			
+		</script>
+    </head>
+    <body>
+		<div class="jg-layout-north">
+			<div style="height:100%;width:100%;background:red">north</div>
+		</div>
+		<div class="jg-layout-west" >
+			<div style="height:100%;width:100%;background:black">west</div>
+		</div>
+		<div class="jg-layout-south">
+			<div style="height:100%;width:100%;background:blue">south</div>
+		</div>
+		<div class="jg-layout-east" >
+			<div style="height:100%;width:100%;background:yellow">east</div>
+		</div>
+		<div class="jg-layout-centor" >
+			<div style="height:100%;width:100%;background:olive">centor
+				<input value="关闭north" onclick='close1("north")' type="button"  />
+				<input value="打开north" onclick='open1("north")' type="button"  />
+				<input value="关闭west" onclick='close1("west")' type="button"  />
+				<input value="打开west" onclick='open1("west")' type="button"  />
+				<input value="关闭south" onclick='close1("south")' type="button"  />
+				<input value="打开south" onclick='open1("south")' type="button"  />
+				<input value="关闭east" onclick='close1("east")' type="button"  />
+				<input value="打开east" onclick='open1("east")' type="button"  />
+			</div>
+		</div>
+    </body>
+</html>

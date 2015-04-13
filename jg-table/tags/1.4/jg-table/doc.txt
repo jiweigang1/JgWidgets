@@ -1,0 +1,42 @@
+th data
+{
+  cindex[],
+  thc[],//控制head宽度
+  tbc[],//控制body宽度
+  tfc[],//控制foot宽度
+}
+
+结构
+<jg-table-wrapper>
+	<jg-table-thead-container>
+		<tbale>
+			 <thead>
+				<cindex>
+				<tr>
+			 </thead>	
+		</table>
+	</jg-table-thead-container>
+	<jg-table-tbody-container >
+		<tbale>
+			 <thead>
+				<cindex>
+			 </thead>
+			<tbody>
+				tr...
+			</tbody>	
+		</table>		
+	</jg-table-tbody-container>
+	<jg-table-tfoot-container>
+		<tbale>
+			 <thead>
+				<cindex>
+				<tr>
+			 </thead>
+			 或者
+			<tbody>
+				<cindex>
+				<tr>
+			</tbody>	
+		</table>	
+	</jg-table-tfoot-container>
+</jg-table-wrapper>

@@ -1,0 +1,101 @@
+﻿.jg-select-container{
+  position: relative;
+  display: inline-block;
+}
+
+.jg-select-container >a{
+  border: solid 1px #bababa;
+  cursor: pointer; 
+  background: #fff;
+  overflow: hidden;
+  display: block;
+  padding: 4px;
+  color: #333;
+  font-weight: normal;
+}
+
+.jg-select-container >a:hover {
+  border: solid 1px #808080;
+}
+.jg-select-container .jg-select-arrow{
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  border: solid 7px transparent; 
+}
+.jg-select-container  .jg-select-arrow.close{
+  border-top: solid 7px #505050;
+}
+.jg-select-container  .jg-select-arrow.open{
+  border-bottom: solid 7px #505050;
+  margin-top:-7px;	
+}
+.jg-select-container .options-container{
+	position:absolute;
+}
+.jg-select-container .options-scroll{
+	overflow:auto;
+	border-bottom: solid 1px #bababa;
+	border-left: solid 1px #bababa;
+	border-right: solid 1px #bababa;
+	display: none;
+	z-index: 20;
+	background:#FFFFFF;
+}
+
+.jg-select-container  ul {
+  position: relative;
+  border: 0px;
+  border-top: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+.jg-select-container  ul li { 
+  margin:0px;
+  padding:0px;
+  cursor:pointer;
+  height:20px;
+  line-height:20px;
+  margin:2px;
+}
+.jg-select-container  a:link {
+ text-decoration: none;
+}
+.jg-select-container  a:visited {
+ text-decoration: none;
+}
+.jg-select-container  a:hover {
+ text-decoration: none;
+}
+.jg-select-container  a:active {
+ text-decoration: none;
+}
+.jg-select-container  ul li.jg-select-optgroup{
+	background:#bbdcfe;
+}
+.jg-select-container  ul li.jg-select-option:nth-child(even){
+	background-color:#eaeaea;
+} 
+.jg-select-container  ul li.jg-select-option:nth-child(odd){
+	background-color:#fff;
+} 
+.jg-select-container  ul li.jg-select-option:hover{
+	background:#bbdcfe;
+}
+.jg-select-container  ul li.jg-select-optgroup:hover{
+	background:#bbdcfe;
+}
+
+.jg-select-container  ul .jg-select-text{
+	margin-left:2px;
+}
+
+.jg-select-container  ul.jg-select-optgroup-container  li.jg-select-option .jg-select-text{
+	margin-left:10px;
+}
+
+

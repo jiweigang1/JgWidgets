@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+        <link href="../css/jquery.jgform.css" rel="stylesheet" media="screen" />
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		 <script src="../../../lib/jquery.validate.js"></script>
+		<script src="../../../jquery-ui/jquery.ui.widget.js"></script>
+		<script src="../js/jquery.jgform.js"></script>
+        <script>
+			$(function(){
+				$(".jgForm").jgForm({onSuceess:function($el,data){
+					alert(data+"提交了");
+				}});
+			});
+			var findErrHolder = function($form,$element){
+				return $element.next("div");
+			}
+			
+		</script>
+    </head>
+    <body>
+    	<form class="jgForm" action="1" findErrHolder="findErrHolder"  method="post" >
+					
+					邮箱<input name="1"  type="email" value="jigang@aa.com" required  title="错误" >
+					<div>1</div>
+					手机<input name="2"  type="phone" value="15213174839"    customvaild="aaaa">
+					<div >1</div>
+					
+					Ajax<input name="5"  type="ajax"  action="321" value="222"  data-msg-ajax="用户名重复2"  >
+					<div >1</div>
+					
+					
+					
+					<input name="6" id="6"  type="ajax"  action="321" value="222"    >
+					<div >1</div>
+					
+					eqto<input name="7"  type="password" data-rule-eqto="true"   action="321" value="222"  data-msg-eqto="啊啊啊" eqtoid="6"  >
+					
+					<div >1</div>
+					<input name="8"  type="text" data-rule-submit="true"  errRel="8-error"  action="321" value="222"    >
+					<div ></div>
+					
+					<input type="submit" value="提交">
+					
+		</form>
+    </body>
+</html>

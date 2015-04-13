@@ -1,0 +1,52 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+        <link href="../css/jquery.jgselect.css" rel="stylesheet" media="screen" />
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		<script src="../js/jquery.jgrestful.js"></script>
+        <script>
+			$(function(){
+			
+					/**
+					$.ajax(
+						{	
+							"url":"/[b]/{a}/{c=:c}/1.html",
+							"data":{
+										"a":"aaaa",
+										"b":"bbbb",
+										"c":"ccccc"
+								   }
+						}
+					);
+					**/
+					/**
+					$.ajax(
+						{	
+							"url":"/[a=:a]/1.html",
+							"data":[
+									 {name:"a",value:"1"},
+									 {name:"a",value:"2"}
+								   ]
+						}
+					);
+					*/
+					$.ajax(
+						{	
+							"url":"/[a=:a]/1.html?a=3",
+							"type":"post",
+							"data":[
+									 {name:"a",value:"1"},
+									 {name:"a",value:"2"}
+								   ]
+						}
+					);
+			});
+			
+			
+		</script>
+    </head>
+    <body>
+		
+	</body>
+</html>

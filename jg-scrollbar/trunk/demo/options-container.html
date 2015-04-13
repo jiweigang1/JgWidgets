@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>perfect-scrollbar example</title>
+      <link href="../css/jquery.jgscrollbar.css" rel="stylesheet">
+      <script src="../../../../lib/jquery-1.10.2.js"></script>
+      <script src="../../../../lib/jquery.mousewheel.js"></script>
+	  <script src="../../../../jquery-ui/jquery-ui.js"></script>
+	  <script src="../../../../lib/jquery.resize.js"></script>
+      <script src="../js/jquery.jgscrollbar.js"></script>
+      <style>
+        .contentHolder { position:relative; margin:0px auto; padding:0px; width: 600px; height: 400px; overflow: hidden; }
+        .contentHolder .content { background-image: url('./azusa.jpg'); width: 1280px; height: 720px; }
+        .spacer { text-align:center }
+      </style>
+    <script>
+      jQuery(document).ready(function ($) {
+        "use strict";
+        $('#Default').jgScrollbar({railContainer:$("#container")});
+      });
+    </script>
+  </head>
+  <body>
+    
+	<div id="Default" class="contentHolder">
+      <div class="content">
+      </div>
+    </div>
+	
+	<div id="container" style="height:100px;width:100px;border:red 1px solid;position:relative;"  >
+      
+    </div>	
+  </body>
+</html>
+

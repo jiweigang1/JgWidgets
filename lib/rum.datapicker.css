@@ -1,0 +1,88 @@
+
+.rumdatepicker .ui-widget-content {
+    background: none repeat-x scroll 50% 50% #ffffff;
+    border: 1px solid #aaaaaa;
+    color: #222222;
+}
+.rumdatepicker .ui-widget-header {
+    background: none repeat-x scroll 50% 50% #3a3a3a;
+    border: 1px solid #aaaaaa;
+    color: #ffffff;
+    font-weight: bold;
+    height: 22px;
+}
+.rumdatepicker .ui-state-default, .rumdatepicker .ui-widget-content .ui-state-default, .rumdatepicker .ui-widget-header .ui-state-default {
+    background: none repeat scroll 50% 50% #ffffff;
+    border: 1px solid #eeeeee;
+    color: #5a5c5c;
+    font-weight: normal;
+}
+.rumdatepicker .ui-state-hover, .rumdatepicker .ui-widget-content .ui-state-hover, .rumdatepicker .ui-widget-header .ui-state-hover, .rumdatepicker .ui-state-focus, .rumdatepicker .ui-widget-content .ui-state-focus, .rumdatepicker .ui-widget-header .ui-state-focus {
+    background: none repeat-x scroll 50% 50% #3598db;
+    border: 1px solid #eeeeee;
+    color: #ffffff;
+    font-weight: normal;
+}
+.rumdatepicker .ui-state-highlight, .rumdatepicker .ui-widget-content .ui-state-highlight, .rumdatepicker .ui-widget-header .ui-state-highlight {
+    background: url("images/data_on.gif") repeat-x scroll 0 0 #e5e3e3;
+    border: 1px solid #d8d8d8;
+    color: #5a5c5c;
+}
+.rumdatepicker .ui-state-active, .rumdatepicker .ui-widget-content .ui-state-active, .rumdatepicker .ui-widget-header .ui-state-active {
+    background: none repeat-x scroll 50% 50% #3598db;
+    border: 1px solid #eeeeee;
+    color: #ffffff;
+    font-weight: normal;
+}
+.rumdatepicker .ui-state-default a:visited {
+    color: #5a5c5c;
+    text-decoration: none;
+}
+.rumdatepicker .ui-widget-header .ui-state-focus {
+    background: none repeat-x scroll 50% 50% #3598db;
+    border: 1px solid #eeeeee;
+    color: #ffffff;
+    font-weight: normal;
+}
+.rumdatepicker .ui-widget-header .ui-state-active {
+    background: none repeat-x scroll 50% 50% #3598db;
+    border: 1px solid #eeeeee;
+    color: #ffffff;
+    font-weight: normal;
+}
+.rumdatepicker .ui-widget-header .ui-state-highlight {
+    background: url("images/data_on.gif") repeat-x scroll 0 0 #e5e3e3;
+    border: 1px solid #d8d8d8;
+    color: #5a5c5c;
+}
+.rumdatepicker .ui-widget-header .ui-icon {
+    background-image: url("images/ui-icons_222222_256x240_1.png");
+}
+.rumdatepicker .ui-datepicker {
+    display: none;
+    width: 210px;
+}
+.rumdatepicker .ui-datepicker th {
+    background: none repeat scroll 0 0 #e3e3e3;
+    border: 0 none;
+    font-family: "Arial Narrow";
+    font-size: 12px;
+    font-weight: bold;
+    height: 20px;
+    padding: 0;
+    text-align: center;
+}
+.rumdatepicker .ui-datepicker td {
+    border: 0 none;
+    border-collapse: collapse;
+    padding: 0;
+}
+.rumdatepicker .ui-datepicker td a {
+    display: block;
+    height: 28px;
+    line-height: 28px;
+    padding: 0;
+    text-align: center;
+    text-decoration: none;
+    width: 28px;
+}

@@ -1,0 +1,136 @@
+.jg-tabs{
+	overflow:hidden;
+	border: 1px solid #d3d3d3;
+}
+.jg-tabs .jg-tabs-warpHeader{
+	width:100%;
+	float:left;
+	margin: 0;
+    padding: 0;
+	background: none repeat scroll 0 0 #fff;
+	border-bottom: 1px solid #d3d3d3;
+    height: 40px;
+	position: relative;
+}
+.jg-tabs .jg-tabs-warpHeader .scroll-bar{
+	border: 1px solid #d3d3d3;
+	height: 30px;
+	margin-top:5px;
+	position:absolute;
+	display:none;
+	width:10px;
+}
+.jg-tabs .jg-tabs-warpHeader ul {
+	list-style-type:none;
+	margin: 0;
+    padding: 0;
+	white-space: nowrap;
+	position: absolute;
+	
+}
+.jg-tabs .jg-tabs-warpHeader ul li {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 107px;
+	background: url("./images/tab_bg.gif") repeat-x scroll left top rgba(0, 0, 0, 0);
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+}
+
+.jg-tabs .jg-tabs-warpHeader ul li span{
+    border-left: 1px solid #d3d3d3;
+    color: #666666;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    width: 107px;
+}
+
+.jg-tabs .jg-tabs-warpHeader ul li:first-child span{
+    border-left: 0px solid #d3d3d3;
+}
+.jg-tabs .jg-tabs-warpHeader ul li:last-child span{
+    border-right: 1px solid #d3d3d3;
+}
+
+.jg-tabs .jg-tabs-warpHeader ul li.active {
+	background: #FFFFFF;
+	border-bottom: 0px solid #FFFFFF;
+	margin-bottom: -1px;
+    padding-bottom: 1px;
+}
+
+.jg-tabs .jg-tabs-warpHeader ul li span.close-button{
+	height:16px;
+	width:16px;
+	position: absolute;
+	left:90px;
+	top:2px;
+	background-image: url("images/close.png");
+	border: 0px;
+	border-right:0px;
+}
+.jg-tabs .jg-tabs-content {
+	width:100%;
+	float:left;
+	margin:  0px;
+    padding: 0px;
+	position:relative;
+	border: 0px;
+}
+.jg-tabs.jg-tabs-fixed-height  .jg-tabs-content{
+	height:calc(100% - 42px);
+}
+
+.jg-tabs .jg-tabs-content.animation {
+	border-bottom: 0px;
+}
+
+.jg-tabs .jg-tabs-content-element{
+	width:100%;
+	float:left;
+	margin:  0px;
+    padding: 0px;
+	overflow:hidden;
+}
+
+.jg-tabs.jg-tabs-fixed-height>.jg-tabs-content>.jg-tabs-content-element{
+	height:calc(100% - 2px);
+	overflow-y:auto;
+}
+
+
+.jg-tabs .jg-tabs-content-element.animation{
+	border-right: 1px solid #d3d3d3;
+	border-left: 1px solid #d3d3d3;
+}
+.jg-tabs .scroll-bar{
+	background:#FFFFFF;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor:pointer;
+}
+.jg-tabs .scroll-bar.r{
+	background-image: url('images/icon-right.png');
+}
+.jg-tabs .scroll-bar.l{
+	background-image: url('images/icon-left.png');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

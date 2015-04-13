@@ -1,0 +1,123 @@
+
+.ui-slider {
+    text-decoration: none !important;
+}
+.ui-slider .ui-slider-handle {
+    overflow: visible !important;
+}
+.ui-slider .ui-slider-tooltip {
+    display: none;
+}
+.ui-slider .screenReaderContext {
+    height: 0;
+    left: -1e+9px;
+    overflow: hidden;
+    position: absolute;
+    width: 0;
+}
+.ui-slider .ui-state-active .ui-slider-tooltip, .ui-slider .ui-state-focus .ui-slider-tooltip, .ui-slider .ui-state-hover .ui-slider-tooltip {
+    bottom: 2.5em;
+    display: block;
+    font-size: 0.9em;
+    margin-left: -3.7em;
+    padding: 0.3em 0.2em 0.4em;
+    position: absolute;
+    text-align: center;
+    width: 8em;
+}
+.ui-slider .ui-slider-tooltip .ui-tooltip-pointer-down, .ui-slider .ui-slider-tooltip .ui-tooltip-pointer-down-inner {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-bottom-width: 0;
+    display: block;
+    height: 0;
+    position: absolute;
+    width: 0;
+}
+.ui-slider .ui-slider-tooltip .ui-tooltip-pointer-down {
+    border-left: 7px dashed transparent;
+    border-right: 7px dashed transparent;
+    border-top-width: 8px;
+    bottom: -8px;
+    left: 50%;
+    margin-left: -7px;
+    right: auto;
+}
+.ui-slider .ui-slider-tooltip .ui-tooltip-pointer-down-inner {
+    border-left: 6px dashed transparent;
+    border-right: 6px dashed transparent;
+    border-top: 7px solid #fff;
+    bottom: auto;
+    left: -6px;
+    top: -9px;
+}
+.ui-slider a {
+    text-decoration: none;
+}
+.ui-slider ol, .ui-slider li, .ui-slider dl, .ui-slider dd, .ui-slider dt {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
+.ui-slider ol, .ui-slider dl {
+    position: relative;
+    top: 1.3em;
+    width: 100%;
+}
+.ui-slider dt {
+    border-bottom: 1px dotted #ddd;
+    color: #999;
+    height: 0.7em;
+    padding-top: 0.2em;
+    position: absolute;
+    text-align: center;
+    top: 1.5em;
+}
+.ui-slider dt span {
+    background: none repeat scroll 0 0 #fff;
+    padding: 0 0.5em;
+}
+.ui-slider li, .ui-slider dd {
+    color: #666;
+    overflow: visible;
+    position: absolute;
+}
+.ui-slider span.ui-slider-label {
+    position: absolute;
+}
+.ui-slider li span.ui-slider-label, .ui-slider dd span.ui-slider-label {
+    display: none;
+}
+.ui-slider li span.ui-slider-label-show, .ui-slider dd span.ui-slider-label-show {
+    display: block;
+}
+.ui-slider span.ui-slider-tic {
+    height: 11px;
+    left: 0;
+    position: absolute;
+    top: -1.3em;
+}
+.ui-slider li span.ui-widget-content, .ui-slider dd span.ui-widget-content {
+    border-bottom: 0 none;
+    border-right: 0 none;
+    border-style: none none none solid;
+    border-top: 0 none;
+    border-width: 0 0 0 1px;
+}
+.ui-slider .first .ui-slider-tic, .ui-slider .last .ui-slider-tic {
+    display: none;
+}
+.rumslider .ui-slider .ui-slider-label.ui-slider-label-show {
+    font-family: Arial,Î¢ÈíÑÅºÚ,Helvetica,sans-serif !important;
+    font-size: 11px;
+    margin-left: -15px !important;
+    width: 55px;
+}
+.rumslider .ui-slider .ui-slider-tooltip {
+    display: none !important;
+}
+.rumslider div.ui-slider-range.ui-widget-header {
+    background: none repeat scroll 0 0 #3598db;
+}
+.rumslider .ui-widget-content {
+    background: none repeat scroll 0 0 #cccccc;
+}

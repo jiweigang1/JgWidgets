@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+        <link href="../css/jgform.css" rel="stylesheet" media="screen" />
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		<script src="../../../jquery-ui/jquery-ui.js"></script>
+		<script src="../css/jquery.jgpage.js"></script>
+        <script>
+			$(function(){
+				$(".jgpage").jgPage({validate:function(){
+					//alert(1);
+					//return false;
+					//return true;
+					//return "111";
+					//window.location.href='./1.html';
+					return true
+				},opened:function($page){
+						
+						$page.find(".pageButton").jgPageButton();
+				}});
+				$("#open").on("click",function(){
+					$(".jgpage").jgPage("openPage","1.html");
+				})
+				
+				
+			});
+			
+			
+		</script>
+    </head>
+    <body>
+		<input id="open" type="button" value="´ò¿ª" >
+    	<div  class="jgpage" style="width:400px;height:200px" url="1.html" >
+				
+		</div>
+		
+		<div  class="jgpage" style="width:400px;height:200px" url="2.html" >
+				
+		</div>
+		
+    </body>
+</html>

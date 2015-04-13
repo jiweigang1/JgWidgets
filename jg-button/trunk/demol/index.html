@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+        <link href="../css/jgform.css" rel="stylesheet" media="screen" />
+		<link href="../../../lib/jspanel/css/jsPanel.css" rel="stylesheet" media="screen" />
+		
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+
+		
+		<script src="../../../jquery-ui/jquery-ui.js"></script>
+		<script src="../../../lib/jspanel/jquery.jspanel.js"></script>
+		
+		
+		<script src="../js/jqeruy.jgbutton.js"></script>
+		
+		
+		
+       
+    </head>
+    <body>
+		<input class="button" type="button" url="1.html" value="´ò¿ª" >
+		<script>
+			$(function(){
+				$(".button").jgButton({validate:function(data){
+					//window.location="1.html";
+					//return false;
+					return true;
+				}});
+			});
+		</script>
+		
+    </body>
+</html>

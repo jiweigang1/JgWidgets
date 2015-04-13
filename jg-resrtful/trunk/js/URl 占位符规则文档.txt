@@ -1,0 +1,73 @@
+1 占位符类别  {} ,[]
+	{}  为单个参数占位符，若果出现多个同名参数，取最后一个。
+例子(1)
+	url  	/a/{b}/c.html
+	参数	[
+				{name:"b",1},
+				{name:"b",2},
+				{name:"b",3},
+			]
+	结果	/a/3/c.html		
+
+[]	为多参数占位符，若果出现多个同名参数，格式为逗号间隔。
+
+例子(2)
+	url  	/a/[b]/c.html
+	参数	[
+				{name:"b",1},
+				{name:"b",2},
+				{name:"b",3},
+			]
+	结果	/a/1,2,3/c.html	
+
+	
+2 占位符的形式  名称{name}  下标值{0}	
+
+指定名称 参照例子(1)
+
+指定下标 
+
+例子(3)	
+	url  	/a/{0}/c.html
+	参数	[
+				{name:"a",1},
+				{name:"b",2},
+				{name:"c",3},
+			]
+	结果	/a/1/c.html
+
+
+3 占位符使用别名
+  {rname=:name}		
+   rname 为URl中的参数名称，
+   name  为Data中的参数名称
+
+例子(4)   
+   url  	/a;{keyUrl=:a}/c.html
+   参数		[
+				{name:"a",1},
+			]
+	结果	/a;keyUrl=1/c.html
+   
+4 多组结构 可以指定多个名字
+例子(5)
+	url  	/a/[a,b,c]/c.html
+   参数		[
+				{name:"a",1},
+				{name:"b",2},
+				{name:"c",3},
+			]
+	结果	/a/1,2,3/c.html
+   
+   
+   
+/a/{a}/a.html
+/a/{a,b,c}/a.html
+/a/{ra=:a}/a.html
+/a/{ra=:a,rb=:b,rc=:c}/a.html
+/a/{0}/a.html
+
+/a/[a]/a.html
+/a/[a,b,c]/a.html
+/a/[a=:a,b=:b,c=:c]/a.html
+/a/[0]/a.html
