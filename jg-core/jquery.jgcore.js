@@ -1,4 +1,19 @@
+/**
+ *
+ * jg-core
+ *
+ * Licensed  Apache Licence 2.0
+ * 
+ * Version : 1.0.0
+ *
+ * Author JiGang 2015-4-16
+ *
+*/
 (function($){
+	
+	$.event_ready 		= "onload";
+	$.event_init 		= "_init_";
+	
 	var ehs = {};
 	$.addEventHolder=function(eventType,$dom){
 		var es = ehs[eventType];
@@ -10,7 +25,7 @@
 	};
 	$.removeEventHolder=function(eventType){
 		if(!eventType){
-			eventType = "onload"
+			return;
 		}
 		var es = ehs[eventType];
 		if(es&&es.length>0){
@@ -18,8 +33,11 @@
 		}
 		return null;
 	};
+	/**
+	  执行时机是所有是插件执行完成后执行
+	*/
 	$.jgReady=function(fn){
-		var eventType = "onload";
+		var eventType = $.event_ready;
 		if(!ehs[eventType]||ehs[eventType].length==0){
 			return;
 		}
@@ -28,6 +46,25 @@
 			fn.call(window,$dom);
 		});
 	}
+	
+	
+	
+	$.jgInit=function(fn){
+		var eventType = $.event_init;
+		if(!ehs[eventType]||ehs[eventType].length==0){
+			return;
+		}
+		var $dom = ehs[eventType][0];
+		$dom.one(eventType,function(event,$dom){
+			fn.call(window,$dom);
+		});
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

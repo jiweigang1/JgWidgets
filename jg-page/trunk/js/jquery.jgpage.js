@@ -394,15 +394,24 @@
 				 dataType:"text",
 				 success:function(data){
 					$.jgPage[PAGE_HOLDER]=$dom;
+					
 					if($.addEventHolder){
-						$.addEventHolder("onload",$dom);
+						$.addEventHolder($.event_init,$dom);
+						$.addEventHolder($.event_ready,$dom);
 					}
+					
 					self._hideLoading();
 					$dom.empty().append(data);
 					$.jgPage[PAGE_HOLDER]=null;
+					
+					
 					if($.removeEventHolder){
-						$.removeEventHolder("onload");
+						$.removeEventHolder($.event_init,$dom);
+						$.removeEventHolder($.event_ready,$dom);
 					}
+					
+					$dom.trigger($.event_init,[$dom])
+					
 					if(success&&$.isFunction(success)){
 						success.call(null,data)
 					}

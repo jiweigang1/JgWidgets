@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-page</title>
+        <link href="../css/jquery.jgpage.css" rel="stylesheet" media="screen" />
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		<script src="../../../lib/velocity.js"></script>
+		<script src="../../../jquery-ui/jquery-ui.js"></script>
+		<script src="../../../jg-core/jquery.jgcore.js"></script>
+		<script src="../js/jquery.jgpage.js"></script>
+        <script>
+			$(function(){
+				$(".jgpage").jgPage();
+				$("#open").on("click",function(){
+					$(".jgpage").jgPage("openPage","1-beforInit.html");
+				})
+				
+			});
+			
+			
+		</script>
+    </head>
+    <body>
+		<input id="open" clearCache="false"	 type="button" value="´ò¿ª" >
+		
+    	<div  class="jgpage" style="width:400px;height:200px" showLoading="true" loaddingTimeout="800" >
+				<div>adasdasdadas</div>
+		</div>
+		
+    </body>
+</html>
