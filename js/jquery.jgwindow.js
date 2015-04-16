@@ -5,15 +5,24 @@
 $.widget( "jgWidgets.jgWindow", {
 		 options:{
 			minHeight:300,
-			minWidth:400,
-			title	:'新建窗口',
-			content	:null,
-			left	:null,
-			top		:null,
-			ajaxType:"post",
-			url		:null,
-			jgscroll:true,
-			model	:false,
+			minWidth :400,
+			title	 :'新建窗口',
+			content	 :null,
+			left	 :null,
+			top		 :null,
+			ajaxType :"post",
+			url		 :null,
+			jgscroll :true,
+			jgscrollDragEnable:true,
+			
+			model		:false,
+			max			:false,
+			fullScreen	:false,
+			
+			maxAble  :true,
+			miniAble :true,
+			closeAble:true,
+			
 			
 			validate:null,
 			onOpen	:null,
@@ -36,6 +45,7 @@ $.widget( "jgWidgets.jgWindow", {
 			this._initEvent();
 		 },
 		 _initHtml:function(){
+				var self = this;
 				if(this.options.model){
 					this._showCover();
 				}
@@ -43,16 +53,18 @@ $.widget( "jgWidgets.jgWindow", {
 				var html = this.element.text();
 				this.element.empty();
 				var content = '<div class="jg-window-tool-bar">\
-								<div class="jg-window-title-container">\
-								  <p class="jg-window-title">\
-								  </p>\
+								<div class="jg-window-tool-bar-holder" >\
+									<div class="jg-window-title-container">\
+									  <p class="jg-window-title">\
+									  </p>\
+									</div>\
+									<div class="jg-window-tool-container">\
+									  <div class="jg-window-tool-close"></div>\
+									  <div class="jg-window-tool-max normal"></div>\
+									  <div class="jg-window-tool-min"></div>\
+									</div>\
+									<div class="jg-window-tool-hdr"></div>\
 								</div>\
-								<div class="jg-window-tool-container">\
-								  <div class="jg-window-tool-close"></div>\
-								  <div class="jg-window-tool-max normal"></div>\
-								  <div class="jg-window-tool-min"></div>\
-								</div>\
-								<div class="jg-window-tool-hdr"></div>\
 							  </div>\
 							  <div class="jg-window-content-container">\
 									<div class="jg-window-content" ></div>\
@@ -61,15 +73,33 @@ $.widget( "jgWidgets.jgWindow", {
 				this.element.append(content).appendTo("body");
 				this._$window	=	this.element;
 				
-				this._$toolBar			= $(".jg-window-tool-bar",this._$window);
+				this._$toolBar			= $(".jg-window-tool-bar",		 this._$window);
+				this._$toolBarHolder	= $(".jg-window-tool-bar-holder",this._$window);
+				
 				this._$toolContainer	= $(".jg-window-tool-container",this._$window);
 				this._$windowTitle		= $(".jg-window-title",this._$window);
 				this._$contentContainer = $(".jg-window-content-container",this._$window);
 				this._$content 			= $(".jg-window-content",this._$window);
 				
 				this._$toolMax			= $(".jg-window-tool-max"  ,this._$window);
-				this._$toolClose		= $(".jg-window-tool-close",this._$window);
 				this._$toolMin			= $(".jg-window-tool-min",this._$window);
+				this._$toolClose		= $(".jg-window-tool-close",this._$window);
+				
+				if(!this.options.fullScreen){
+					this._$toolBarHolder.css("visibility","visible");
+				}
+				
+				if(this.options.maxAble){
+				   this._$toolMax.show();
+				}
+				if(this.options.miniAble){
+					this._$toolMin.show();;
+				}
+				if(this.options.closeAble){
+					this._$toolClose.show();;
+				}
+				
+				
 				
 				this._$window.width(this.options.minWidth).height(this.options.minHeight);
 				this._$windowTitle.text(this.options.title);
@@ -78,11 +108,21 @@ $.widget( "jgWidgets.jgWindow", {
 				if(html&&$.trim(html)!=""){
 					this._$contentContainer.append(html);
 				}
-				if(this.options.url){
-					this.loadContent(this.options.url);
+				
+				if(!this.options.max){
+					if(this.options.url){
+						this.loadContent(this.options.url);
+					}
 				}
 				if(this.options.jgscroll){
 					this._enableJgScroll();
+				}
+				if(this.options.max){
+					this.maxSize(function(){
+						if(self.options.url){
+							self.loadContent(this.options.url);
+						}
+					});
 				}
 				
 		},
@@ -102,14 +142,21 @@ $.widget( "jgWidgets.jgWindow", {
 				this.options._cover=null;
 			}
 		},
-		_enableJgScroll:function(){
+		_updateScroll:function(){
 			var self = this;
-			if($.fn.jgScrollbar){
-				this._$contentContainer.addClass("scroll").jgScrollbar();
-				this._$contentContainer.on("mouseenter",function(){
-					self._$contentContainer.jgScrollbar("update");
-				})
+			if(this.options.jgscroll&&$.fn.jgScrollbar){
+				if(this._$contentContainer.data("jgScrollbar")){
+					this._$contentContainer.jgScrollbar("update");
+				}else{
+					this._$contentContainer.addClass("scroll").jgScrollbar({wheelSpeed:15,dragEnable:self.options.jgscrollDragEnable});
+					this._$contentContainer.on("mouseenter",function(){
+						self._$contentContainer.jgScrollbar("update");
+					})
+				}
 			}
+		},
+		_enableJgScroll:function(){
+			this._updateScroll();
 		},
 		_initEvent:function(){
 				var self = this;
@@ -124,6 +171,7 @@ $.widget( "jgWidgets.jgWindow", {
 									});
 				this.element.resizable({
 										handles:"all",
+										helper: "jg-window-resizable-helper",
 										start:function(){
 											self.element.addClass("sizzing");
 										},
@@ -152,6 +200,14 @@ $.widget( "jgWidgets.jgWindow", {
 				this._$toolMin.on("click",function(){
 					self.minSize();
 				});
+				if(this.options.fullScreen){
+					this._$toolBar.on("mouseenter",function(){
+						self._$toolBarHolder.css("visibility","visible");
+					}).on("mouseleave",function(){
+						self._$toolBarHolder.css("visibility","hidden");
+					});
+				}
+				
 				
 				
 	 },
@@ -170,11 +226,14 @@ $.widget( "jgWidgets.jgWindow", {
 	 },
 	 _adjustContentContainer:function(){
 		this._$contentContainer.css({"height":this._$window.height()-this._$toolBar.height()-6,"width":this._$window.width()-6});
+		this._updateScroll();
 	 },
+	 /**
 	 _adjustContent:function(){
 		this._$content.css({"min-height":this._$content.parent().height(),"min-width":this._$content.parent().width()});
 		this._$contentContainer.jgScrollbar("update");
 	 },
+	 */
 	_frontWindow:function(){
 		var zi = 0;
 		var w  = null;
@@ -215,6 +274,7 @@ $.widget( "jgWidgets.jgWindow", {
                  data: params,
 				 cache:false,
 				 type:self.options.ajaxType,
+				 dataType:"text",
 				 success:function(data){
 					if(self.options.validate&&$.isFunction(self.options.validate)){
 						var v = self.options.validate.call(null,data);
@@ -265,7 +325,6 @@ $.widget( "jgWidgets.jgWindow", {
 			if(self.options.onOpen) {
 				self.options.onOpen.call(null, $content);
             }
-			$content.trigger("onOpen", [$content]);
 			if($.JgWidgets){
 				try{
 					$.JgWidgets._initContent($content,$.JgWidgets.g_after);
@@ -275,7 +334,9 @@ $.widget( "jgWidgets.jgWindow", {
 					}
 				}
 			}
+			$content.trigger("onload",[$content]);
 			$content.trigger("onOpen",[$content]);
+			self._adjustContentContainer();
 		});
 	},
 	getWid:function(){
@@ -308,7 +369,7 @@ $.widget( "jgWidgets.jgWindow", {
 			return parseInt(this.element.css("z-index"));
 		}
 	},
-	maxSize:function(){ 
+	maxSize:function(fn){ 
 		var self =  this;
 		this.element.data("oldSize",{left:this._$window.css("left"),top:this._$window.css("top"),width:this._$window.css("width"),height:this._$window.css("height")});
 		var width =  parseInt( this._$window.parent().outerWidth() , 10 ) - 10 + 'px',
@@ -319,9 +380,12 @@ $.widget( "jgWidgets.jgWindow", {
 			woW = $( window ).outerWidth();
 		self.element.addClass("sizzing");	
         this.element.animate( {left: wsL+5+'px' , top: wsT+5+'px' , width: woW-12 , height: woH-12+'px' },function(){
-			self.element.removeClass("sizzing").addClass("max");
+			self.element.removeClass("sizzing");
 			self._adjustContentContainer();
 			self.element.resizable("disable").draggable("disable");
+			if(fn){
+				fn.call(self);
+			}
 		} );
 	 },
 	 normalSize:function(){
@@ -330,7 +394,6 @@ $.widget( "jgWidgets.jgWindow", {
 			self.element.addClass("sizzing");		
 		this._$window.animate( {left: oldSize.left , top: oldSize.top , width: oldSize.width , height: oldSize.height},function(){
 			self.element.removeClass("sizzing");
-			self.element.removeClass("sizzing max");
 			self._adjustContentContainer();
 			self.element.resizable("enable").draggable("enable");
 		});
@@ -432,7 +495,7 @@ $.widget( "jgWidgets.jgWindow", {
 	}
 })(jQuery);
 (function ($) {
-    $.widget("JgWidgets.jgWindowButton", {
+    $.widget("jgWidgets.jgWindowButton", {
         options: {
            
         },
@@ -448,8 +511,38 @@ $.widget( "jgWidgets.jgWindow", {
 				if(!url){
 					return true;
 				}
-			
-				$.jgWindow({url:url});
+				var max 	= "true" ===$this.attr("max");
+				var title	= $this.attr("title")||"新建窗口";
+				var maxAble = true;
+				if($this.attr("maxAble")==="false"){
+					maxAble = false;
+				}
+				
+				var closeAble = true;
+				if($this.attr("closeAble")==="false"){
+					closeAble = false;
+				}
+				
+				var miniAble = true; 
+				if($this.attr("miniAble")==="false"){
+					miniAble = false;
+				}
+				var fullScreen = false;
+				if($this.attr("fullScreen")==="true"){
+					fullScreen = true;
+				}
+				
+				var jgscrollDragEnable = true;
+				if($this.attr("jgscrollDragEnable")==="false"){
+					jgscrollDragEnable = false;
+				}
+				
+				var model = true;
+				if($this.attr("model")==="false"){
+					model = false;
+				}
+				
+				$.jgWindow({url:url,max:max,title:title,maxAble:maxAble,closeAble:closeAble,miniAble:miniAble,fullScreen:fullScreen,model:model,jgscrollDragEnable:jgscrollDragEnable});
 				return false;
 			})
 		}

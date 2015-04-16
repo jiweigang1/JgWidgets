@@ -82,6 +82,10 @@
 	position:relative;
 	border: 0px;
 }
+.jg-tabs.jg-tabs-fixed-height  .jg-tabs-content{
+	height:calc(100% - 42px);
+}
+
 .jg-tabs .jg-tabs-content.animation {
 	border-bottom: 0px;
 }
@@ -93,6 +97,12 @@
     padding: 0px;
 	overflow:hidden;
 }
+
+.jg-tabs.jg-tabs-fixed-height>.jg-tabs-content>.jg-tabs-content-element{
+	height:calc(100% - 2px);
+	overflow-y:auto;
+}
+
 
 .jg-tabs .jg-tabs-content-element.animation{
 	border-right: 1px solid #d3d3d3;

@@ -15,14 +15,20 @@
             onShow:null
         },
 		_create:function(){
-			this.element.find(">div").eq(0).addClass("jg-card-open");
-			this.element.find(">div:not(:first)").hide();
+			this.element.find(">div").hide();
 			this._initOptions();
+			this.open(this.element.find(">div:first").attr("cardId"));
 		},
 		_initOptions:function(){
 			 this.options.onShow  = getValue(this.element,"onShow",this.options.onShow,"function");
 		},
-		open:function(cardId){
+		open:function(cardId,trigger){
+			if(!cardId){
+				return false;
+			}
+			if(typeof trigger !=="boolean"){
+			   trigger = true;
+			}
 			var self = this;
 			var $toHide = this.element.find(".jg-card-open");
 			var $toOpen = this.element.find('>div[cardId="'+cardId+'"]');
@@ -38,7 +44,9 @@
 				$toOpen.slideDown(function(){
 					if(self.options.onShow&&$.isFunction(self.options.onShow)){
 						self.options.onShow.call(null,$toOpen);
-						self.element.trigger("onShow",[$toOpen]);
+						if(trigger){
+						   self.element.trigger("onShow",[$toOpen]);
+						}
 					}
 				});
 			}

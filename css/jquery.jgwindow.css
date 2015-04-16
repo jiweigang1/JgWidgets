@@ -30,9 +30,15 @@
 	margin:0px;
 }
 .jg-window .jg-window-tool-bar{
-	background-color: #F4F4F4;
 	height: 46px;
 	cursor: move;
+	
+}
+.jg-window .jg-window-tool-bar .jg-window-tool-bar-holder{
+	height:100%;
+	width:100%;
+	visibility:hidden;
+	background-color: #F4F4F4;
 }
 .jg-window .jg-window-tool-container{
     float: right;
@@ -52,11 +58,15 @@
     height: 20px;
     margin-left: 3px;
     overflow: hidden;
-    width: 16px;	
+    width: 16px;
+	display:none;
 }
 .jg-window .jg-window-tool-close:hover{ 
     background: url("images/icon-sprite.png") -110px 0  no-repeat;
 	background-color:#d74e54;
+}
+.jg-window .jg-window-tool-max{
+	display:none;
 }
 .jg-window .jg-window-tool-max.normal{ 
 	background: url("images/icon-sprite.png") -20px 0  no-repeat; 
@@ -80,6 +90,7 @@
     margin-left: 3px;
     overflow: hidden;
     width: 16px;
+	
 }
 .jg-window .jg-window-tool-max.alternate:hover{
    background: url("images/icon-sprite.png") -128px 0  no-repeat;
@@ -93,6 +104,7 @@
     margin-left: 3px;
     overflow: hidden;
     width: 16px;
+	display:none;
 }
 .jg-window .jg-window-tool-min:hover{ 
      background: url("images/icon-sprite.png") -74px  0  no-repeat; 
@@ -204,5 +216,8 @@
     top: 0;
 }
 
-
+.jg-window-resizable-helper{
+  border:2px #000000 dashed;
+  z-index:1300 !important;
+}
 

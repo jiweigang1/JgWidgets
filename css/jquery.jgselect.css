@@ -17,7 +17,7 @@
 .jg-select-container >a:hover {
   border: solid 1px #808080;
 }
-.jg-select-container .arrow{
+.jg-select-container .jg-select-arrow{
   width: 0;
   height: 0;
   position: absolute;
@@ -25,10 +25,10 @@
   top: 50%;
   border: solid 7px transparent; 
 }
-.jg-select-container  .arrow.close{
+.jg-select-container  .jg-select-arrow.close{
   border-top: solid 7px #505050;
 }
-.jg-select-container  .arrow.open{
+.jg-select-container  .jg-select-arrow.open{
   border-bottom: solid 7px #505050;
   margin-top:-7px;	
 }
@@ -41,6 +41,8 @@
 	border-left: solid 1px #bababa;
 	border-right: solid 1px #bababa;
 	display: none;
+	z-index: 20;
+	background:#FFFFFF;
 }
 
 .jg-select-container  ul {
@@ -60,17 +62,40 @@
   line-height:20px;
   margin:2px;
 }
-
-.jg-select-container  ul li:nth-child(even){
+.jg-select-container  a:link {
+ text-decoration: none;
+}
+.jg-select-container  a:visited {
+ text-decoration: none;
+}
+.jg-select-container  a:hover {
+ text-decoration: none;
+}
+.jg-select-container  a:active {
+ text-decoration: none;
+}
+.jg-select-container  ul li.jg-select-optgroup{
+	background:#bbdcfe;
+}
+.jg-select-container  ul li.jg-select-option:nth-child(even){
 	background-color:#eaeaea;
 } 
-.jg-select-container  ul li:nth-child(odd){
+.jg-select-container  ul li.jg-select-option:nth-child(odd){
 	background-color:#fff;
 } 
-.jg-select-container  ul li:hover{
+.jg-select-container  ul li.jg-select-option:hover{
+	background:#bbdcfe;
+}
+.jg-select-container  ul li.jg-select-optgroup:hover{
 	background:#bbdcfe;
 }
 
+.jg-select-container  ul .jg-select-text{
+	margin-left:2px;
+}
 
+.jg-select-container  ul.jg-select-optgroup-container  li.jg-select-option .jg-select-text{
+	margin-left:10px;
+}
 
 

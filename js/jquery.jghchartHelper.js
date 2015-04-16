@@ -5,7 +5,13 @@
  * Author JiGang 2014-12-27
  *
 */
-
+/**
+*
+*	forms-a	closest-a
+*	froms可以指定多个组
+*
+*
+*/
 (function($){
 	if(window.Highcharts){
 		Highcharts.setOptions({
@@ -19,7 +25,7 @@
 			ajaxType		  :"post",
 			chartId	  		  :null,
 			chartWidth		  :null,
-			chartHight		  :null,
+			chartHeight		  :null,
 			url		  		  :null,
 			params	  		  :null,
 			forms	  		  :null,
@@ -35,12 +41,15 @@
 			hchartSetting	  :null,
 			logoUrl			  :null,
 			showWaitting	  :true,
-			
-			onReceiveData	  :null
+			windowResize	  :true,		
+			onReceiveData	  :null,
+			showApdexT        :false
 			
 			
 		},
 		_create:function(){
+			var self = this;
+			this._UUID = "helper"+new Date().getTime();
 			this.__initParams();
 			this.element.addClass("jg-hchart-helper");
 			this.el			= this.element;
@@ -55,11 +64,27 @@
 						seriesClick :null,
 						pointClick	:null
 				}
-			}	
+			}
+			
+			this._settings = {};
+			
 			this.chartSetting 		= null;
 			this.highChart		  	= null;
 			this.dataChartSetting	= null;
-			this._initParams();
+			if(this.options.windowResize){
+				$(window).on("resize."+this._UUID,function(){
+					if(!self.$el.is(":visible")){
+						return;
+					}
+					if(self._timeOutResize){
+						clearTimeout(self._timeOutResize);
+					}
+					self._timeOutResize = setTimeout(function(){
+						self.reDrawLocal();
+					},20);
+					
+				});	
+			}
 			this.draw();
 			
 		},
@@ -67,7 +92,7 @@
 		  this.options.chartType  	  		 = getValue(this.element,"chartType",this.options.chartType);
 		  this.options.chartId    	  		 = getValue(this.element,"chartId",this.options.chartId);
 		  this.options.chartWidth 	  		 = getValue(this.element,"chartWidth",this.options.chartWidth);
-		  this.options.chartHight 	  		 = getValue(this.element,"chartHight",this.options.chartHight);
+		  this.options.chartHeight 	  		 = getValue(this.element,"chartHeight",this.options.chartHeight);
 		  this.options.url 		  	  		 = getValue(this.element,"url",this.options.url);
 		  this.options.params	  	  		 = getValue(this.element,"params",null,"object");
 		  this.options.forms	  	  		 = getValue(this.element,"forms",null);
@@ -84,7 +109,9 @@
 		  this.options.logoUrl	 	 		 = getValue(this.element,"logoUrl",this.options.logoUrl);
 		  this.options.showWaitting	 	 	 = getValue(this.element,"showWaitting",this.options.showWaitting,"boolean"); 
 		  
+		  this.options.onComplete			 = getValue(this.element,"onComplete",	 this.options.onComplete,"function");
 		  this.options.onReceiveData		 = getValue(this.element,"onReceiveData",this.options.onReceiveData,"function");
+		  this.options.showApdexT		 	 = getValue(this.element,"showApdexT",	 this.options.showApdexT,"boolean");
 		},
 		//初始化url
 		_initUrl:function(){
@@ -107,20 +134,111 @@
 				this.setting.data = serializeArrayObject(this.options.params);
 			}
 			if(this.options.forms){
-				var fs 	 =  this.options.forms.split(/\s+/);
-				var $fs	 =	$(fs.join());	
-				if(fs.length>0){
+			var $fs = this._getForms();
+				if($fs.length>0){
 					this.setting.data  = $.merge(this.setting.data,$fs.serializeArray());
 					if(this.options.autoRefresh&&!r){
-						$fs.change(function(e){
+						$fs.on("change."+this._UUID,function(e,type){
 							if(self.$el.is(":visible")){
-								self.reDraw();
+								if("updateChartData"==type){
+									self.updateChartData();
+								}else{
+									self.reDraw();
+								}
 							}
 						});
 					}
 				}
 			}
 	},
+	_getFromByGroup:function(group){
+				if(!this._settings.forms){
+					return  null;
+				}
+				for(var i=0;i<this._settings.forms.length;i++){
+					if(this._settings.forms[i].group===group){
+						return 	this._settings.forms[i];
+					}
+				}
+				return null;
+	},
+	_getForms:function(){
+			var self = this;
+				/*
+				[
+					elements:""
+					forms:""
+					closest:""
+					group:""
+				]
+				*/
+				
+				if(!this._settings.forms){
+					this._settings.forms = [];
+					$.each(this.element[0].attributes,function(){
+						//console.log(this.name);
+						if(this.specified && this.name.indexOf("forms")==0){
+							var form = {group:"____"};
+							var g = this.name.split("-");
+							if(g[1]){
+								form.group = g[1];
+							}
+							form.forms = this.value;
+							if(form.forms){
+								form.forms = form.forms.split(/\s+/);
+							}
+							if(form.forms.length>0){
+								self._settings.forms.push(form);
+							}
+						}
+						
+					});
+					$.each(this.element[0].attributes,function(name,value){
+						
+						if(this.specified && this.name.indexOf("closest")==0){
+							var g = this.name.split("-");
+							if(g[1]){
+							  var form = self._getFromByGroup(g[1]);
+							  if(form&&this.value){
+								 form.closest = this.value;
+							  }
+							}
+						}
+					});
+					
+					$.each(this._settings.forms,function(index,form){
+						var $c	 = $(document);
+						if(form.closest){
+							var $cl = self.element.closest(form.closest);
+							if($cl.length>0){
+								$c = $cl;
+							}
+						}
+						form.elements =	$(form.forms.join(),$c);	
+												
+					});
+					
+				}
+				var $r = $();
+				for(var i=0;i<this._settings.forms.length;i++){
+					$r = $r.add(this._settings.forms[i].elements);
+					//alert($r.length);
+				}
+				return $r;
+				
+			},
+	//获取参数
+	_getData:function(){
+		var data = [];
+		if(this.options.params){
+			data = serializeArrayObject(this.options.params);
+		}
+		var $fs = this._getForms();
+		if($fs.length>0){
+			$.merge(data,$fs.serializeArray());
+		}
+		return data;
+	},		
 	//初始化高度和宽度
 	_initHeightAndWidth:function(){
 		if(this.options.chartWidth){
@@ -161,6 +279,16 @@
 		this.$el.append(this.$elC);
 		return this.$elC;
 	},
+	_setElcSize:function(width,height){
+		if(!this.$elC){
+			return;
+		}
+		this.$elC.css({width:width,height:height});
+		if(this.options.showYRangeBar){
+			this.$elC.css({float:"left",width:width-20});
+		}
+	},
+	
 	//初始化事件
 	_initEvents:function(){
 		var self = this;
@@ -390,6 +518,9 @@
 		if(opts.apdex){
 			os = $.extend(true,{},os,{
 				 yAxis:{
+					title: {
+						text: ""
+					},
 					max :1,
 					min: 0,
 					tickInterval: 0.01,
@@ -464,15 +595,13 @@
 		//如果初始化过清除
 		this._clear();
 		var $c 	  = this.$el;
-		
-			chartSetting.chart.renderTo=this._createElc()[0];
+		this._createElc();
+			chartSetting.chart.renderTo= this.$elC[0];
 			
 		var cs 	  = chartSetting;
 		var chart = new Highcharts.Chart(cs);
 		this.highChart =chart;
 		this._addLegendHeight();
-		//$c.data("chart",chart);
-		//$c.data("opts" ,this.options);
 		if(this.options.tooltipGroup){
 			var group =$(document).data("rum-chart-toolTipGroup-"+this.options.toolTipGroup);
 				if(!group){
@@ -489,11 +618,7 @@
 	},
 	_clear:function(){
 		var  $this 	 =  this.$el;
-		var  rchart  =  $this.data("chart")
-		if(!rchart){
-			return;
-		}
-		var chart	= rchart.higchart;
+		var  chart	 =  this.higchart;
 		if(chart){
 			var opts  = chart.opts;
 			if(opts&&opts.tooltipGroup){
@@ -507,7 +632,6 @@
 					}
 				  }
 			}
-			$this.removeData("chart opts");
 		}
 		this.$el.empty();
 	},
@@ -525,7 +649,7 @@
 		if(chart.options.aggregateValue){
 			text = chart.options.aggregateValue;
 		}
-		if(  !(chart.options.aggregateValue!=undefined&&chart.options.aggregateValue>0) ){
+		if(!(chart.options.aggregateValue!=undefined&&chart.options.aggregateValue>0) ){
 			return;
 		}
 		if(chart.yAxis[0].options.tickUnit){
@@ -536,12 +660,60 @@
 				"font-family": "Arial, 宋体, sans-serif"
             });
 			atext.add();
-		var box	  = atext.getBBox();
-		var _x    = chart.options.chart.width-box.width;
-		if(!isNaN(_x)){
-			atext.attr({x:_x,y:14});
-		}	
 		
+		this._settings.aggregateLable = atext;
+		this._resetAggregateLablePosition();
+		
+		//以下处理显示ApdexT
+
+        if(!opts.showApdexT){
+            return;
+        }
+
+        if(chart.options.params && chart.options.params.apdexT){
+            text = chart.options.params.apdexT;
+        }
+        if(  !(chart.options.params.apdexT != undefined && chart.options.params.apdexT > 0) ){
+            return;
+        }
+
+        var apdextext = chart.renderer.text("应用服务器 Apdex T："+text+"(ms)",-1000,-1000).css({
+            fontSize: '12px',
+            "font-family": "Arial, 宋体, sans-serif"
+        });
+        apdextext.add();
+        var apdexbox	  = apdextext.getBBox();
+		var box			  = atext.getBBox();
+        _x    = this.highChart.plotBox.width - box.width - apdexbox.width - 20;
+        if(!isNaN(_x)){
+            apdextext.attr({x:_x,y:14});
+        }
+		
+		
+	},
+	_setAggregateLableValue:function(value,unit){
+		if(value<=0||!this._settings.aggregateLable){
+			return;
+		}
+		if(!unit){
+			if(this.highChart){
+				unit = this.highChart.yAxis[0].options.tickUnit;
+			}else{
+				unit = "";
+			}
+		}
+		this._settings.aggregateLable.attr("text","平均值:"+value+"("+unit+")");
+		this._resetAggregateLablePosition();
+	},
+	_resetAggregateLablePosition:function(){
+		if(!this._settings.aggregateLable){
+			return;
+		}
+		var box	  = this._settings.aggregateLable.getBBox();
+		var _x    = this.highChart.plotBox.width- (box.width==0?30:box.width);
+		if(!isNaN(_x)){
+			this._settings.aggregateLable.attr({x:_x,y:14});
+		}
 	},
 	
 	_creatWaterMark:function(){
@@ -551,19 +723,6 @@
 		if(!chart){
 			return;
 		}
-		// if(this.setting.height>500&&opts.logoUrl){
-			// var logoImg = new Image();
-				// logoImg.src		= opts.logoUrl;
-				// logoImg.onload  = function() {
-				// var waterWidth  = logoImg.width;
-				// var waterHeight = logoImg.height;
-				// var x		= chart.options.chart.width  - waterWidth;
-				// var y		= chart.options.chart.height;// - waterHeight;
-				// var water = chart.renderer.image(opts.logoUrl, chart.plotLeft+chart.plotWidth-waterWidth, chart.plotTop+chart.plotHeight+10, waterWidth, waterHeight).add();
-			// }
-		// }
-		
-		
 		if(this.setting.width>500&&opts.logoUrl){
 				var waterWidth  = 96;
 				var waterHeight = 10;
@@ -573,10 +732,6 @@
 		}
 	},
 	_showWaitting:function(){
-		// var $err_box = this.$el.find(".err_box");
-		// if($err_box.size()>0){
-			// $err_box.remove();
-		// }
 		this.$el.find("div").remove();
 		var html ='<div class="waitting_box"  ><span class="waitting_icon" style="" ></span></div>';
 		this.$el.append(html);
@@ -586,10 +741,6 @@
 			$waitting_icon.css({"margin-left":this.setting.width/2-$waitting_icon.width()/2,"margin-top":this.setting.height/2-$waitting_icon.height()/2});
 	},
 	_showErr:function(err){
-		// var $waitting_box = this.$el.find(".waitting_box");
-		// if($waitting_box.size()>0){
-			// $waitting_box.remove();
-		// }
 		this.$el.find("div").remove();
 		var html ='<div class="err_box"  ><span class="err_message_box"><span class="err_icon"></span><span class="err_message" style="" ></span></span></div>';
 		this.$el.append(html);
@@ -618,7 +769,10 @@
 				tick ="("+tick+")";
 				var te 		= chart.renderer.text(tick,-1000,-1000).add();
 				var boxx	= te.getBBox();
-				var x = se.left-20;
+				var x = se.left-10;
+				if(i>0){
+					x = this.highChart.options.chart.width-x-10;
+				}
 				if(x<4||isNaN(x)){
 					x = 4;
 				}	
@@ -650,7 +804,7 @@
 			   $.ajax({
 					type:this.options.ajaxType,
 					url:  url,
-					data:this.setting.data||{},
+					data:this._getData()||{},
 					dataType:"text",
 					beforeSend:function(requset){
 					  if(self.options.showWaitting){
@@ -688,14 +842,12 @@
 							return;
 						}
 						chart = self._initChartSetting(chart);
-						
 						self._drawChart(chart);
 					},
 					complete:function(){
 						
 					}
 			   });
-			   this.$el.data("chart",this);
 			   if(this.setting.events.onComplete){
 					setTimeout(function(){
 						try{
@@ -713,6 +865,56 @@
 	},
 	reDraw:function(){
 		this._draw(true);
+	},
+	reDrawLocal:function(){	
+		this._initHeightAndWidth();
+		this._setElcSize(this.setting.width,this.setting.height);
+		if(this.highChart){
+			this.highChart.setSize(this.setting.width,this.setting.height,false);
+		}
+		if(this.options.showAggregateLable){
+			this._resetAggregateLablePosition();
+		}
+		
+	},
+	_getUrl:function(){
+		var url = this.setting.url;
+		if(this.options.webContext){
+			url = this.options.webContext + url;
+		}
+		return url;  
+	},
+	//更新数据
+	updateChartData:function(){
+		var self = this;
+		var url = this._getUrl();
+		$.ajax({
+			type:this.options.ajaxType,
+			url:  url,
+			data:this._getData()||{},
+			dataType:"text",
+		}).done(function(data){
+			var data = $.parseJSON(data);
+			if(!data){
+				return;
+			}
+			if(!self.highChart){
+				return;
+			}
+			while(self.highChart.series.length > 0){
+				self.highChart.series[0].remove(false);
+			}
+			for(var i=0;i<data.series.length;i++){
+				var s = data.series[i];
+					s.animation = false;
+				self.highChart.addSeries(s,false,false);
+			}
+			self.highChart.redraw(false);
+			if(self.options.showAggregateLable){
+				self._setAggregateLableValue(data.aggregateValue);
+			}
+			
+		});
 	},
 	getDataString:function(){
 		var data = this.setting.data;
@@ -771,6 +973,13 @@
 		
 		
 	},
+	_destroy:function(){
+	 	var $fs = this._getForms();
+		if($fs.length>0){
+			$fs.off("change."+this._UUID);
+		}
+		$(window).off("resize."+this._UUID);
+	},
 	getExtattr:function(){
 		var  extAttr = [];
 			 extAttr.push({name:"showYRangeBar",value:this.options.showYRangeBar});
@@ -827,7 +1036,11 @@
 					var v;
 					try{
 						v = eval(value)
-					}catch(e){}
+					}catch(e){
+						if(console){
+							console.log(e);
+						}
+					}
 					if($.isFunction(v)){
 						return v;
 					}else{
@@ -837,8 +1050,12 @@
 			}else if(type=="object"){
 					var v;
 					try{
-						v = eval(value)
-					}catch(e){}
+						v = $.parseJSON(value)
+					}catch(e){
+						if(console){
+							console.log(e+"\n"+value);
+						}
+					}
 					if(v){
 						return v;
 					}else{

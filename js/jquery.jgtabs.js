@@ -23,11 +23,15 @@
 		},
 		_create: function() {
 			this._settings = {
-				watting:false
+				watting:false,
+				UUID:"jgTabs"+new Date().getTime()
 			};
 			this._initParams();
 			this._initHtml();
 			this._initEvent();
+		},
+		_createTid:function(){
+			return ++this._tabId;
 		},
 		_initParams:function(){
 			if(this.element.attr("animation")=="false"){
@@ -43,10 +47,19 @@
 				this.options.scrollable = false;
 			}
 			
+			var height = $.trim(this.element[0].style.height);
+			if(height!=""&&height!="auto"){
+				this.options._autoHeight = false;
+			}
+			
+			
 		},
 		_initHtml:function(){
 			var self = this;
 			this.element.addClass("jg-tabs");
+			if(!this.options._autoHeight){
+				this.element.addClass("jg-tabs-fixed-height");
+			}
 			
 			this.$header  = this.element.find(">ul");
 			if(this.$header.length==0){
@@ -109,11 +122,31 @@
 				}
 			});
 			this.$header.find("li[url]").each(function(i,v){
-				$(this).data("data",{ajax:true,init:false,url:$(this).attr("url")});
+				var bean = self._getFormBean($(this));
+				$(this).data("data",{ajax:true,init:false,url:$(this).attr("url"),formBean:bean});
 				$(this).wrapInner("<span></span>");
 				if(self.options.closeable){
 					$(this).append('<span class="close-button" ></span>')
 				}
+				
+				var LI_UUID = "jg-tabs-li"+new Date().getTime();
+				var $fs = bean.getAllElements();
+				var $li = $(this);
+				if($fs&&$fs.length>0){
+					$fs.on("change."+LI_UUID,function(){
+						var data = $li.data("data");
+							data.init=false;
+						if($li.hasClass("active")){
+							$li.removeClass("active");
+							$li.data("content").remove();
+							self._showTab($li);
+						}
+					})
+					$li.on("remove",function(){
+						$fs.off("change."+LI_UUID);
+					})
+				}
+				
 			});
 			var $li = this.$header.find("li:first"); 
 			if($li.length>0){
@@ -124,6 +157,10 @@
 		_initEvent:function(){
 			var self = this;
 			this.$header.on("click","li",function(e){
+				if(self._settings.watting){
+					return;
+				}
+				self._settings.watting = true;
 				self._showTab($(this));
 				e.stopPropagation();
 				return false;
@@ -169,7 +206,11 @@
 				if(data.ajax&&!data.init){
 					var  $element = $('<div class="jg-tabs-content-element" ></div>').hide();
 					this.$content.append($element);
-					this._ajaxLoad($element,data.url,{},function(){
+					var params = {};
+					if(data.formBean){
+						params = data.formBean.getAllElements().serializeArray();
+					}
+					this._ajaxLoad($element,data.url,params,function(){
 							data.init=true;
 							$li.data("content",$element);
 							
@@ -182,10 +223,8 @@
 								}
 							}
 							$element.hide().css("opacity",1);
-							
 							self._toggle($element,$toHide,direction,function(){
 								$element.trigger("onOpen",[$element]).trigger("onload",[$element]);
-								
 								if($.JgWidgets){
 									try{
 										$.JgWidgets._initContent($element,$.JgWidgets.g_after);
@@ -241,21 +280,28 @@
 			if(!toHide||toHide.length==0){
 				direction="right";
 			}
+			var ewidth = this.element.width();
 			if(this.options.animation){
-				//this.$content.addClass("animation");
 				if(toHide&&toHide.length>0){
-					toHide.addClass("animation").css("position","absolute").hide("slide",{direction: direction=='left'?'left':'right'},500,function(){
-						toHide.css("position","");
-						toHide.removeClass("animation");
+					toHide.addClass("animation").css({"position":"absolute"});
+					var method = "animate";
+					if($.fn.velocity){
+						method = "velocity";	
+					}
+					toHide[method].call(toHide,{left:direction=='left'?-ewidth:ewidth},500,function(){
+						toHide.hide().css("position","").removeClass("animation");
 					});
 				}
 				if(toShow&&toShow.length>0){
-					toShow.addClass("animation").css("position","absolute").show("slide",{direction: direction=='left'?'right':'left'},500,function(){
-						toShow.css("position","");
-						toShow.removeClass("animation");
-						//self.$content.removeClass("animation");
+					toShow.addClass("animation").css({"position":"absolute","left":direction=='left'?ewidth:-ewidth}).show();
+					var method = "animate";
+					if($.fn.velocity){
+						method = "velocity";	
+					}
+					toShow[method].call(toShow,{left:0},500,function(){
+						toShow.css("position","").removeClass("animation");
 						if(self.options._autoHeight){
-							self.$content.css("height","auto");
+							self.element.css("height","auto");
 						}	
 						fn.call(self);
 					});
@@ -284,7 +330,10 @@
 			}			
 		},
 		_fixActiveHead:function($ali){
-			var bwidth = this.element.width(); 		
+			var bwidth = this.element.width();
+			if(bwidth<=0){
+			   return;	
+			}
 			if(!$ali){
 				$ali = this._getActiveHeader();
 			}
@@ -353,7 +402,75 @@
 		},
 		_getActiveHeader:function(){
 			return 	this.$header.find('li.active');
-		}
+		},
+		_getFormBean:function(element){
+			var self = this;
+			var bean  = {
+				forms:[],
+				getForm:function(group){
+					for(var i=0;i<this.forms.length;i++){
+						if(this.forms[i].group===group){
+							return this.this.forms[i];
+						}
+					}
+				},
+				getAllElements:function(){
+					var $fs = $([]);
+					for(var i=0;i<this.forms.length;i++){
+						if(this.forms[i].elements&&this.forms[i].elements.length>0){
+						  $fs =	$fs.add(this.forms[i].elements)
+						}
+					}
+					return $fs;
+				}
+			}
+			 
+			 /*[
+					elements:""
+					forms:""
+					closest:""
+					group:""
+				]*/
+				$.each(element[0].attributes,function(){
+					if(this.specified && this.name.indexOf("forms")==0){
+						var form = {group:"____"};
+						var g = this.name.split("-");
+						if(g[1]){
+							form.group = g[1];
+						}
+						form.forms = this.value;
+						if(form.forms){
+							form.forms = form.forms.split(/\s+/);
+						}
+						if(form.forms.length>0){
+							bean.forms.push(form);
+						}
+					}
+					
+				});
+				$.each(element[0].attributes,function(name,value){
+					if(this.specified && this.name.indexOf("closest")==0){
+						var g = this.name.split("-");
+						if(g[1]){
+						  var form = bean.getFrom(g[1]);
+						  if(form&&this.value){
+							 form.closest = this.value;
+						  }
+						}
+					}
+				});
+				$.each(bean.forms,function(index,form){
+					var $c	 = $(document);
+					if(form.closest){
+						var $cl = element.closest(form.closest);
+						if($cl.length>0){
+							$c = $cl;
+						}
+					}
+					form.elements =	$(form.forms.join(),$c);							
+				});
+				return bean;
+			}
 	})
 	
 	function cssParseInt(value){
@@ -388,7 +505,7 @@
 })(jQuery);
 
 (function ($) {
-    $.widget("JgWidgets.jgTabsButton", {
+    $.widget("jgWidgets.jgTabsButton", {
         options: {
            
         },

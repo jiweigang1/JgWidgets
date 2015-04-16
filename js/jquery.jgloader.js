@@ -24,15 +24,21 @@
             }
         },
 		_create:function(){
+			var self = this;
 			this._initOptions();
+			this._loadContent();
+		},
+		_loadContent:function(params){
+			var self = this;
 			var $content = $("<div><div>");
 				$content.css({"opacity":0,width:"100%","margin":"0px","padding":"0px"});
 			this.element.append($content);
 			if(this.options.url){
-				this._ajaxLoad($content,this.options.url,{},function(){
+				this._ajaxLoad($content,this.options.url,params||{},function(){
 						if($.JgWidgets){
 							try{
 								$.JgWidgets._initContent($content);
+								self.element.trigger("onload",[self.element]);
 								$content.contents().unwrap();
 							}catch(e){
 								if(console){
@@ -90,6 +96,10 @@
 				 }
 			});
 		},
+		reload:function(params){
+			this.element.empty();
+			this._loadContent(params);
+		}
 	});
 	
 	/**

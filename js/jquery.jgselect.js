@@ -17,41 +17,133 @@
             maxDropHeight:200,
 			width:260,
 			disabled: false,
-			selectionIndex:0
+			selectionIndex:-1,
+			holderId:null,
+			autoLoad:true,
+			
+			onComplet:null,
+			beforeChange:null
 			
         },
 		_create:function(){
+			if(this.element[0].tagName.toLowerCase()!=="select"){
+				return false;
+			}
+			this._settings = {};
+			this._settings.UUID = "jg-select"+new Date().getTime();
 			var self = this;
 			this._initOptions();
-			this._loadOptions(function(){
+			if(this.options.autoLoad){
+				this._loadOptions({},function(){
+					self._initHtml();
+					if(this.options.onComplet){
+						this.options.onComplet.call(this.element,this.element.val());
+					}
+					this.element.trigger("onComplet");
+				});
+			}else{
 				self._initHtml();
-			});
+				if(this.options.onComplet){
+					this.options.onComplet.call(this.element,this.element.val());
+				}
+				this.element.trigger("onComplet");
+			}
+			
 			
 		},
 		_initOptions:function(){
 			this.options.url 	  		  =	getValue(this.element,"url",		  this.options.url);
 			this.options.ajaxType 		  = getValue(this.element,"ajaxType",	  this.options.ajaxType);
 			this.options.maxDropHeight 	  = getValue(this.element,"maxDropHeight",this.options.maxDropHeight,"int");
+			this.options.holderId 	  	  = getValue(this.element,"holderId",	  this.options.holderId);
+			this.options.autoLoad	  	  = getValue(this.element,"autoLoad", 	  this.options.beforeChange,"boolean");	
+			this.options.onComplet	  	  = getValue(this.element,"onComplet", 	  this.options.onComplet,	"function");	
+			this.options.beforeChange	  = getValue(this.element,"beforeChange", this.options.beforeChange,"function");	
+		},
+		_getHolder:function(){
+			if(this.options.holderId){
+				var    $holder = $("#"+this.options.holderId);
+				return $holder.length>0?$holder:null;
+			}else{
+				return null;
+			}
+		},
+		_setHolderValue:function(value,$option){
+			var $holder  = this._getHolder();
+			var oldValue ; 
+			if($holder){
+				oldValue = $holder.val();
+				$holder.data("jg-select","___");
+				$holder.data("old-value",oldValue);
+				$holder.val(value);
+				$holder.data("jg-select-option",$option.clone());
+			}
+		},
+		
+		_triggerHolderChange:function(force){
+			if(typeof force ==="undefined" ){
+				force = true;
+			}
+			var $holder = this._getHolder();
+			if($holder&&$holder.length>0){
+				if(!force){
+					var oldValue = $holder.data("old-value")
+					if(oldValue!=$holder.val()){
+						$holder.trigger("change");
+					}
+				}else{
+					$holder.trigger("change");
+				}
+				
+			}
+		},
+		
+		_selectValue:function(v){
+		   var $option = this.element.find('option[value="'+v+'"]');
+		   this._selectOption($option);
 		},
 		_selectIndex: function(index) {
+			if(index<0){
+				index = 0;
+			}
             var $option = this.element.find("option").eq(index)
+			this._selectOption($option);
+        },
+		_selectOption:function($option){
+			if($option.length==0){
+				$option = this.element.find("option:first");
+				if($option.length==0){
+					return false;
+				}
+			}
 			var name 	= $option.text();
 			var value	= $option.attr("value");
 			this.$selected.find("span").html(name);
 			if(!this.element.is('[multiple]')){
 				this.element.find("option[selected]").attr("selected",false);
 			}
-			this.element.find("option").eq(index).attr("selected",true);
+			//$option.attr("selected",true);
+			$option[0].selected=true;
+			var $holder = this._getHolder();
+			this._setHolderValue($option.attr("value"),$option);
+		},
+		_triggerChange:function(){
+			var value = this.element.val();
+			if(this.options.beforeChange){
+				this.options.beforeChange.call(this.element,value,this.element.find("option:selected").clone());
+			}
+			this.element.trigger("beforeChange");
+			this._triggerHolderChange();
 			this.element.trigger("change");
-        },
-
-		_loadOptions:function(fn){
+		},
+		_loadOptions:function(params,fn){
 			var self = this;
 			if(this.options.url){
 				$.ajax({
 					url:self.options.url,
 					type:self.options.ajaxType,
-					cache:false
+					cache:false,
+					data:params||{},
 				}).done(function(data){
 					self.element.append(data);
 					if($.isFunction(fn)){
@@ -74,23 +166,38 @@
 			this.$arrow.removeClass("close").addClass("open");
             this.$optionsScroll.slideDown('fast',function(){
 				self.$optionsScroll.scrollTop(0);
-				if($.fn.jgScrollbar){
+				self._updateOptionsScroll();
+			});
+        },
+		_updateOptionsScroll:function(){
+			var self = this;
+			if($.fn.jgScrollbar){
+				if(self.$optionsScroll.data("jgScrollbar")){
 					self.$optionsScroll.jgScrollbar("update");
+				}else{
+					self.$optionsScroll.jgScrollbar();
+				}
+			}
+		},
+        _closeOptions: function (fn) {
+            var self	= this;
+			this.$arrow.removeClass('open').addClass("close");
+            this.$optionsScroll.slideUp(50,function(){
+				if(fn){
+					fn.call(self);
 				}
 			});
         },
 
-        _closeOptions: function () {
-            this.$arrow.removeClass('open').addClass("close");
-            this.$optionsScroll.slideUp(50);
-        },
-
         _enable: function () {
             var self = this;
-			this.$selected.on("click.jg-select",function(e){
-				self._showOptions();
-				e.stopPropagation();
-				e.preventDefault();
+			var $hander = this.$selected.add(this.$arrow); 
+			$hander.on("click.jg-select",function(e){
+				if(self.$arrow.hasClass("close")){	
+					self._showOptions();
+				}else{
+					self._closeOptions();
+				}
 			});
 			this.$options.on("click.jg-select","li",function(e){
 				var index = $(this).attr("index");
@@ -98,13 +205,23 @@
 					return false;
 				}
 				self._selectIndex(index);
-				self._closeOptions();
+				self._closeOptions(function(){
+					self._triggerChange();
+				});
+				
 			})
 			this.$selectContainer.on("click.jg-select",function(e){
 				e.stopPropagation();
+				e.preventDefault();
+				$(document).trigger("click",[self._settings.UUID])
 			})
-			$(document).on("click.jg-select", function (e) {
-                self._closeOptions();
+			$(document).on("click.jg-select"+this._settings.UUID, function (e,UUID) {
+                 if(typeof UUID==="string"&&UUID===self._settings.UUID){
+					
+				 }else{
+					self._closeOptions();
+				 }
+				 
             });
 			
         },
@@ -123,7 +240,7 @@
 										<a class="selected">\
 											<span></span>\
 										</a>\
-										<span class="arrow close"></span>\
+										<span class="jg-select-arrow close"></span>\
 										<div class="options-container" >\
 											<div class="options-scroll">\
 												<ul class="options">\
@@ -134,7 +251,7 @@
             this.$selectContainer.insertAfter(this.element);
 			this.$selectContainer.css({width:this.options.width})
 			this.$selected  = this.$selectContainer.find(".selected");
-			this.$arrow = this.$selectContainer.find(".arrow");
+			this.$arrow = this.$selectContainer.find(".jg-select-arrow");
 			this.$optionsContainer = this.$selectContainer.find(".options-container");
 			this.$optionsContainer.css({width:this.options.width});
 			this.$options   = this.$selectContainer.find(".options");
@@ -143,32 +260,81 @@
 			this.$optionsScroll.css({"max-height":this.options.maxDropHeight});
 			if($.fn.jgScrollbar){
 				this.$optionsScroll.css({"overflow":"hidden","position":"relative"})
-				this.$optionsScroll.jgScrollbar({autoShow:false});
+				this.$optionsScroll.jgScrollbar({autoShow:false,wheelSpeed:15});
 			}
-           
+			this._initOptionsHtml();
+			if (!this.options.disabled) {
+                this._enable();
+            }else {
+                this.$selected.addClass('disabled');
+            }
+			
+			var $holder = self._getHolder();
+			if($holder&&$holder.data("jg-select")){
+				this._selectValue($holder.val());
+			}else{
+				this._selectIndex(this.options.selectionIndex,false);
+			}
+			
+			
+            
+        },
+		_initOptionsHtml:function(){
+			var self = this;
 			var optionsHtml = "";
 			var i=0;
             this.element.children().each(function () {
 				if(this.tagName.toLowerCase()=="optgroup"){
-					optionsHtml += '<li>'+$(this).attr("label")+'</li>';
+					optionsHtml += '<li class="jg-select-optgroup" ><span class="jg-select-text" >'+$(this).attr("label")+'</span></li>';
 					$(this).find("option").each(function(){
-						optionsHtml += '<li index="'+i+'">'+$(this).text()+'</li>';
+						optionsHtml += '<li class="jg-select-option" index="'+i+'"><span class="jg-select-text" >'+$(this).text()+'</span></li>';
+						if($(this).attr("selected")){
+							self.options.selectionIndex=i;
+						}
 						i++;
 					})
 				}else if(this.tagName.toLowerCase()=="option"){
-					optionsHtml += '<li index="'+i+'">'+$(this).text()+'</li>';
+					optionsHtml += '<li class="jg-select-option"  index="'+i+'"><span class="jg-select-text" >'+$(this).text()+'</span></li>';
+					if($(this).attr("selected")){
+							self.options.selectionIndex=i;
+					}
 					i++;
 				}
 				
 			});
 			this.$options.html(optionsHtml);
-            if (!this.options.disabled) {
-                this._enable();
-            }else {
-                this.$selected.addClass('disabled');
-            } 
-            this._selectIndex(this.options.selectionIndex);
-        }
+			if(this.$options.find(".jg-select-optgroup").length>0){
+				this.$options.addClass("jg-select-optgroup-container");
+			}
+		},
+		_destroy:function(){
+			$(document).off("click.jg-select"+this._settings.UUID);
+		},
+		reload:function(params,fn){
+			var self = this;
+			this.element.empty();
+			this._loadOptions(params,function(){
+				self._initOptionsHtml();
+				var $holder = self._getHolder();
+				if($holder&&$holder.data("jg-select")){
+					self._selectValue($holder.val());
+				}else{
+					self._selectIndex(self.options.selectionIndex,false);
+				}
+				if($.isFunction(fn)){
+					try{
+						fn.call();
+					}catch(e){
+						if(console){
+						  console.log(e)
+						}
+					}
+				}
+			});
+		},
+		selectByIndex:function(index){
+			this._selectIndex(index);
+		}
 	});	
 	
 	function getValue($el,name,defaultValue,type){
