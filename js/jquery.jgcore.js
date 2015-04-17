@@ -225,7 +225,7 @@ $.JgWidgets = {
 		
 		if($.fn.jgHchartHelper){
 			$.JgWidgets.addPlugin(function($content){
-				$content.find(".chart").jgHchartHelper();
+				$content.find(".hchart").jgHchartHelper();
 			});
 		}
 		
