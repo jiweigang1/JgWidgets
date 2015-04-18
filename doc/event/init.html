@@ -1,0 +1,18 @@
+﻿<div class="panel-content-wrapper" >
+	<div class="text-content">
+	$.jgInit(function($content){</br>
+		&nbsp;&nbsp;&nbsp;&nbsp; $.jgAlert("在页面被加载后且其他控件被初始化之前执行："+$content.find(".text-content").html());</br>
+	});
+	</br>
+	</br>
+	事件执行的时机：在页面被加载后且其他控件被初始化之前执行。</br>
+	
+	</br>
+	$content:当前加载的页面,便于获取当前页面的元素.
+	</div>
+</div>
+<script>
+	$.jgInit(function($content){
+		$.jgAlert("在页面被加载后且其他控件被初始化之前执行："+$content.find(".text-content").html());
+	});
+</script>
