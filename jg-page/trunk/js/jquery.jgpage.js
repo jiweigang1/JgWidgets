@@ -1,4 +1,4 @@
-/**
+ï»¿/**
  *
  * jg-page
  *
@@ -14,15 +14,15 @@
         options: {
             url					: null,
 			autoShowBackButton	: true,
-			//ÊÂ¼ş
+			//äº‹ä»¶
             beforeOpen			: null,
             onOpen				: null,
             beforeBack			: null,
             onBack				: null,
 			
-			//ÊÇ·ñÏÔÊ¾µÈ´ıÍ¼±ê
+			//æ˜¯å¦æ˜¾ç¤ºç­‰å¾…å›¾æ ‡
 			showLoading		:false,
-			//Ö´ĞĞ¶¯»­
+			//æ‰§è¡ŒåŠ¨ç”»
 			animation		:true,
 			ajaxType		:"post",
 			loaddingTimeout	:600
@@ -58,7 +58,7 @@
 				pageNo		: 1,
 				overlay		: null,
 				$pageLoading: null,
-				//×Ô¶¨Òå¸ß¶È
+				//è‡ªå®šä¹‰é«˜åº¦
 				autoHeight	:true,
 				waitting	:false
 			};
@@ -127,7 +127,7 @@
 		},
 		_addBackButton:function($page){
 			if(this._settings.historyPage.length>0){
-				$page.append('<div class="jg-page-back-button">·µ»Ø</div>');
+				$page.append('<div class="jg-page-back-button">è¿”å›</div>');
 			}
 		},
         openPage: function (url,params,clearCache,direction,animation,pageNo) {
@@ -416,7 +416,7 @@
 						success.call(null,data)
 					}
 				 },
-				 //ÇëÇóÊ§°Ü
+				 //è¯·æ±‚å¤±è´¥
 				 error:function(){
 					self._hideLoading();
 					if(success&&$.isFunction(success)){
@@ -428,7 +428,7 @@
         _addHistory: function ($page) {
             this._settings.historyPage.push($page);
         },
-		//Çå¿Õ»º´æ
+		//æ¸…ç©ºç¼“å­˜
 		_clearCache:function(){
 			if(this._settings.historyPage&&this._settings.historyPage.length>0){
 				$.each(this._settings.historyPage,function(k,v){
@@ -485,7 +485,7 @@
 	}
 	
 	/**
-		×¢²á¼ÓÔØµÄÊÂ¼ş£¬×÷ÓÃÓòÊÇµ±Ç°µÄPage
+		æ³¨å†ŒåŠ è½½çš„äº‹ä»¶ï¼Œä½œç”¨åŸŸæ˜¯å½“å‰çš„Page
 	*/
 	var PAGE_HOLDER = "page_holder";
 	$.jgPage = function(event,fn){

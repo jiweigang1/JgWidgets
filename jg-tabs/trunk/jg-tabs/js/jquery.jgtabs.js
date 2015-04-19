@@ -219,19 +219,25 @@
 								try{
 									$.JgWidgets._initContent($element,$.JgWidgets.g_before);
 								}catch(e){
-								
+									if(console){
+										console.log(e);
+									}
 								}
 							}
 							$element.hide().css("opacity",1);
 							self._toggle($element,$toHide,direction,function(){
-								$element.trigger("onOpen",[$element]).trigger("onload",[$element]);
 								if($.JgWidgets){
 									try{
 										$.JgWidgets._initContent($element,$.JgWidgets.g_after);
 									}catch(e){
-									
+										if(console){
+											console.log(e);
+										}
 									}
 								}
+								self._triggerEvent("onOpen",[$element]);
+								$element.trigger("onOpen",[$element]);
+								$element.trigger($.event_ready,[$element]);
 								self._settings.watting = false;
 							});
 							
@@ -255,13 +261,17 @@
 			}).done(function(data, textStatus, jqXHR){
 				$.jgTabs[TAB_HOLDER] = $dom;
 				if($.addEventHolder){
-					$.addEventHolder("onload",$dom);
+					$.addEventHolder($.event_init,$dom);
+					$.addEventHolder($.event_ready,$dom);
 				}
 				$dom.append(data);
 				$.jgTabs[TAB_HOLDER] = null;
 				if($.removeEventHolder){
-					$.removeEventHolder("onload");
+					$.removeEventHolder($.event_init);
+					$.removeEventHolder($.event_ready);
 				}
+				$dom.trigger($.event_init,[$dom]);
+				
 				if(fn&&$.isFunction(fn)){
 					fn.call(self);
 				}
@@ -393,6 +403,12 @@
 				return false;
 			}
 			this._showTab($li);
+		},
+		_triggerEvent:function(eventType,params){
+			if(this.options[eventType]&&$.isFunction(this.options[eventType])){
+				this.options[eventType].apply(this.element,params);
+			}
+			this.element.trigger(eventType,params);
 		},
 		_getHeader:function(tabId){
 			if(!tabId){

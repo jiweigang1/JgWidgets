@@ -110,9 +110,9 @@
 			if(complete){
 				this.options.onComplete = complete;	
 			}
-			var suceess = getFunction($el,"onSuceess");
-			if(suceess){
-				this.options.onSuceess = suceess;	
+			var success = getFunction($el,"onSuccess");
+			if(success){
+				this.options.onSuccess = success;	
 			}
 			var error = getFunction($el,"onError");
 			if(error){
@@ -125,9 +125,9 @@
 				}
 			});
 			
-			$el.bind("suceess",function(event,data){
-				if(self.options.onSuceess){
-					self.options.onSuceess.call(null,$el,data);
+			$el.bind("success",function(event,data){
+				if(self.options.onSuccess){
+					self.options.onSuccess.call(null,$el,data);
 				}
 			});
 			
@@ -153,7 +153,7 @@
 					cache:false,
 					success:function(data, textStatus, jqXHR){
 						self._resetSubmitRule();
-						$el.trigger("suceess",[data])
+						$el.trigger("success",[data])
 					},
 					error:function(){
 						self._validSubmit();
