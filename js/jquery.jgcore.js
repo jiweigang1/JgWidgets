@@ -1,4 +1,4 @@
-/**
+ï»¿/**
  *
  * jg-core
  *
@@ -34,7 +34,7 @@
 		return null;
 	};
 	/**
-	  Ö´ĞĞÊ±»úÊÇËùÓĞÊÇ²å¼şÖ´ĞĞÍê³ÉºóÖ´ĞĞ
+	  æ‰§è¡Œæ—¶æœºæ˜¯æ‰€æœ‰æ˜¯æ’ä»¶æ‰§è¡Œå®Œæˆåæ‰§è¡Œ
 	*/
 	$.jgReady=function(fn){
 		var eventType = $.event_ready;
@@ -121,12 +121,21 @@ $.JgWidgets = {
 	};
 	
 	(function(){
-		//Ä¬ÈÏº¯Êı----
+		//é»˜è®¤å‡½æ•°----
 		window.onAjaxButtonCallBackInPage = function($button,respons){
 				var data = $.parseJSON(respons);
 				jgAlertify.alert(data.message,function(){
 					if(data.status==200){
 						$button.parents(".jg-page-doc:first").jgPage("reload");
+					}
+				});
+		}
+		
+		window.onFormCallBackInPage = function($form,respons){
+				var data = $.parseJSON(respons);
+				jgAlertify.alert(data.message,function(){
+					if(data.status==200){
+						$form.parents(".jg-page-doc:first").jgPage("goBack");
 					}
 				});
 		}

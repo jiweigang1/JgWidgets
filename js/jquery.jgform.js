@@ -110,9 +110,9 @@
 			if(complete){
 				this.options.onComplete = complete;	
 			}
-			var suceess = getFunction($el,"onSuceess");
-			if(suceess){
-				this.options.onSuceess = suceess;	
+			var success = getFunction($el,"onSuccess");
+			if(success){
+				this.options.onSuccess = success;	
 			}
 			var error = getFunction($el,"onError");
 			if(error){
@@ -125,9 +125,9 @@
 				}
 			});
 			
-			$el.bind("suceess",function(event,data){
-				if(self.options.onSuceess){
-					self.options.onSuceess.call(null,$el,data);
+			$el.bind("success",function(event,data){
+				if(self.options.onSuccess){
+					self.options.onSuccess.call(null,$el,data);
 				}
 			});
 			
@@ -153,7 +153,7 @@
 					cache:false,
 					success:function(data, textStatus, jqXHR){
 						self._resetSubmitRule();
-						$el.trigger("suceess",[data])
+						$el.trigger("success",[data])
 					},
 					error:function(){
 						self._validSubmit();
@@ -213,8 +213,10 @@
 							options:self.options
 						}
 					});
-			}).off("focusin focusout keyup").on("focusin focusout keyup",function(){
+			}).off("focusin focusout keyup").on("focusin focusout keyup",function(event){
 				validator.element(this);
+				event.stopPropagation();
+				return false;
 			});
 			this._resetSubmitRule();
 			
@@ -270,52 +272,104 @@
 })(jQuery);
 
 (function($){
-	var defaults = {
-		callBack:null,
-		conform:true
-	};
-	
-	var plugName = "_ajaxButton_";
-	
-	$.fn.ajaxButton = function(options){
-		return this.each(function(){
-			var $this = $(this);
-			if($this.data(plugName)){
-				return true;
+	$.widget("jgWidgets.ajaxButton",{
+		options:{
+			callBack:null,
+			conform	:true,
+		},
+		_initOptions:function(){
+			this.options.callBack = getValue(this.element,"callBack",this.options.callBack,"function");
+			this.options.conform  = getValue(this.element,"conform",this.options.callBack,"boolean");
+		},
+		_create:function(){
+			this._initOptions();
+			var self 	= this;
+			var $this   = this.element;
+			var title   = $this.attr("title");
+			if(title){
+				$this.attr("message",title).removeAttr("title");
 			}
-			
-			var opts = $.extend(true,{},defaults,options);
-			var url ;
-			if(this.tagName.toUpperCase() == "A"){
-				url = $this.attr("href");
-			}else{
-				url = $this.attr("url");
-			}
-			var message = $this.attr("title")||"";
 			$this.on("click",function(){
-				if(opts.conform){
+				var url ;
+				if(this.tagName.toUpperCase() == "A"){
+					url = $this.attr("href");
+				}else{
+					url = $this.attr("url");
+				}
+				var message = $this.attr("message")||"";
+				
+				if(self.options.conform){
 					jgAlertify.confirm(message,function(e){
 						if(e){
 						    $.post(url,{},function(response){
-							  if(opts.callBack){
-								  opts.callBack.call($this,$this,response);
+							  if(self.options.callBack){
+								  self.options.callBack.call($this,$this,response);
 								}
 							});
 						}
 					});
 				}else{
 					$.post(url,{},function(response){
-					   if(opts.callBack){
-						  opts.callBack.call($this,$this,response);
+					   if(self.options.callBack){
+						  self.options.callBack.call($this,$this,response);
 						}
 					});
 				}
-				
 				return false;
 			});
-			
-		});
-	}
+		}
+	});
+	
+	function getValue($el,name,defaultValue,type){
+		if(!type){
+			type = "string";
+		}
+		var value = $el.attr(name);
+		if(!value){
+			return defaultValue;
+		}else{
+			if(type=="string"){
+				return value;
+			}else if(type=="boolean"){
+				if(value=="true"){
+					return true;
+				}else{
+					return false;
+				}
+			}else if(type=="function"){
+				if($.isFunction(value)){
+					return value;
+				}else{
+					var v;
+					try{
+						v = eval(value)
+					}catch(e){}
+					if($.isFunction(v)){
+						return v;
+					}else{
+						return defaultValue;
+					}
+				}
+			}else if(type=="object"){
+					var v;
+					try{
+						v = $.parseJSON(value)
+					}catch(e){
+						if(console){
+							console.log(e+"\n"+value);
+						}
+					}
+					if(v){
+						return v;
+					}else{
+						return defaultValue;
+					}
+			}
+		}
+		return defaultValue;
+	}	
+	
+	
 })(jQuery);
 
 
