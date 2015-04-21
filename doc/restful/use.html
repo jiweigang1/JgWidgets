@@ -1,0 +1,79 @@
+<div class="panel-content-wrapper" >
+  <div class="text-content" >	
+	
+		1 占位符类别  {} ,[]<br>
+			{}  为单个参数占位符，若果出现多个同名参数，取最后一个。<br>
+		例子(1)<br>
+			url  	/a/{b}/c.html<br>
+			参数	[<br>
+						{name:"b",1},<br>
+						{name:"b",2},<br>
+						{name:"b",3},<br>
+					]<br>
+			结果	/a/3/c.html<br>
+<br>
+		[]	为多参数占位符，若果出现多个同名参数，格式为逗号间隔。<br>
+<br>
+		例子(2)<br>
+			url  	/a/[b]/c.html<br>
+			参数	[<br>
+						{name:"b",1},<br>
+						{name:"b",2},<br>
+						{name:"b",3},<br>
+					]<br>
+			结果	/a/1,2,3/c.html<br>
+<br>
+<br>
+		2 占位符的形式  名称{name}  下标值{0}<br>
+<br>
+		指定名称 参照例子(1)<br>
+<br>
+		指定下标<br>
+<br>
+		例子(3)<br>
+			url  	/a/{0}/c.html<br>
+			参数	[<br>
+						{name:"a",1},<br>
+						{name:"b",2},<br>
+						{name:"c",3},<br>
+					]<br>
+			结果	/a/1/c.html<br>
+<br>
+<br>
+		3 占位符使用别名<br>
+		  {rname=:name}<br>
+		   rname 为URl中的参数名称,<br>
+		   name  为Data中的参数名称<br>
+<br>
+		例子(4)<br>   
+		   url  	/a;{keyUrl=:a}/c.html<br>
+		   参数		[<br>
+						{name:"a",1},<br>
+					]<br>
+			结果	/a;keyUrl=1/c.html<br>
+<br>
+		4 多组结构 可以指定多个名字<br>
+		例子(5)<br>
+			url  	/a/[a,b,c]/c.html<br>
+		   参数		[<br>
+						{name:"a",1},<br>
+						{name:"b",2},<br>
+						{name:"c",3},<br>
+					]<br>
+			结果	/a/1,2,3/c.html<br>
+<br>
+<br>	   
+<br>	   
+		/a/{a}/a.html<br>
+		/a/{a,b,c}/a.html<br>
+		/a/{ra=:a}/a.html<br>
+		/a/{ra=:a,rb=:b,rc=:c}/a.html<br>
+		/a/{0}/a.html<br>
+<br>
+		/a/[a]/a.html<br>
+		/a/[a,b,c]/a.html<br>
+		/a/[a=:a,b=:b,c=:c]/a.html<br>
+		/a/[0]/a.html<br>
+<br>
+  </div>
+</div>
