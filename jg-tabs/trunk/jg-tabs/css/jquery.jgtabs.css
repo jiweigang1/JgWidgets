@@ -11,6 +11,7 @@
 	border-bottom: 1px solid #d3d3d3;
     height: 40px;
 	position: relative;
+	visibility:visible;
 }
 .jg-tabs .jg-tabs-warpHeader .scroll-bar{
 	border: 1px solid #d3d3d3;
@@ -81,6 +82,7 @@
     padding: 0px;
 	position:relative;
 	border: 0px;
+	visibility:visible;
 }
 .jg-tabs.jg-tabs-fixed-height  .jg-tabs-content{
 	height:calc(100% - 42px);
@@ -122,6 +124,28 @@
 }
 
 
+
+.jg-tabs > ul {
+	list-style-type:none;
+	margin: 0;
+    padding: 0;
+	white-space: nowrap;
+	position: absolute;
+	
+}
+.jg-tabs > ul li {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 107px;
+	background: url("./images/tab_bg.gif") repeat-x scroll left top rgba(0, 0, 0, 0);
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+}
+.jg-tabs > div {
+    visibility:hidden;
+}
 
 
 
