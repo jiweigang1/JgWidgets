@@ -158,7 +158,7 @@ $.JgWidgets = {
 		if($.fn.jgTabs){
 			$.JgWidgets.addPlugin(function($content){
 				$content.find(".tabs").jgTabs();
-			},$.JgWidgets.g_before);
+			});
 		}
 		if($.fn.jgTabsButton){
 			$.JgWidgets.addPlugin(function($content){
