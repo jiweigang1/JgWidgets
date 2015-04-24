@@ -9,11 +9,14 @@ body{
 ul{
 	list-style: none ;
 }
+#mainPage{
+	border: 1px solid #d3d3d3;
+}
 .main-doc{
 	width:100%;
 }
 .header{
-	width:100%
+	width:100%;
 	clear: both;
 	height:40px;
 	margin:0;
