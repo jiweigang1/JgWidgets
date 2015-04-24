@@ -76,13 +76,24 @@
 					}
 					$.jgLoader[EVENT_HOLDER]=$eventHolder;
 					if($.addEventHolder){
-						$.addEventHolder("onload",$eventHolder);
+						$.addEventHolder($.event_init,$eventHolder);
+						$.addEventHolder($.event_ready,$eventHolder);
 					}
 					$dom.empty().append(data);
 					$.jgLoader[EVENT_HOLDER]=null;
 					if($.removeEventHolder){
-						$.removeEventHolder("onload");
+						$.removeEventHolder($.event_init,$eventHolder);
+						$.removeEventHolder($.event_ready,$eventHolder);
 					}
+					try{
+						$dom.trigger($.event_init,[$dom])
+					}catch(e){
+						if(console){
+							console.log(e.getMessage());
+						}
+					}
+					
+					
 					//self._hideLoading();
 					if(success&&$.isFunction(success)){
 						success.call(null,data)

@@ -25,7 +25,8 @@
 			//执行动画
 			animation		:true,
 			ajaxType		:"post",
-			loaddingTimeout	:600
+			loaddingTimeout	:600,
+			toggleTime		:500
         },
         _initOptions: function () {
 			this.options.url  		 	= getValue(this.element,"url"		  			,this.options.url);
@@ -37,6 +38,8 @@
 			this.options.animation	 	= getValue(this.element,"animation"  			,this.options.animation		,"boolean");
 			this.options.ajaxType	 	= getValue(this.element,"ajaxType"   			,this.options.ajaxType);
 			this.options.loaddingTimeout= getValue(this.element,"loaddingTimeout"   	,this.options.loaddingTimeout,"int");
+			this.options.toggleTime		= getValue(this.element,"toggleTime"   			,this.options.toggleTime	 ,"int");
+			
 		},
 		_fireEvent:function(name,params){
 			if(this.options[name]){
@@ -63,7 +66,7 @@
 				waitting	:false
 			};
 			this._initOptions();
-			this.element.addClass("jg-page-doc");
+			this.element.addClass("jg-page-doc	jg-component");
 			var html = this.element.html();
 			if(this.options.autoShowBackButton){
 				this.enableAutoShowBackButton();
@@ -343,7 +346,7 @@
 					if($.fn.velocity){
 						method = "velocity";	
 					}
-					toHide[method].call(toHide,{left:direction=='left'?-ewidth:ewidth},500,function(){
+					toHide[method].call(toHide,{left:direction=='left'?-ewidth:ewidth},this.options.toggleTime,function(){
 						toHide.hide().css("position","").removeClass("animation");
 						fnWrapper();
 					});
@@ -354,7 +357,7 @@
 					if($.fn.velocity){
 						method = "velocity";	
 					}
-					toShow[method].call(toShow,{left:0},500,function(){
+					toShow[method].call(toShow,{left:0},this.options.toggleTime,function(){
 						toShow.css("position","").removeClass("animation");
 						if(self._settings.autoHeight){
 							self.element.css("height","auto");
