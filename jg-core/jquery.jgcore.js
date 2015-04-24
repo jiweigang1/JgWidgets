@@ -218,15 +218,16 @@ $.JgWidgets = {
 			});
 		}
 		
-		
+		//查询form
 		$.JgWidgets.addPlugin(function($content){
 			var $forms = $content.find(".panel-from")
 				$forms.each(function(){
 					$(this).on("submit",function(event){
-						var $container = $(this).closest(".jg-box");
-						if($container.hasClass("jg-page")){
-							var $page = $container.closest(".jg-page-doc");
-							$page.jgPage("reload",$(this).attr("action"),$(this).serializeArray());
+						var $container = $(this).closest(".jg-component");
+						if($container.hasClass("jg-page-doc")){
+							$container.jgPage("reload",{url:$(this).attr("action"),params:$(this).serializeArray()});
+						}else if($container.hasClass("jg-tabs")){
+							$container.jgTabs("reloadCurrent",{url:$(this).attr("action"),params:$(this).serializeArray()});
 						}
 						return false;
 					});

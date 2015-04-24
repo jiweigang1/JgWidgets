@@ -66,7 +66,7 @@
 				waitting	:false
 			};
 			this._initOptions();
-			this.element.addClass("jg-page-doc");
+			this.element.addClass("jg-page-doc	jg-component");
 			var html = this.element.html();
 			if(this.options.autoShowBackButton){
 				this.enableAutoShowBackButton();

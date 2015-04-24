@@ -19,19 +19,21 @@
 			scrollable:true,
 			
 			_autoHeight:true,
-			_tabId:0
+			
 		},
 		_create: function() {
+			this.element.addClass("jg-component")
 			this._settings = {
 				watting:false,
-				UUID:"jgTabs"+new Date().getTime()
+				UUID:"jgTabs"+new Date().getTime(),
+				tabIdIndex:0
 			};
 			this._initParams();
 			this._initHtml();
 			this._initEvent();
 		},
 		_createTid:function(){
-			return ++this._tabId;
+			return "__tab"+ this._settings.tabIdIndex++
 		},
 		_initParams:function(){
 			if(this.element.attr("animation")=="false"){
@@ -114,6 +116,9 @@
 			});
 			
 			this.$header.find("li").not("[url]").each(function(i,v){
+				if(!$(this).attr("tid")){
+					$(this).attr("tid",self._createTid());
+				}
 				$(this).data("content",self.$content.find(">.jg-tabs-content-element").eq(i));
 				$(this).data("data",{ajax:false});
 				$(this).wrapInner("<span></span>");
@@ -122,6 +127,9 @@
 				}
 			});
 			this.$header.find("li[url]").each(function(i,v){
+				if(!$(this).attr("tid")){
+					$(this).attr("tid",self._createTid());
+				}
 				var bean = self._getFormBean($(this));
 				$(this).data("data",{ajax:true,init:false,url:$(this).attr("url"),formBean:bean});
 				$(this).wrapInner("<span></span>");
@@ -182,7 +190,50 @@
 				this._showTab($tsl)
 			}
 		},
-		_showTab:function($li){
+		reloadCurrent:function(url,params){
+			if(arguments.length==1&&typeof arguments[0]=="object"){
+				params = arguments[0].params||{};
+				url    = arguments[0].url;
+			}
+			var $li = this._getActiveHeader();
+			this.reload($li.attr("tid"),url,params);
+		},
+		reload:function(tabId,url,params){
+			if(arguments.length==1&&typeof arguments[0]=="object"){
+				url    = arguments[0].url;
+				params = arguments[0].params;
+				tabId  = arguments[0].tabId;
+			}
+			var $li = this._getHeader(tabId);
+			if(!$li.data("data").ajax){
+				return;
+			}
+			$li.data("data").init=false;
+			if(url){
+			 $li.data("data").url = url;
+			}
+			
+			if($li.hasClass("active")){
+				$li.removeClass("active");
+				if($li.data("content")&&$li.data("content").length>0){
+					$li.data("content").remove();
+				}
+				$li.removeData("content");
+				this._showTab($li,false);
+			}else{
+				if($li.data("content")&&$li.data("content").length>0){
+					$li.data("content").remove();
+				}
+				$li.removeData("content");
+			}
+			
+			
+		},
+		
+		_showTab:function($li,animation){
+			if(typeof animation=="undefined"){
+				animation = true;
+			}
 			var self = this;
 			if($li.hasClass("active")){
 				this._settings.watting=false;
@@ -225,7 +276,7 @@
 								}
 							}
 							$element.hide().css("opacity",1);
-							self._toggle($element,$toHide,direction,function(){
+							self._toggle($element,$toHide,animation,direction,function(){
 								if($.JgWidgets){
 									try{
 										$.JgWidgets._initContent($element,$.JgWidgets.g_after);
@@ -237,7 +288,9 @@
 								}
 								self._triggerEvent("onOpen",[$element]);
 								$element.trigger("onOpen",[$element]);
-								$element.trigger($.event_ready,[$element]);
+								if($.event_ready){
+									$element.trigger($.event_ready,[$element]);
+								}
 								self._settings.watting = false;
 							});
 							
@@ -245,7 +298,7 @@
 					});
 					
 				}else{	
-					self._toggle($li.data("content"),$toHide,direction,function(){
+					self._toggle($li.data("content"),$toHide,animation,direction,function(){
 						self._settings.watting = false;
 					});
 				}
@@ -270,7 +323,10 @@
 					$.removeEventHolder($.event_init);
 					$.removeEventHolder($.event_ready);
 				}
-				$dom.trigger($.event_init,[$dom]);
+				if($.event_init){
+					$dom.trigger($.event_init,[$dom]);
+				}
+				
 				
 				if(fn&&$.isFunction(fn)){
 					fn.call(self);
@@ -282,7 +338,7 @@
 				}
 			});
 		},
-		_toggle:function(toShow,toHide,direction,fn){
+		_toggle:function(toShow,toHide,animation,direction,fn){
 			var self = this;
 			if(!direction){
 				direction="left";
@@ -291,7 +347,7 @@
 				direction="right";
 			}
 			var ewidth = this.element.width();
-			if(this.options.animation){
+			if(this.options.animation&&animation){
 				if(toHide&&toHide.length>0){
 					toHide.addClass("animation").css({"position":"absolute"});
 					var method = "animate";
@@ -555,6 +611,20 @@
 					params.push(url);
 					var tabId = $this.attr("relId");
 					params.push(tabId);
+				}else if("reload"){
+					var tabId = $this.attr("relId");
+						params.push(tabId);
+						
+						var url	;  
+						if(this.tagName.toUpperCase() == "A"){
+							url = $this.attr("href");
+						}else{
+							url = $this.attr("url");
+						}
+						if(!url){
+							return false;
+						}
+						params.push(url);
 				}else{
 					return false;
 				}

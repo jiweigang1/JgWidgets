@@ -1,0 +1,56 @@
+<html>
+	<head>
+		<script  src="../js/jquery.js" ></script>
+		<script src="../../../lib/velocity.js"></script>
+		<script  src="../js/jquery-ui.js" ></script>
+		<script  src="../js/jquery.jgtabs.js" ></script>
+		<link 	  rel="stylesheet" href ="../css/jquery.jgtabs.css">
+	</head>
+	<body>
+			<input type="button" value="Ìí¼Ó" />
+			
+			<input id="a" name="a" value="1" />
+			
+			<a	class="tabs-button" target="#jgtabs" href="./1.html" action="add" >Ìí¼Ó</a>
+			<a	class="tabs-button" target="#jgtabs" href="./3.html" action="reload" relId="bb" >Ë¢ÐÂ</a>
+			
+			<div id="jgtabs" class="jgtabs jg-tabs" style="width:600px" animation="true" scrollable="false" >
+				<ul>
+					<li tid="a1" >1head</li>
+					<li>2head</li>
+					<li forms="#a" url="./1.html" tid="bb">3head</li>
+				</ul>
+				<div style="height:100px" >
+					<div class="jgtabs jg-tabs" style="width:600px" animation="true" >
+							<ul>
+								<li>1head</li>
+								<li>2head</li>
+								<li url="./1.html">3head</li>
+							</ul>
+							<div style="height:100px" >
+								1body1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+							</div>
+							<div>
+								2body2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+							</div>
+					</div>
+				</div>
+				<div>
+					2body2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+				</div>
+			</div>
+
+
+			
+			<div width="100%" style="float:left" >
+				
+			</div>
+			<script>
+				$(function(){
+					$(".jgtabs").jgTabs();
+					$(".tabs-button").jgTabsButton();
+					
+				});
+			</script>
+	</body>
+</html>
