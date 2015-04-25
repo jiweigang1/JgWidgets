@@ -91,7 +91,6 @@
 			var x =	$(window).width()/2-$loading.width()/2
 			var y = $(window).height()/2-$loading.height()/2
 				$loading.css({left:x,top:y}).show();
-			alert(1);
 		}
 	 }
 	 
