@@ -60,10 +60,52 @@
 		});
 	}
 	
-	
-	
-	
-	
+//处理全局的loading显示操作
+	 
+	 var requests = [];
+	 
+	 $(document).ajaxSend(function(evt, request, settings){
+		 if(settings.globalRequest){
+			settings._globalRequestId = "requset-" + new Date().getTime();
+		 }
+		 requests.push(settings._globalRequestId);
+		 _showLoading();
+	 })
+	 $(document).ajaxComplete(function(evt, request, settings){
+		if(settings.globalRequest){
+			requests = $.grep(requests,function(n,i){
+				return settings._globalRequestId!=n;
+			});
+		 }
+		 _hideLoading();
+	 })
+	 
+	 var $loading = null;
+	 
+	 var _showLoading = function(){
+		if(!$loading||$loading.length==0){
+			$loading = $('<div class="jg-page-loading"></div>');
+			$("body").append($loading);
+		}
+		if(requests.length==1){
+			var x =	$(window).width()/2-$loading.width()/2
+			var y = $(window).height()/2-$loading.height()/2
+				$loading.css({left:x,top:y}).show();
+			alert(1);
+		}
+	 }
+	 
+	 var _hideLoading = function(){
+		if(requests.length!=0){
+			return;
+		}
+		if($loading&&$loading.length>0){
+				$loading.hide();
+		}
+	 }
+	 
+	 
+	 
 	
 	
 	
