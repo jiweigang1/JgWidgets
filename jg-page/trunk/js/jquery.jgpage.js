@@ -395,6 +395,7 @@
 				 cache:false,
 				 type:self.options.ajaxType,
 				 dataType:"text",
+				 globalRequest:true,
 				 success:function(data){
 					$.jgPage[PAGE_HOLDER]=$dom;
 					
