@@ -67,9 +67,9 @@
 	 $(document).ajaxSend(function(evt, request, settings){
 		 if(settings.globalRequest){
 			settings._globalRequestId = "requset-" + new Date().getTime();
+			requests.push(settings._globalRequestId);
+			_showLoading();
 		 }
-		 requests.push(settings._globalRequestId);
-		 _showLoading();
 	 })
 	 $(document).ajaxComplete(function(evt, request, settings){
 		if(settings.globalRequest){
