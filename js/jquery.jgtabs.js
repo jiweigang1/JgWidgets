@@ -311,6 +311,7 @@
 				data:params,
 				url:url,
 				cache:false,
+				globalRequest:true,
 			}).done(function(data, textStatus, jqXHR){
 				$.jgTabs[TAB_HOLDER] = $dom;
 				if($.addEventHolder){
@@ -368,6 +369,7 @@
 						toShow.css("position","").removeClass("animation");
 						if(self.options._autoHeight){
 							self.element.css("height","auto");
+							self.$content.css("height","auto");
 						}	
 						fn.call(self);
 					});
