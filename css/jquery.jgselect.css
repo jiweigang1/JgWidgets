@@ -14,6 +14,10 @@
   font-weight: normal;
 }
 
+.jg-select-container >a >span{
+	white-space:nowrap;
+}
+
 .jg-select-container >a:hover {
   border: solid 1px #808080;
 }
@@ -83,6 +87,11 @@
 .jg-select-container  ul li.jg-select-option:nth-child(odd){
 	background-color:#fff;
 } 
+
+.jg-select-container  ul li.jg-select-option span{
+	white-space:nowrap;
+} 
+
 .jg-select-container  ul li.jg-select-option:hover{
 	background:#bbdcfe;
 }
