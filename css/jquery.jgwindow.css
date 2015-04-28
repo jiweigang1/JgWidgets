@@ -37,7 +37,7 @@
 .jg-window .jg-window-tool-bar .jg-window-tool-bar-holder{
 	height:100%;
 	width:100%;
-	visibility:hidden;
+
 	background-color: #F4F4F4;
 }
 .jg-window .jg-window-tool-container{
@@ -220,4 +220,10 @@
   border:2px #000000 dashed;
   z-index:1300 !important;
 }
-
+.jg-window .jg-window-fullScreen-hander{
+  position:absolute;
+  left:0;
+  top:0px;
+  width:100%;
+  height:30px;
+}	

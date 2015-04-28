@@ -85,8 +85,25 @@ $.widget( "jgWidgets.jgWindow", {
 				this._$toolMin			= $(".jg-window-tool-min",this._$window);
 				this._$toolClose		= $(".jg-window-tool-close",this._$window);
 				
-				if(!this.options.fullScreen){
-					this._$toolBarHolder.css("visibility","visible");
+				if(this.options.fullScreen){
+					this._$toolBar.hide();
+					var hand_mouseenter = function(){
+						self._$toolBar.show();
+						self._$fullScreenHander.hide();
+						self._adjustContentContainer();
+					}
+					
+					var toolBar_leave = function(){
+						self._$toolBar.hide();
+						self._$fullScreenHander.show();
+						self._adjustContentContainer();
+					}
+					
+					
+					this._$fullScreenHander = $('<div class="jg-window-fullScreen-hander" ></div>');
+					this.element.append(this._$fullScreenHander);
+					this._$fullScreenHander.on("mouseenter",hand_mouseenter);
+					this._$toolBar.on("mouseleave",toolBar_leave);
 				}
 				
 				if(this.options.maxAble){
@@ -200,13 +217,7 @@ $.widget( "jgWidgets.jgWindow", {
 				this._$toolMin.on("click",function(){
 					self.minSize();
 				});
-				if(this.options.fullScreen){
-					this._$toolBar.on("mouseenter",function(){
-						self._$toolBarHolder.css("visibility","visible");
-					}).on("mouseleave",function(){
-						self._$toolBarHolder.css("visibility","hidden");
-					});
-				}
+				
 				
 				
 				
