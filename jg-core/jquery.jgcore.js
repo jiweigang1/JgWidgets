@@ -281,6 +281,12 @@ $.JgWidgets = {
 			});
 		}
 		
+		if($.fn.jgChart){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".chart").jgChart();
+			});
+		}
+		
 	})();
 	
 	

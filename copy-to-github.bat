@@ -24,7 +24,9 @@ copy F:\ApacheDocs\JgWidgets\jg-window\trunk\css\images					F:\Svn\Github\Javasc
 
 copy F:\ApacheDocs\JgWidgets\jg-card\trunk\js\jquery.jgcard.js			F:\Svn\Github\Javascript\JgWidgets\js\
 
-copy F:\ApacheDocs\JgWidgets\jg-loader\trunk\js\jquery.jgloader.js			F:\Svn\Github\Javascript\JgWidgets\js\
+copy F:\ApacheDocs\JgWidgets\jg-loader\trunk\js\jquery.jgloader.js		F:\Svn\Github\Javascript\JgWidgets\js\
+
+copy F:\ApacheDocs\JgWidgets\jgchart\jquery.jgchart.js					F:\Svn\Github\Javascript\JgWidgets\js\
 
 
 
