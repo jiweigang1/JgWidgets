@@ -122,21 +122,35 @@
 		},
 		log:function(message, type, wait){
 			var self = this;
-			this._init();		
-				if(!wait){
-					wait = 10*1000;
-				}
-				this._$logsContainer.show();
-				var $html	=	$('<div class="jg-alert-log jg-alert-log-'+type+'">'+message+'</div>').appendTo(this._$logsContainer);
-					$html.animate({right:"0px",opacity:1});
+			var auto = true;
+			this._init();
+			if( typeof wait == "undefined"){
+				wait = 10*1000;
+			}else if(wait<=0){
+				auto = false;
+			}
+			this._$logsContainer.show();
+			var $html	=	$('<div class="jg-alert-log jg-alert-log-'+type+'">'+message+'</div>').appendTo(this._$logsContainer);
+				$html.animate({right:"0px",opacity:1});
+			
+			var hide  = function(){
+				$html.animate({right:"-300px",opacity:300},function(){
+						$html.remove();
+						if(self._$logsContainer.find("div").length==0){
+							self._$logsContainer.hide();
+						}
+				});
+			}
+			if(auto){
 				setTimeout(function(){
-					$html.animate({right:"-300px",opacity:300},function(){
-							$html.remove();
-							if(self._$logsContainer.find("div").length==0){
-								self._$logsContainer.hide();
-							}
-					});
+					hide.call();
 				},wait);
+			}else{
+				$html.on("click",function(){
+					hide.call();
+				});
+			}
+			
 		},
 		success:function(message, wait){
 			this.log(message, "success", wait);
