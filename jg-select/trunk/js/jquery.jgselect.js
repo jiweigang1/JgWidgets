@@ -21,6 +21,9 @@
 			holderId:null,
 			autoLoad:true,
 			
+			//数据的过滤器
+			dataFilter:null,
+			
 			onComplet:null,
 			beforeChange:null
 			
@@ -56,9 +59,11 @@
 			this.options.ajaxType 		  = getValue(this.element,"ajaxType",	  this.options.ajaxType);
 			this.options.maxDropHeight 	  = getValue(this.element,"maxDropHeight",this.options.maxDropHeight,"int");
 			this.options.holderId 	  	  = getValue(this.element,"holderId",	  this.options.holderId);
-			this.options.autoLoad	  	  = getValue(this.element,"autoLoad", 	  this.options.beforeChange,"boolean");	
+			this.options.autoLoad	  	  = getValue(this.element,"autoLoad", 	  this.options.autoLoad,	"boolean");	
 			this.options.onComplet	  	  = getValue(this.element,"onComplet", 	  this.options.onComplet,	"function");	
-			this.options.beforeChange	  = getValue(this.element,"beforeChange", this.options.beforeChange,"function");	
+			this.options.beforeChange	  = getValue(this.element,"beforeChange", this.options.beforeChange,"function");
+			this.options.dataFilter	  	  = getValue(this.element,"dataFilter",   this.options.dataFilter,	"function");			
+			
 		},
 		_getHolder:function(){
 			if(this.options.holderId){
@@ -128,13 +133,14 @@
 			this._setHolderValue($option.attr("value"),$option);
 		},
 		_triggerChange:function(){
-			var value = this.element.val();
+			var value 		= this.element.val();
+			var $selected	= this.element.find("option:selected").clone();
 			if(this.options.beforeChange){
-				this.options.beforeChange.call(this.element,value,this.element.find("option:selected").clone());
+				this.options.beforeChange.call(this.element,value,$selected);
 			}
 			this.element.trigger("beforeChange");
 			this._triggerHolderChange();
-			this.element.trigger("change");
+			this.element.trigger("change",[value,$selected]);
 		},
 		_loadOptions:function(params,fn){
 			var self = this;
@@ -145,6 +151,9 @@
 					cache:false,
 					data:params||{},
 				}).done(function(data){
+					if(self.options.dataFilter){
+						data = self.options.dataFilter.call(self,data);
+					}
 					self.element.append(data);
 					if($.isFunction(fn)){
 						fn.call(self);
@@ -152,7 +161,7 @@
 				});
 			}else{
 				if($.isFunction(fn)){
-						fn.call(self);
+					fn.call(self);
 				}
 			}
 		},
@@ -310,7 +319,7 @@
 		_destroy:function(){
 			$(document).off("click.jg-select"+this._settings.UUID);
 		},
-		reload:function(params,fn){
+		reload:function(params,onComplet){
 			var self = this;
 			this.element.empty();
 			this._loadOptions(params,function(){
@@ -321,9 +330,9 @@
 				}else{
 					self._selectIndex(self.options.selectionIndex,false);
 				}
-				if($.isFunction(fn)){
+				if($.isFunction(onComplet)){
 					try{
-						fn.call();
+						onComplet.call();
 					}catch(e){
 						if(console){
 						  console.log(e)

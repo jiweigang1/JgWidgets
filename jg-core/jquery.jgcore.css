@@ -1,0 +1,9 @@
+body .jg-loading{
+	width:124px;
+	height:124px;
+	background-image:url('./images/page-loading.gif');
+    background-repeat:no-repeat;
+	display:none;
+	position: absolute;
+	z-index:3000;
+}

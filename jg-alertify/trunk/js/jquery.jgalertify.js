@@ -134,6 +134,7 @@
 				$html.animate({right:"0px",opacity:1});
 			
 			var hide  = function(){
+				$html.off("click");
 				$html.animate({right:"-300px",opacity:300},function(){
 						$html.remove();
 						if(self._$logsContainer.find("div").length==0){
@@ -142,14 +143,16 @@
 				});
 			}
 			if(auto){
-				setTimeout(function(){
-					hide.call();
-				},wait);
-			}else{
-				$html.on("click",function(){
-					hide.call();
-				});
+				var timeOut =  setTimeout(function(){
+						hide.call();
+					},wait);
+				$html.data("timeOut",timeout)	
 			}
+			
+			$html.on("click",function(){
+				 hide.call();
+			});
+			
 			
 		},
 		success:function(message, wait){
