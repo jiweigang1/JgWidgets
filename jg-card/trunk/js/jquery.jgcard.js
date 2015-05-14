@@ -12,43 +12,117 @@
 (function ($) {
     $.widget("jgWidgets.jgCard", {
         options: {
+			direction:"top",
+			autoShowFirst:true,
             onShow:null
         },
 		_create:function(){
-			this.element.find(">div").hide();
+			 this._settings={
+				autoHeight	:true
+			};
+			this.element.addClass("jg-card-doc");
 			this._initOptions();
-			this.open(this.element.find(">div:first").attr("cardId"));
+			var $cards = this.element.find(">div").addClass("jg-card");
+				
+			if(this.options.autoShowFirst){
+				$cards.hide();
+				this.open($cards.eq(0).attr("cardId"));
+			}else{
+				$cards.eq(0).addClass("jg-card-open").show();
+				$cards.not(":first").hide();
+			}
+			
 		},
 		_initOptions:function(){
-			 this.options.onShow  = getValue(this.element,"onShow",this.options.onShow,"function");
+			 this.options.direction 	 = getValue(this.element,"direction"	,this.options.direction);
+			 this.options.autoShowFirst  = getValue(this.element,"autoShowFirst",this.options.autoShowFirst,"boolean");
+			 
+			 this.options.onShow  	 = getValue(this.element,"onShow"	,this.options.onShow,"function");
 		},
-		open:function(cardId,trigger){
+		open:function(cardId,trigger,direction){
 			if(!cardId){
 				return false;
 			}
+			if($.isPlainObject(cardId)){
+				trigger		= cardId.trigger;
+				direction	= cardId.direction;
+				cardId 		= cardId.cardId;
+			}
+			
 			if(typeof trigger !=="boolean"){
 			   trigger = true;
 			}
 			var self = this;
 			var $toHide = this.element.find(".jg-card-open");
-			var $toOpen = this.element.find('>div[cardId="'+cardId+'"]');
-			if($toOpen.length==0||$toOpen.hasClass("jg-card-open")){
+			var $toShow = this.element.find('>div[cardId="'+cardId+'"]');
+			if($toShow.length==0||$toShow.hasClass("jg-card-open")){ 
 				return false;
 			}
+			this._toggle($toShow,$toHide,direction||this.options.direction,function(){
+				
+			});
+		},
+		_toggle:function($toShow,$toHide,direction,fn){
+			var self = this;
+			
+		
 			$toHide.removeClass("jg-card-open");
-			$toOpen.addClass("jg-card-open");
-			if($toHide.length>0){
-				$toHide.slideUp();
-			}
-			if($toOpen.length>0){
-				$toOpen.slideDown(function(){
-					if(self.options.onShow&&$.isFunction(self.options.onShow)){
-						self.options.onShow.call(null,$toOpen);
-						if(trigger){
-						   self.element.trigger("onShow",[$toOpen]);
+			$toShow.addClass("jg-card-open");
+			if(direction=="top"){
+				if($toHide.length>0){
+					$toHide.slideUp();
+				}
+				if($toShow.length>0){
+					$toShow.slideDown(function(){
+						if(self.options.onShow&&$.isFunction(self.options.onShow)){
+							self.options.onShow.call(null,$toShow);
+							if(trigger){
+							   self.element.trigger("onShow",[$toShow]);
+							}
 						}
+					});
+				}
+				
+			}else if(direction=="left"||direction=="right"){
+				var ewidth = this.element.width();
+					fn.__time = 1;
+					var count = $toHide==null?1:2;
+					var fnWrapper = function(){
+						if(fn.__time<count){
+							fn.__time++;
+							return;
+						}
+						delete fn.__time;
+						fn.call(self);
 					}
-				});
+					if($toHide&&$toHide.length>0){
+						$toHide.addClass("animation").css({"position":"absolute"});
+						var method = "animate";
+						if($.fn.velocity){
+							method = "velocity";	
+						}
+						$toHide[method].call($toHide,{left:direction=='left'?-ewidth:ewidth},this.options.toggleTime,function(){
+							$toHide.hide().css("position","").removeClass("animation");
+							fnWrapper();
+						});
+					}
+					if($toShow&&$toShow.length>0){
+						$toShow.addClass("animation").css({"position":"absolute","left":direction=='left'?ewidth:-ewidth}).show();
+						var method = "animate";
+						if($.fn.velocity){
+							method = "velocity";
+						}
+						$toShow[method].call($toShow,{left:0},this.options.toggleTime,function(){
+							$toShow.css("position","").removeClass("animation");
+							if(self._settings.autoHeight){
+								self.element.css("height","auto");
+							}	
+							fnWrapper();
+						});
+					}
+					if(this._settings.autoHeight){
+						this.element.height(Math.max(($toHide&&$toHide.length>0)?$toHide.height():0,$toShow.height()));
+					}
 			}
 		}
 	});
@@ -114,16 +188,17 @@
 				if(!action){
 					action = "open";
 				}
-				var params =[];
-					params.push(action);
-				var cardId = $this.attr("cardId");
-				if(!cardId){
+				var params = {};
+					params.cardId = $this.attr("cardId");
+				if(!params.cardId){
 					return false;
 				}	
-				params.push(cardId);
+				var direction = $this.attr("direction");
+					params.direction = direction;
+					
 				var $card = $($this.attr("target"));
 				if($card.length>0){
-					$card.jgCard.apply($card,params);
+					$card.jgCard.call($card,action,params);
 				}
 				return false;
 			});
