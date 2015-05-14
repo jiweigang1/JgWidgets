@@ -4,6 +4,9 @@
 
 $.widget( "jgWidgets.jgWindow", {
 		 options:{
+		 
+			params:null,
+		 
 			minHeight:300,
 			minWidth :400,
 			title	 :'新建窗口',
@@ -128,7 +131,7 @@ $.widget( "jgWidgets.jgWindow", {
 				
 				if(!this.options.max){
 					if(this.options.url){
-						this.loadContent(this.options.url);
+						this.loadContent(this.options.url,this.options.params);
 					}
 				}
 				if(this.options.jgscroll){
@@ -137,7 +140,7 @@ $.widget( "jgWidgets.jgWindow", {
 				if(this.options.max){
 					this.maxSize(function(){
 						if(self.options.url){
-							self.loadContent(this.options.url);
+							self.loadContent(this.options.url,this.options.params);
 						}
 					});
 				}

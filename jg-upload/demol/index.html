@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Layout Example</title>
+
+<script type="text/javascript" src="../../lib/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="../../lib/jquery-ui.js"></script>
+<script type="text/javascript" src="../js/jquery.jgupload.js"></script>
+
+<script type="text/javascript">
+$(function(){
+
+	$(".jgbutton").jgUpload();
+	$(".remove").on("click",function(){
+		$(".jgbutton").remove();
+	})
+});
+</script>
+</head>
+<body>
+	<input class="remove" type="button" value="É¾³ý" >
+	<input class="jgbutton" type="button" value="ÉÏ´«" >
+</body>
+</html>
