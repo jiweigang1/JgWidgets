@@ -1,0 +1,34 @@
+<div class="panel-content-wrapper" >
+	<div class="text-content" >
+		JgWidgets 对loading做了封装<br>
+		$.ajax({<br>
+&nbsp&nbsp&nbsp	globalRequest:true<br>
+		});<br>
+		
+		$.post(<br>
+				{<br>
+&nbsp&nbsp&nbsp		url:www.baidu.com,<br>
+&nbsp&nbsp&nbsp		globalRequest:true<br>
+				},<br>
+&nbsp&nbsp&nbsp		data,<br>
+				function(){<br>
+				<br>
+				},<br>
+		);<br>
+		
+		
+		$.get(<br>
+				{<br>
+&nbsp&nbsp&nbsp		url:www.baidu.com,<br>
+&nbsp&nbsp&nbsp		globalRequest:true<br>
+				},<br>
+				data,<br>
+				function(){<br>
+				<br>
+				},<br>
+		);<br>
+		
+		
+		Ajax请求时 加入globalRequest参数会自动显示loading效果<br>
+	</div>
+<div>
