@@ -84,7 +84,7 @@
 	 
 	 var _showLoading = function(){
 		if(!$loading||$loading.length==0){
-			$loading = $('<div class="jg-page-loading"></div>');
+			$loading = $('<div class="jg-loading"></div>');
 			$("body").append($loading);
 		}
 		if(requests.length==1){
@@ -283,7 +283,7 @@ $.JgWidgets = {
 		
 		if($.fn.jgChart){
 			$.JgWidgets.addPlugin(function($content){
-				$content.find(".chart").jgChart();
+				$content.find(".chart:visible").jgChart();
 			});
 		}
 		
