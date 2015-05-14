@@ -16,7 +16,7 @@ $(function(){
 		var game = new Phaser.Game(900, 750, Phaser.AUTO, 'phaser-example', { create: create });
 		function create(){
 			game.stage.disableVisibilityChange = true;
-			game.add.existing(new JgPmap(game,window._maps_.china));
+			game.add.existing(new JgPmap(game,window._maps_.china,300,300));
 		}
 });			
 

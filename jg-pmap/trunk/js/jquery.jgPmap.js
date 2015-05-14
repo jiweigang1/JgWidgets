@@ -7,31 +7,57 @@
 	
 
 
-  JgPmap = function(game,mapdata){
+  JgPmap = function(game,mapdata,mapWidth,mapHeight){
 	Phaser.Group.call(this,game,null,"JgPmap",true);
 	this._background1 = new Phaser.Graphics(game,0,0);
 	this._background1.beginFill(0xFFFFFF);
 	this._background1.moveTo(0,0).lineTo(0,50000).lineTo(50000,50000).lineTo(50000,0);
 	this._background1.endFill();
 	this.add(this._background1);
+	
+	this._initWidthAndHeight(mapWidth,mapHeight,mapdata.width,mapdata.height);
+	
+	this.scale= new Phaser.Point(this._ratio,this._ratio);
 	this._createMap(mapdata);
 	
-	this._toolTip = new ToolTip(game);
-	this.add(this._toolTip);
+	//this._toolTip = new ToolTip(game);
+	//game.add.existing(this._toolTip);
 	
   };
   
   JgPmap.prototype = Object.create(Phaser.Group.prototype);
   JgPmap.prototype.constructor = JgPmap;
+  JgPmap.prototype._initWidthAndHeight = function(mapWidth,mapHeight,rwidth,rheight){
+	var ratio = 1;
+	if(mapWidth&&!mapHeight){
+		ratio = mapWidth/rwidth;
+	}else if(!mapWidth&&mapHeight){
+		ratio = chartHeight/rheight;
+	}else if(mapWidth&&mapHeight){
+		ratio = Math.min(mapWidth/rwidth,mapHeight/rheight);
+	}
+	this._ratio = ratio;
+	this._mapWidth	= ratio*rwidth;
+	this._mapHeight = ratio*rheight;
+	
+  }
   JgPmap.prototype._createMap = function(mapdata){
 	var self = this;
 	for(var path in mapdata.paths){
 		var area = new Area(this.game,{name:mapdata.paths[path].name},mapdata.paths[path].path);
 			area.setColor(getRandomColor());
 			area.onMouseOver = function(location){
+				if(!self._toolTip){
+					self._toolTip = new ToolTip(self.game);
+					self.game.add.existing(self._toolTip);
+				}
 				self._toolTip.setName(location.name);
 			}
 			area.onMouseOut = function(location){
+				if(!self._toolTip){
+					self._toolTip = new ToolTip(self.game);
+					self.game.add.existing(self._toolTip);
+				}
 				self._toolTip.setName("");
 			}
 		this.add(area);

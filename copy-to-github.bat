@@ -30,8 +30,10 @@ copy F:\ApacheDocs\JgWidgets\jgchart\jquery.jgchart.js					F:\Svn\Github\Javascr
 
 
 
-copy F:\ApacheDocs\JgWidgets\jg-core\jquery.jgcore.js	F:\Svn\Github\Javascript\JgWidgets\js\
+copy F:\ApacheDocs\JgWidgets\jg-core\jquery.jgcore.js				F:\Svn\Github\Javascript\JgWidgets\js\
 
+copy E:\Svn\Github\Javascript\JgWidgets\jg-map\trunk\js				F:\Svn\Github\Javascript\JgWidgets\js\
+copy E:\Svn\Github\Javascript\JgWidgets\jg-map\trunk\js\data		F:\Svn\Github\Javascript\JgWidgets\js\
 
 
 pause
