@@ -158,6 +158,10 @@
 					if($.isFunction(fn)){
 						fn.call(self);
 					}	
+				}).fail(function(){
+					if($.isFunction(fn)){
+						fn.call(self);
+					}
 				});
 			}else{
 				if($.isFunction(fn)){
