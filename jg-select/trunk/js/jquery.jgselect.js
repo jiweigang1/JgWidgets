@@ -134,13 +134,13 @@
 		},
 		_triggerChange:function(){
 			var value 		= this.element.val();
-			var $selected	= this.element.find("option:selected").clone();
+			var $selected	= this.element.find("option:selected");
 			if(this.options.beforeChange){
-				this.options.beforeChange.call(this.element,value,$selected);
+				this.options.beforeChange.call(this.element,value,$selected.clone());
 			}
 			this.element.trigger("beforeChange");
 			this._triggerHolderChange();
-			this.element.trigger("change",[value,$selected]);
+			this.element.trigger("change",[value,$selected.clone()]);
 		},
 		_loadOptions:function(params,fn){
 			var self = this;
