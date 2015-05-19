@@ -50,7 +50,12 @@
 		enableAutoShowBackButton:function(){
 			var self = this;
 			this.element.off("click.jg-page-auto-show-back-button").on("click.jg-page-auto-show-back-button",".jg-page-back-button",function(){
-				self.goBack();
+				var $this = $(this);
+				var reload = false;
+				if($this.attr("reload")=="true"){
+						reload = true;
+				}
+				self.goBack(reload);
 			});
 		},
         _create: function () {
