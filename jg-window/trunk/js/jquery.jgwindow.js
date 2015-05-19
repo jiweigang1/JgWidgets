@@ -184,6 +184,7 @@ $.widget( "jgWidgets.jgWindow", {
 			this._updateScroll();
 		},
 		enableResize:function(){
+			var self = this;
 			var ds = {
 						handles:"all",
 						helper: "jg-window-resizable-helper",
@@ -206,6 +207,7 @@ $.widget( "jgWidgets.jgWindow", {
 			this.element.resizable(ds);
 		},
 		enableDrag:function(){
+			var self = this;
 			var ds = {
 						handle:"div.jg-window-tool-bar",
 						start:function(){
@@ -225,7 +227,7 @@ $.widget( "jgWidgets.jgWindow", {
 					this.enableDrag();
 				}
 				
-				if(this.options.resizeable){
+				if(this.options.resizable){
 					this.enableResize();
 				}
 				
@@ -425,7 +427,16 @@ $.widget( "jgWidgets.jgWindow", {
         this.element.animate( {left: wsL+5+'px' , top: wsT+5+'px' , width: woW-12 , height: woH-12+'px' },function(){
 			self.element.removeClass("sizzing");
 			self._adjustContentContainer();
-			self.element.resizable("disable").draggable("disable");
+			if(self.options.resizable){
+				self.element.resizable("disable");
+			}
+			
+			if(self.options.dragable){
+				self.element.draggable("disable")
+			}
+			
+			
+			
 			if(fn){
 				fn.call(self);
 			}
@@ -438,7 +449,15 @@ $.widget( "jgWidgets.jgWindow", {
 		this._$window.animate( {left: oldSize.left , top: oldSize.top , width: oldSize.width , height: oldSize.height},function(){
 			self.element.removeClass("sizzing");
 			self._adjustContentContainer();
-			self.element.resizable("enable").draggable("enable");
+			
+			if(self.options.resizable){
+				self.element.resizable("enable");
+			}
+			
+			if(self.options.dragable){
+				self.element.draggable("enable");
+			}
+			
 		});
 	 },
 	 minSize:function(){
@@ -597,10 +616,10 @@ $.widget( "jgWidgets.jgWindow", {
 				
 				
 				
-				var height 	  = getValue($this,"height",	 $.jgWidgets.jgPage.prototype.options.height,"int");
-				var width  	  = getValue($this,"width", 	 $.jgWidgets.jgPage.prototype.options.width,"int");
-				var minWidth  = getValue($this,"minWidth",   $.jgWidgets.jgPage.prototype.options.minWidth,"int");
-				var minHeight = getValue($this,"minHeight",  $.jgWidgets.jgPage.prototype.options.minHeight,"int");
+				var height 	  = getValue($this,"height",	 $.jgWidgets.jgWindow.prototype.options.height,"int");
+				var width  	  = getValue($this,"width", 	 $.jgWidgets.jgWindow.prototype.options.width,"int");
+				var minWidth  = getValue($this,"minWidth",   $.jgWidgets.jgWindow.prototype.options.minWidth,"int");
+				var minHeight = getValue($this,"minHeight",  $.jgWidgets.jgWindow.prototype.options.minHeight,"int");
 				
 				
 				$.jgWindow({url:url,height:height,width:width,minHeight:minHeight,minWidth:minWidth,max:max,title:title,maxAble:maxAble,closeAble:closeAble,miniAble:miniAble,fullScreen:fullScreen,model:model,jgscrollDragEnable:jgscrollDragEnable});
