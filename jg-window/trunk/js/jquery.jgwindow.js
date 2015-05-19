@@ -28,7 +28,7 @@ $.widget( "jgWidgets.jgWindow", {
 			maxAble  :true,
 			miniAble :true,
 			closeAble:true,
-			dragable :true,
+			draggable :true,
 			resizable:true,
 			
 			validate:null,
@@ -223,7 +223,7 @@ $.widget( "jgWidgets.jgWindow", {
 		},
 		_initEvent:function(){
 				var self = this;
-				if(this.options.dragable){
+				if(this.options.draggable){
 					this.enableDrag();
 				}
 				
@@ -431,7 +431,7 @@ $.widget( "jgWidgets.jgWindow", {
 				self.element.resizable("disable");
 			}
 			
-			if(self.options.dragable){
+			if(self.options.draggable){
 				self.element.draggable("disable")
 			}
 			
@@ -454,7 +454,7 @@ $.widget( "jgWidgets.jgWindow", {
 				self.element.resizable("enable");
 			}
 			
-			if(self.options.dragable){
+			if(self.options.draggable){
 				self.element.draggable("enable");
 			}
 			
@@ -604,9 +604,9 @@ $.widget( "jgWidgets.jgWindow", {
 					model = false;
 				}
 				
-				var dragable = true;
-				if($this.attr("dragable")==="false"){
-					dragable = false;
+				var draggable = true;
+				if($this.attr("draggable")==="false"){
+					draggable = false;
 				}
 				
 				var resizable = true;
@@ -622,7 +622,7 @@ $.widget( "jgWidgets.jgWindow", {
 				var minHeight = getValue($this,"minHeight",  $.jgWidgets.jgWindow.prototype.options.minHeight,"int");
 				
 				
-				$.jgWindow({url:url,height:height,width:width,minHeight:minHeight,minWidth:minWidth,max:max,title:title,maxAble:maxAble,closeAble:closeAble,miniAble:miniAble,fullScreen:fullScreen,model:model,jgscrollDragEnable:jgscrollDragEnable});
+				$.jgWindow({url:url,draggable:draggable,resizable:resizable,height:height,width:width,minHeight:minHeight,minWidth:minWidth,max:max,title:title,maxAble:maxAble,closeAble:closeAble,miniAble:miniAble,fullScreen:fullScreen,model:model,jgscrollDragEnable:jgscrollDragEnable});
 				return false;
 			})
 		}
