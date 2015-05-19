@@ -185,7 +185,7 @@
 		_updateOptionsScroll:function(){
 			var self = this;
 			if($.fn.jgScrollbar){
-				if(self.$optionsScroll.data("jgScrollbar")){
+				if(self.$optionsScroll.data("jgWidgets-jgScrollbar")){
 					self.$optionsScroll.jgScrollbar("update");
 				}else{
 					self.$optionsScroll.jgScrollbar();
