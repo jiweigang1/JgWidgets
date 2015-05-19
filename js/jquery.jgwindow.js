@@ -5,10 +5,13 @@
 $.widget( "jgWidgets.jgWindow", {
 		 options:{
 		 
-			params:null,
+			params	 :null,
 		 
-			minHeight:300,
-			minWidth :400,
+			
+			height	 :300,
+			width	 :400,
+			minHeight:0,
+			minWidth :0,
 			title	 :'新建窗口',
 			content	 :null,
 			left	 :null,
@@ -25,7 +28,8 @@ $.widget( "jgWidgets.jgWindow", {
 			maxAble  :true,
 			miniAble :true,
 			closeAble:true,
-			
+			dragable :true,
+			resizable:true,
 			
 			validate:null,
 			onOpen	:null,
@@ -121,7 +125,8 @@ $.widget( "jgWidgets.jgWindow", {
 				
 				
 				
-				this._$window.width(this.options.minWidth).height(this.options.minHeight);
+				this._$window.width(this.options.width).height(this.options.height);
+				
 				this._$windowTitle.text(this.options.title);
 				this._initLocation();
 				this._adjustContentContainer();
@@ -178,28 +183,54 @@ $.widget( "jgWidgets.jgWindow", {
 		_enableJgScroll:function(){
 			this._updateScroll();
 		},
+		enableResize:function(){
+			var self = this;
+			var ds = {
+						handles:"all",
+						helper: "jg-window-resizable-helper",
+						start:function(){
+							self.element.addClass("sizzing");
+						},
+						stop:function(){
+							self.element.removeClass("sizzing");
+							self._adjustContentContainer();
+						}
+					}
+		
+			if(this.options.minHeight>0){
+				ds.minHeight = this.options.minHeight;
+			}
+			if(this.options.minWidth>0){
+				ds.minWidth = this.options.minWidth;
+			}
+			
+			this.element.resizable(ds);
+		},
+		enableDrag:function(){
+			var self = this;
+			var ds = {
+						handle:"div.jg-window-tool-bar",
+						start:function(){
+							self.element.addClass("dragging");
+						},
+						stop:function(){
+							self.element.removeClass("dragging");
+						}
+					}
+			
+			this.element.draggable(ds);
+			
+		},
 		_initEvent:function(){
 				var self = this;
-				this.element.draggable({
-										handle:"div.jg-window-tool-bar",
-										start:function(){
-											self.element.addClass("dragging");
-										},
-										stop:function(){
-											self.element.removeClass("dragging");
-										},
-									});
-				this.element.resizable({
-										handles:"all",
-										helper: "jg-window-resizable-helper",
-										start:function(){
-											self.element.addClass("sizzing");
-										},
-										stop:function(){
-											self.element.removeClass("sizzing");
-											self._adjustContentContainer();
-										}			
-									});
+				if(this.options.dragable){
+					this.enableDrag();
+				}
+				
+				if(this.options.resizable){
+					this.enableResize();
+				}
+				
 				this._$toolBar.on("mousedown",function(){
 					self.front();
 				});
@@ -396,7 +427,16 @@ $.widget( "jgWidgets.jgWindow", {
         this.element.animate( {left: wsL+5+'px' , top: wsT+5+'px' , width: woW-12 , height: woH-12+'px' },function(){
 			self.element.removeClass("sizzing");
 			self._adjustContentContainer();
-			self.element.resizable("disable").draggable("disable");
+			if(self.options.resizable){
+				self.element.resizable("disable");
+			}
+			
+			if(self.options.dragable){
+				self.element.draggable("disable")
+			}
+			
+			
+			
 			if(fn){
 				fn.call(self);
 			}
@@ -409,7 +449,15 @@ $.widget( "jgWidgets.jgWindow", {
 		this._$window.animate( {left: oldSize.left , top: oldSize.top , width: oldSize.width , height: oldSize.height},function(){
 			self.element.removeClass("sizzing");
 			self._adjustContentContainer();
-			self.element.resizable("enable").draggable("enable");
+			
+			if(self.options.resizable){
+				self.element.resizable("enable");
+			}
+			
+			if(self.options.dragable){
+				self.element.draggable("enable");
+			}
+			
 		});
 	 },
 	 minSize:function(){
@@ -556,9 +604,87 @@ $.widget( "jgWidgets.jgWindow", {
 					model = false;
 				}
 				
-				$.jgWindow({url:url,max:max,title:title,maxAble:maxAble,closeAble:closeAble,miniAble:miniAble,fullScreen:fullScreen,model:model,jgscrollDragEnable:jgscrollDragEnable});
+				var dragable = true;
+				if($this.attr("dragable")==="false"){
+					dragable = false;
+				}
+				
+				var resizable = true;
+				if($this.attr("resizable")==="false"){
+					resizable = false;
+				}
+				
+				
+				
+				var height 	  = getValue($this,"height",	 $.jgWidgets.jgWindow.prototype.options.height,"int");
+				var width  	  = getValue($this,"width", 	 $.jgWidgets.jgWindow.prototype.options.width,"int");
+				var minWidth  = getValue($this,"minWidth",   $.jgWidgets.jgWindow.prototype.options.minWidth,"int");
+				var minHeight = getValue($this,"minHeight",  $.jgWidgets.jgWindow.prototype.options.minHeight,"int");
+				
+				
+				$.jgWindow({url:url,height:height,width:width,minHeight:minHeight,minWidth:minWidth,max:max,title:title,maxAble:maxAble,closeAble:closeAble,miniAble:miniAble,fullScreen:fullScreen,model:model,jgscrollDragEnable:jgscrollDragEnable});
 				return false;
 			})
 		}
 	})
+	
+	function getValue($el,name,defaultValue,type){
+		if(!type){
+			type = "string";
+		}
+		var value = $el.attr(name);
+		if(!value){
+			return defaultValue;
+		}else{
+			if(type=="string"){
+				return value;
+			}else if(type=="boolean"){
+				if(value=="true"){
+					return true;
+				}else{
+					return false;
+				}
+			}else if(type=="function"){
+				if($.isFunction(value)){
+					return value;
+				}else{
+					var v;
+					try{
+						v = eval(value)
+					}catch(e){}
+					if($.isFunction(v)){
+						return v;
+					}else{
+						return defaultValue;
+					}
+				}
+			}else if(type=="object"){
+					var v;
+					try{
+						v = $.parseJSON(value)
+					}catch(e){
+						if(console){
+							console.log(e+"\n"+value);
+						}
+					}
+					if(v){
+						return v;
+					}else{
+						return defaultValue;
+					}
+			}else if(type=="int"){
+					var v = defaultValue;
+					try{
+						v = parseInt(value);
+					}catch(e){
+						if(console){
+							console.log(e+"\n"+value);
+						}
+					}
+					return v;
+			}
+		}
+		return defaultValue;
+	}
+	
 })(jQuery);	
