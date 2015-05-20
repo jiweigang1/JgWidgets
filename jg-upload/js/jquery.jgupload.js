@@ -19,6 +19,7 @@
 			onUpload	:null
 		},
 		_create:function(){
+			this._initOptions();
 			var self = this;
 			var upload =	new AjaxUpload(this.element, {
 								action: this.options.url, 
@@ -36,6 +37,12 @@
 							});
 			this.element.data("_uploader",upload)
 		},
+		_initOptions:function(){
+			this.options.url  		  = getValue(this.element,"url",this.options.url);
+			this.options.name 		  = getValue(this.element,"name",this.options.name);
+			this.options.beforeUpload = getValue(this.element,"beforeUpload",this.options.beforeUpload);
+			this.options.onUpload 	  = getValue(this.element,"onUpload",this.options.onUpload);
+		},
 		destroy:function(){
 			var uploader =  this.element.data("_uploader");
 			this.element.removeData("_uploader");
@@ -47,13 +54,66 @@
 			}
 			
 		}
-		
 	});
 	
-	
-	
-	
-	
+	function getValue($el,name,defaultValue,type){
+		if(!type){
+			type = "string";
+		}
+		var value = $el.attr(name);
+		if(!value){
+			return defaultValue;
+		}else{
+			if(type=="string"){
+				return value;
+			}else if(type=="boolean"){
+				if(value=="true"){
+					return true;
+				}else{
+					return false;
+				}
+			}else if(type=="function"){
+				if($.isFunction(value)){
+					return value;
+				}else{
+					var v;
+					try{
+						v = eval(value)
+					}catch(e){}
+					if($.isFunction(v)){
+						return v;
+					}else{
+						return defaultValue;
+					}
+				}
+			}else if(type=="object"){
+					var v;
+					try{
+						v = $.parseJSON(value)
+					}catch(e){
+						if(console){
+							console.log(e+"\n"+value);
+						}
+					}
+					if(v){
+						return v;
+					}else{
+						return defaultValue;
+					}
+			}else if(type=="int"){
+					var v = defaultValue;
+					try{
+						v = parseInt(value);
+					}catch(e){
+						if(console){
+							console.log(e+"\n"+value);
+						}
+					}
+					return v;
+			}
+		}
+		return defaultValue;
+	}
 	
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
