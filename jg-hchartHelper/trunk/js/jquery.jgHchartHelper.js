@@ -80,6 +80,7 @@
 						clearTimeout(self._timeOutResize);
 					}
 					self._timeOutResize = setTimeout(function(){
+						self._timeOutResize = null;
 						self.reDrawLocal();
 					},20);
 					
