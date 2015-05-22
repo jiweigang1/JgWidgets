@@ -292,6 +292,12 @@ $.JgWidgets = {
 			});
 		}
 		
+		if($.fn.jgUpload){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".upload").jgUpload();
+			});
+		}
+		
 	})();
 	
 	
