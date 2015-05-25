@@ -374,6 +374,11 @@
 							padding: 1
 						}
 						
+					},
+					legend:{
+						borderWidth: 1,
+						borderRadius: 5,
+						itemStyle:{"fontWeight": "normal"}
 					}
 				 };
 			if(!this.options.addLegendHeight){
@@ -640,7 +645,8 @@
 		var  $this 	 = this.$el;
 		var  chart 	 = this.highChart;
 		var  opts	 = this.options; 
-		if(!opts.showAggregateLable){
+		//面积图都为堆积图，不显示平均值
+		if(!opts.showAggregateLable||chart.options.chart.type=="area"){
 			return;
 		}
 		if(!chart){
