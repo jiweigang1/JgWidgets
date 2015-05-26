@@ -20,13 +20,15 @@
 				$(".plate-button").jgPlateButton();
 			});
 			
-			
+			function onOpen($content){
+				alert($content.html());
+			}
 		</script>
     </head>
     <body>
 		<input id="open" value="打开黑色" type="button"  >
 		<input id="close" value="关闭" type="button"  >
-		<div class="plate" style="width:500px" >
+		<div class="plate" style="width:500px" onOpen="onOpen" >
 			<div pid="red" style="background-color:red;height:200px" >
 				a
 			</div>
@@ -37,6 +39,7 @@
 			<div pid="blue" style="background-color:blue;height:200px" >
 				<input class="plate-button"  value="关闭" type="button"  action="close" >
 			</div>
+			
 		</div>
 		<div>
 			上面的哥们要自适应高度

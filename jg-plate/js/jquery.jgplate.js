@@ -1,17 +1,25 @@
 (function($){
 	$.widget("jgWidgets.jgPlate", {
         options: {
-		    toggleTime:200
+		    toggleTime:200,
+			onOpen:null
         },
         _initOptions:function () {
-            
+            this.options.onOpen = getValue(this.element,"onOpen",this.options.onOpen,"function");
         },
+		_fireEvent:function(name,params){
+			if(this.options[name]){
+				this.options[name].apply(this,params);
+			}
+			this.element.trigger(name,params);
+		},
 		_create:function(){
 			this._settings={
 				//自定义高度
 				autoHeight	:true,
 				activePlates:[]
 			};
+			this._initOptions();
 			this.element.addClass("jg-plate-doc");
 			this.element.find(">div")
 			.each(function(k,v){
@@ -33,7 +41,7 @@
 					method = "velocity";	
 				}
 			$plate.css({left:ewidth});
-			this._adjustHeight(this._settings.$activePlate,$plate);
+			this._adjustHeight($activePlate,$plate);
 			this.element.addClass("jg-plate-animate")
 			$plate.show();
 			$plate[method].call($plate,{left:0},this.options.toggleTime,function(){
@@ -45,6 +53,7 @@
 				   self.element.css("height","auto");
 				}
 				self._addActivePlate($plate.attr("plateNo"));
+				self._fireEvent("onOpen",[$plate]);
 			});
 			
 		},
@@ -112,6 +121,66 @@
 				});
 		}
 	})
+	
+	function getValue($el,name,defaultValue,type){
+		if(!type){
+			type = "string";
+		}
+		var value = $el.attr(name);
+		if(!value){
+			return defaultValue;
+		}else{
+			if(type=="string"){
+				return value;
+			}else if(type=="boolean"){
+				if(value=="true"){
+					return true;
+				}else{
+					return false;
+				}
+			}else if(type=="function"){
+				if($.isFunction(value)){
+					return value;
+				}else{
+					var v;
+					try{
+						v = eval(value)
+					}catch(e){}
+					if($.isFunction(v)){
+						return v;
+					}else{
+						return defaultValue;
+					}
+				}
+			}else if(type=="object"){
+					var v;
+					try{
+						v = $.parseJSON(value)
+					}catch(e){
+						if(console){
+							console.log(e+"\n"+value);
+						}
+					}
+					if(v){
+						return v;
+					}else{
+						return defaultValue;
+					}
+			}else if(type=="int"){
+					var v = defaultValue;
+					try{
+						v = parseInt(value);
+					}catch(e){
+						if(console){
+							console.log(e+"\n"+value);
+						}
+					}
+					return v;
+			}
+		}
+		return defaultValue;
+	}
+	
 })(jQuery);
 
 (function ($) {

@@ -298,6 +298,17 @@ $.JgWidgets = {
 			});
 		}
 		
+		if($.fn.jgPlate){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".plate").jgPlate();
+			});
+		}
+		if($.fn.jgPlateButton){
+			$.JgWidgets.addPlugin(function($content){
+				$content.find(".plate-button").jgPlateButton();
+			});
+		}
+		
 	})();
 	
 	
