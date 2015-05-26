@@ -1,0 +1,10 @@
+.jg-plate-doc{
+	overflow:hidden;
+	position:relative;
+}
+.jg-plate-doc .jg-plate{
+	width:100%;
+}
+.jg-plate-doc.jg-plate-animate  .jg-plate{
+	position:absolute;
+}

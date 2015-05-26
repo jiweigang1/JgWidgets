@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+		<link href="../css/jquery.jgplate.css" rel="stylesheet" media="screen" />
+        <script src="../../lib/jquery-1.10.2.js"></script>
+		<script src="../../lib/jquery-ui.js"></script>
+		<script src="../js/jquery.jgplate.js"></script>
+        <script>
+			$(function(){
+				$(".plate").jgPlate();
+				$("#open").on("click",function(){
+					$(".plate").jgPlate("open","black");
+				})
+				
+				$("#close").on("click",function(){
+					$(".plate").jgPlate("close");
+				})
+				
+				$(".plate-button").jgPlateButton();
+			});
+			
+			
+		</script>
+    </head>
+    <body>
+		<input id="open" value="打开黑色" type="button"  >
+		<input id="close" value="关闭" type="button"  >
+		<div class="plate" style="width:500px" >
+			<div pid="red" style="background-color:red;height:200px" >
+				a
+			</div>
+			<div pid="black" style="background-color:black;height:400px">
+				<input class="plate-button"  value="关闭" type="button"  action="close" >
+				<input class="plate-button"  value="打开blue" type="button"  action="open" pid="blue" >
+			</div>
+			<div pid="blue" style="background-color:blue;height:200px" >
+				<input class="plate-button"  value="关闭" type="button"  action="close" >
+			</div>
+		</div>
+    </body>
+</html>
