@@ -1,0 +1,22 @@
+﻿<div class="panel-content-wrapper">
+	<input  class="plate-button" value="打开黑色" target="#test_plate" type="button" pid="black"  >
+	<input  class="plate-button" value="返回"     target="#test_plate" type="button" action="close" >
+	<div  id="test_plate" class="plate" style="width:500px" onOpen="onOpen" >
+		<div pid="red" style="background-color:red;height:200px" >
+			这是红色的
+		</div>
+		<div pid="black" style="background-color:black;height:400px;display:none">
+			<input class="plate-button"  value="返回" type="button"  action="close" >
+			<input class="plate-button"  value="打开blue" type="button"  action="open" pid="blue" ></br>
+			这是黑色的
+		</div>
+		<div pid="blue" style="background-color:blue;height:200px;display:none" >
+			<input class="plate-button"  value="返回" type="button"  action="close" ></br>
+			这是蓝色的
+		</div>
+		
+	</div>
+	<div>
+		上面的哥们要自适应高度
+	</div>
+</div>

@@ -1,4 +1,15 @@
-﻿(function($){
+﻿/**
+ *
+ * jg-window
+ *
+ * Licensed  Apache Licence 2.0
+ * 
+ * Version : 1.0.0
+ *
+ * Author JiGang 2015-5-21
+ *
+*/
+(function($){
 
 
 

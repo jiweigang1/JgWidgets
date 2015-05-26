@@ -23,6 +23,8 @@
 			
 			//数据的过滤器
 			dataFilter:null,
+			//url格式化工具返回 url 或者 {url:url,params:{}}
+			urlFormat:null,
 			
 			onComplet:null,
 			beforeChange:null
@@ -63,7 +65,7 @@
 			this.options.onComplet	  	  = getValue(this.element,"onComplet", 	  this.options.onComplet,	"function");	
 			this.options.beforeChange	  = getValue(this.element,"beforeChange", this.options.beforeChange,"function");
 			this.options.dataFilter	  	  = getValue(this.element,"dataFilter",   this.options.dataFilter,	"function");			
-			
+			this.options.urlFormat	  	  = getValue(this.element,"urlFormat",    this.options.urlFormat,	"function");	
 		},
 		_getHolder:function(){
 			if(this.options.holderId){
@@ -143,10 +145,17 @@
 			this.element.trigger("change",[value,$selected.clone()]);
 		},
 		_loadOptions:function(params,fn){
+			var url  = this.options.url;
 			var self = this;
-			if(this.options.url){
+			if(url){
+			 if(this.options.urlFormat){
+				url = this.options.urlFormat.call(self,url);
+			 }
+			 if(!url){
+				return;
+			 }
 				$.ajax({
-					url:self.options.url,
+					url:url,
 					type:self.options.ajaxType,
 					cache:false,
 					data:params||{},
