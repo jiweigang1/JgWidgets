@@ -37,11 +37,13 @@
 			this.element.addClass("jg-plate-animate")
 			$plate.show();
 			$plate[method].call($plate,{left:0},this.options.toggleTime,function(){
+				if($activePlate.attr("plateNo")!=$plate.attr("plateNo")){
+					$activePlate.hide();
+				}
 				self.element.removeClass("jg-plate-animate");
 				if(self._settings.autoHeight){
 				   self.element.css("height","auto");
 				}
-				$activePlate.hide();
 				self._addActivePlate($plate.attr("plateNo"));
 			});
 			
@@ -101,8 +103,12 @@
 				this._adjustHeight($plate,$preplate);
 				this.element.addClass("jg-plate-animate")
 				$plate[method].call($plate,{left:ewidth},this.options.toggleTime,function(){
-					$plate.removeClass("jg-plate-animate");
+					 $plate.hide();
+					 self.element.removeClass("jg-plate-animate");
 					 self._removeCurrentActivePlate();
+					 if(self._settings.autoHeight){
+						self.element.css("height","auto");
+					 }
 				});
 		}
 	})
