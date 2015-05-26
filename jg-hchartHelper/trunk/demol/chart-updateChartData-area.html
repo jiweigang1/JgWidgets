@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
+		<link 	href="../css/jquery.jgHchartHelper.css" rel="stylesheet" />
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		<script src="../../../jquery-ui/jquery-ui.js"></script>
+		<script src="../js/jquery.jgHchartHelper.js"></script>
+		<script src="../../../lib/highcharts.src.js"></script>
+		<script type="text/javascript">
+		$(function () {
+			$(".container").jgHchartHelper();
+			setInterval(function(){
+				$(".container").jgHchartHelper("updateChartData");
+			},3000);
+		});
+		function draw(){
+			$(".container").jgHchartHelper();
+		}
+		function clickSeries(){
+			alert("Series");
+			alert(this.name);
+		}
+		
+		function clickPoint(point){
+			alert("point");
+			alert(this.x);
+		}
+		
+		</script>
+	</head>
+	<body>
+
+<input  	class="chartf" name="a" value="a" >
+<textarea   class="chartf" name="b" >b</textarea>
+<select 	class="chartf" name="c" >
+	<option  value="c" >c</option>
+</select>
+
+<input type="button" value="绘图" onclick="draw()" >
+ 
+<div id="container"  url="data/data.json" autoRefresh="true"  class="container" forms=".chartf" parmas="{startTime:2013}"   chartType="line" chartWidth="300" onSeriesClick="clickSeries" onPointClick="clickPoint" chartHeight="600" tooltipGroup="1"  style="width:80%;border:1px solid #00F" ></div>
+
+<div id="container2" url="data/data.json" autoRefresh="true" class="container" forms=".chartf" chartType="column" chartWidth="50%" tooltipGroup="1"  style="width:80%; height: 400px;border:1px solid #00F" ></div>
+
+<div id="container3" url="data/data.json" autoRefresh="true" class="container" forms=".chartf" chartType="line" chartWidth="50%" tooltipGroup="1"  style="width:80%; height: 400px;border:1px solid #00F" ></div>
+
+<div id="container4" url="data/data.json" autoRefresh="true" class="container" forms=".chartf" chartType="areaspline" chartWidth="50%" tooltipGroup="1"  style="width:80%; height: 400px;border:1px solid #00F" ></div>
+
+<div id="container5" url="data/data.json" autoRefresh="true" class="container" forms=".chartf" chartType="" chartWidth="50%" tooltipGroup="1"  style="width:80%; height: 400px;border:1px solid #00F" ></div>
+
+<div id="container6" url="data/data.json" autoRefresh="true" class="container" forms=".chartf" chartType="" chartWidth="50%" tooltipGroup="1"  style="width:80%; height: 400px;border:1px solid #00F" ></div>
+
+<div id="container6" url="data/data.json" autoRefresh="true" class="container" forms=".chartf" chartType="area" chartWidth="50%" tooltipGroup="1"  style="width:80%; height: 400px;border:1px solid #00F" ></div>
+
+
+</body>
+</html>

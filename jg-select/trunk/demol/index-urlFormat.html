@@ -1,0 +1,30 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+        <link href="../css/jquery.jgselect.css" rel="stylesheet" media="screen" />
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		<script src="../../../jquery-ui/jquery-ui.js"></script>
+		<script src="../../../jg-scrollbar/trunk/js/jquery.jgscrollbar.js"></script>
+		<link   href="../../../jg-scrollbar/trunk/css/jquery.jgscrollbar.css" rel="stylesheet" media="screen" />
+		<script src="../js/jquery.jgselect.js"></script>
+        <script>
+			$(function(){
+				$(".select").jgSelect();
+			});
+			
+			function urlFormat(url){
+				alert(1);
+				return url+="?1=1";
+			}
+			
+		</script>
+    </head>
+    <body>
+		<select class="select" url ="1.html" urlFormat="urlFormat" >
+				
+		</select>
+		
+		<div>	
+	</body>
+</html>
