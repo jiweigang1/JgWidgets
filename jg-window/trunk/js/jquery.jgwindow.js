@@ -184,7 +184,7 @@ $.widget( "jgWidgets.jgWindow", {
 				if(this._$contentContainer.data("jgScrollbar")){
 					this._$contentContainer.jgScrollbar("update");
 				}else{
-					this._$contentContainer.addClass("scroll").jgScrollbar({wheelSpeed:15,dragEnable:self.options.jgscrollDragEnable});
+					this._$contentContainer.addClass("scroll").jgScrollbar({dragEnable:self.options.jgscrollDragEnable});
 					this._$contentContainer.on("mouseenter",function(){
 						self._$contentContainer.jgScrollbar("update");
 					})
