@@ -28,12 +28,22 @@
 			.addClass("jg-plate").not(":first").hide();
 			this._addActivePlate(0);
 		},
-		open:function(pid){
+		open:function(pid,onComplete){
 			var self = this;
 			var $plate = this.element.find('>div[pid="'+pid+'"]');
 			if($plate.length==0){
 				return;
 			}
+			//不执行重复打开操作
+			if(this._isCurrentActivePlate($plate)){
+				if(onComplete&&$.isFunction(onComplete)){
+					onComplete.call($plate,$plate);
+				}
+				return;
+			}
+			
+			
+			
 			var $activePlate = this._getCurrentActivePlate();
 			var ewidth = this.element.width();
 			var method = "animate";
@@ -54,6 +64,9 @@
 				}
 				self._addActivePlate($plate.attr("plateNo"));
 				self._fireEvent("onOpen",[$plate]);
+				if(onComplete&&$.isFunction(onComplete)){
+					onComplete.call($plate,$plate);
+				}
 			});
 			
 		},
@@ -67,8 +80,14 @@
 			this._settings.activePlates.push(no);
 		},
 		_getCurrentActivePlate:function(){
-		 
 		  return this.element.find('>div[plateNo="'+this._settings.activePlates[this._settings.activePlates.length-1]+'"]')
+		},
+		_isCurrentActivePlate:function($plate){
+			var $cplate = this._getCurrentActivePlate();
+			if($cplate.attr("plateNo")==$plate.attr("plateNo")){
+				return true;
+			}
+			return false;
 		},
 		_removeCurrentActivePlate:function(){
 		  this._settings.activePlates.pop();
@@ -106,11 +125,13 @@
 					}
 				$plate.css({left:0});
 				var $preplate = this._getPreActivePlate();
+				
+				this.element.addClass("jg-plate-animate")
 				if($preplate&&$preplate.length>0){
 					$preplate.show();
 				}
 				this._adjustHeight($plate,$preplate);
-				this.element.addClass("jg-plate-animate")
+				
 				$plate[method].call($plate,{left:ewidth},this.options.toggleTime,function(){
 					 $plate.hide();
 					 self.element.removeClass("jg-plate-animate");
