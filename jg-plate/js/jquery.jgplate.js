@@ -99,7 +99,7 @@
 			return $([]);
 		  }
 		},
-		_adjustHeight($p1,$p2){
+		_adjustHeight:function($p1,$p2){
 		  if(this._settings.autoHeight){
 			 var h1 = 0;
 			 if($p1&&$p1.length>0){

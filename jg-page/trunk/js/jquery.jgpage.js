@@ -218,8 +218,21 @@
 									}
 								}
 							}
-							$page.trigger("onload",[$page]);
-							$page.trigger("onOpen",[$page]);
+							try{
+								$page.trigger("onload",[$page]);
+							}catch(e){
+								if(console){
+									console.log(e);
+								}
+							}
+							
+							try{
+								$page.trigger("onOpen",[$page]);
+							}catch(e){
+								if(console){
+									console.log(e);
+								}
+							}
 							self._settings.activePage = $page;
 							self._settings.waitting   = false;
 							if(self.options.autoShowBackButton){

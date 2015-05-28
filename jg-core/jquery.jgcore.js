@@ -140,7 +140,14 @@ $.JgWidgets = {
 					return true;
 				}
 				if($.isFunction(v.fn)){
-					v.fn.call(null,$content);
+					//捕获异常，防止插件出现错误
+					try{
+					   v.fn.call(null,$content);
+					}catch(e){
+					   if(window.console){
+						  console.log(e.message);
+					   }
+					}
 				}
 			});
 		},
