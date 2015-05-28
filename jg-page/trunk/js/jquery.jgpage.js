@@ -265,6 +265,9 @@
 					}
 					$oldPage.trigger("onload",[$oldPage]);
 					$oldPage.trigger("onOpen",[$oldPage]);
+					if(self.options.autoShowBackButton){
+						self._addBackButton($oldPage);
+					}
 			},true);
 			
 		},
