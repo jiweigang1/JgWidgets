@@ -252,6 +252,7 @@
 				}
 				
 				$li.addClass("active");
+				this._fixHeadScroll();
 				this._fixActiveHead();
 				var data = $li.data("data"); 
 				if(data.ajax&&!data.init){
