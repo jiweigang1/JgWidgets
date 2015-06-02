@@ -1,14 +1,25 @@
-¡/*»ù±¾ÑùÊ½*/
+body .jg-loading{
+	width:124px;
+	height:124px;
+	background-image:url('./images/page-loading.gif');
+    background-repeat:no-repeat;
+	display:none;
+	position: absolute;
+	z-index:3000;
+}
+
+
+?*åŸºæœ¬æ ·å¼*/
 .clear{
      clear:both;
 }
-/*»ù±¾»ú¹¹ÑùÊ½*/
+/*åŸºæœ¬æœºæ„æ ·å¼*/
 .panel-content-wrapper{
      padding:20px;
 }
-/*Form ÑùÊ½ start*/
+/*Form æ ·å¼ start*/
 .panel-form-content{
-     font-family:"ËÎÌå"; 
+     font-family:"å®‹ä½“"; 
      font-size:12px;
 	 
 }
@@ -72,7 +83,7 @@
 	 margin-top:20px;
 	 background:#0078d7; 
 	 color:#fff; 
-	 font-family:"Î¢ÈíÑÅºÚ";
+	 font-family:"å¾®è½¯é›…é»‘";
 	 text-decoration:none;
 	 cursor:pointer;
 	 font-size:16px;
@@ -90,7 +101,7 @@
      border-bottom:1px dotted  #71addc;
 }
 
-/*Form ÑùÊ½ end*/
+/*Form æ ·å¼ end*/
 
 
 
