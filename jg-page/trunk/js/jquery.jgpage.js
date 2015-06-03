@@ -300,10 +300,33 @@
 			}
             var $el = this.element;
             if (self.options.beforeBack) {
-                self.options.beforeBack.call(null, this._settings.activePage, this);
-            }
-            $el.trigger("beforeBack");
-            if(reload){
+                try{
+				  self.options.beforeBack.call(null, this._settings.activePage, this);
+				}catch(e){
+					if(console){
+						console.log(e);
+					}
+				}
+			}
+			try{
+				 $el.trigger("beforeBack");
+			}catch(e){
+				if(console){
+					console.log(e);
+				}
+			}
+			
+            if(self._settings.activePage){
+				try{
+				 self._settings.activePage.trigger("beforeClose",[self._settings.activePage.data("pageData")]);
+				}catch(e){
+					if(console){
+						console.log(e);
+					}
+				}
+			}
+            
+			if(reload){
             	var pageData = $oldPage.data("pageData");
 				this._ajaxLoad($oldPage,pageData.url,pageData.params,function(){
 					self._toggle($oldPage,self._settings.activePage,"right",function(){
