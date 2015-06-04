@@ -458,7 +458,7 @@
 						$.removeEventHolder($.event_ready,$dom);
 					}
 					
-					$dom.trigger($.event_init,[$dom])
+					$dom.trigger("onOpen",[$dom]);
 					
 					if(success&&$.isFunction(success)){
 						success.call(null,data)
