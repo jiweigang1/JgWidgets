@@ -116,6 +116,7 @@
 	
 ////////////////////////////////////
 $.JgWidgets = {
+		options:{},
 		g_before:1,
 		g_after:2,
 		
@@ -151,25 +152,39 @@ $.JgWidgets = {
 				}
 			});
 		},
-		init:function(){
+		init:function(options){
+			if(options){
+			 this.options = options;
+			}
 			this._initPlugins();
 			this._initContent(document);
-			
+			this._initLogin();
 		},
 		_initPlugins:function(){
 			if(this._init){
 				return;
 			}
-			/**
-			$.each(this._plugins,function(k,v){
-				if(typeof v =="object"){
-					if(v.init&&$.isFunction(v.init)){
-						v.init();
-					}
-				}
-			});
-			**/
 			this._init = true;
+		},
+		//处理全局登陆
+		_initLogin:function(){
+		  var loginUrl = this.options.loginUrl;
+		  if(!loginUrl){
+			return false;
+		  }
+		  
+		  $(document).ajaxSuccess(function(event, xhr, settings) {
+			 var result;
+			 try{
+			     result =  xhr.responseText;
+			 }catch(e){
+			 }
+			 if(result&&result.status==301){
+				window.location.href=loginUrl;
+			 }
+			 
+		  });
+		  
 		}
 	};
 	
