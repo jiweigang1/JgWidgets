@@ -28,7 +28,7 @@
 			var ele = this._dialogs.shift();
 			if(ele){
 			   this._init();	
-			   var $html = this._buildDialogHtml(ele.type,ele.message);
+			   var $html = this._buildDialogHtml(ele.type,ele.message,ele.cssClass);
 				   $html.appendTo("body");
 				this._initDialogEvent(ele.type,ele.fn,$html);
 				this._$cover.show();
@@ -36,11 +36,15 @@
 			}
 			
 		},
-		_buildDialogHtml:function(type,message){
+		_buildDialogHtml:function(type,message,cssClass){
+			var clazz = " jg-alert-message ";
+			if(cssClass){
+				clazz += " "+cssClass;
+			}
 			var	$html = $('<div id="jg-alert" class="jg-alert jg-alert-'+type+'">\
 							<div class="jg-alert-dialog">\
 								<div class="jg-alert-inner">\
-									<p id="jg-alert-message" class="jg-alert-message">'+message+'</p>\
+									<p id="jg-alert-message" class="'+clazz+'">'+message+'</p>\
 									<div class="jg-alert-buttons">\
 										<button id="jg-alert-ok" class="jg-alert-button jg-alert-button-ok">确定</button>\
 									</div>\

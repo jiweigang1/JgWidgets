@@ -15,6 +15,10 @@
 
 	<h2>Dialogs</h2>
 	<a href="#" id="alert">Alert Dialog</a><br>
+	
+	<a href="#" id="alert_error">Alert Dialog error</a><br>
+	<a href="#" id="alert_success">Alert Dialog success</a><br>
+	
 	<a href="#" id="confirm">Confirm Dialog</a><br>
 	<a href="#" id="prompt">Prompt Dialog</a><br>
 
@@ -36,6 +40,14 @@
 		// Standard Dialogs
 		$("#alert").on( 'click', function () {
 			$.jgAlert("This is an alert dialog","erooe");
+			return false;
+		});
+		$("#alert_error").on( 'click', function () {
+			$.jgAlert("This is an alert dialog","error");
+			return false;
+		});
+		$("#alert_success").on( 'click', function () {
+			$.jgAlert("This is an alert dialog","success");
 			return false;
 		});
 
