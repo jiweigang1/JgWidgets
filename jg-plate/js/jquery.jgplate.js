@@ -2,10 +2,12 @@
 	$.widget("jgWidgets.jgPlate", {
         options: {
 		    toggleTime:200,
-			onOpen:null
+			onOpen:null,
+			onClose:null
         },
         _initOptions:function () {
-            this.options.onOpen = getValue(this.element,"onOpen",this.options.onOpen,"function");
+            this.options.onOpen  = getValue(this.element,"onOpen",this.options.onOpen,"function");
+			this.options.onClose = getValue(this.element,"onClose",this.options.onClose,"function");
         },
 		_fireEvent:function(name,params){
 			if(this.options[name]){
@@ -138,6 +140,11 @@
 					 self._removeCurrentActivePlate();
 					 if(self._settings.autoHeight){
 						self.element.css("height","auto");
+					 }
+					 try{
+						self._fireEvent("onClose",[$plate.attr("pid"),$plate])
+					 }catch(e){
+					 
 					 }
 				});
 		}

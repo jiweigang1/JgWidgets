@@ -176,7 +176,7 @@ $.JgWidgets = {
 		  $(document).ajaxSuccess(function(event, xhr, settings) {
 			 var result;
 			 try{
-			     result =  xhr.responseText;
+			    result = $.parseJSON(xhr.responseText);
 			 }catch(e){
 			 }
 			 if(result&&result.status==301){
