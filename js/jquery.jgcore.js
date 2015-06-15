@@ -320,6 +320,7 @@ $.JgWidgets = {
 			});
 		}
 		
+
 		if($.fn.jgPlate){
 			$.JgWidgets.addPlugin(function($content){
 				$content.find(".plate").jgPlate();
@@ -331,6 +332,7 @@ $.JgWidgets = {
 			});
 		}
 		
+
 	})();
 	
 	
