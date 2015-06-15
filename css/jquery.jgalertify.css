@@ -221,7 +221,11 @@
 	}
 
 
-
-
+.jg-alert-message.error{
+  color:red;
+}
+.jg-alert-message.success{
+  color:green;
+}
 
 

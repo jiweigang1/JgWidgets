@@ -52,6 +52,18 @@
 		
 		$.validator.messages.eqto  = "两次输入不一致！";
 		
+		$.validator.methods.email = function(value, element, param) {
+			if($.trim(value)== "" || !value) {
+				return true;
+			}
+			
+			var emailTest = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+			return emailTest.test(value);
+		}
+		
+		$.validator.messages.email = "请输入正确的邮箱格式！";
+		
+		//验证表单是否提交过
 		$.validator.methods.submit = function(value, element, param){
 			//alert(param.options.ignoreSubmit);
 			if(param.options.ignoreSubmit){

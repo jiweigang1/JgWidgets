@@ -218,8 +218,21 @@
 									}
 								}
 							}
-							$page.trigger("onload",[$page]);
-							$page.trigger("onOpen",[$page]);
+							try{
+								$page.trigger("onload",[$page]);
+							}catch(e){
+								if(console){
+									console.log(e);
+								}
+							}
+							
+							try{
+								$page.trigger("onOpen",[$page]);
+							}catch(e){
+								if(console){
+									console.log(e);
+								}
+							}
 							self._settings.activePage = $page;
 							self._settings.waitting   = false;
 							if(self.options.autoShowBackButton){
@@ -265,6 +278,9 @@
 					}
 					$oldPage.trigger("onload",[$oldPage]);
 					$oldPage.trigger("onOpen",[$oldPage]);
+					if(self.options.autoShowBackButton){
+						self._addBackButton($oldPage);
+					}
 			},true);
 			
 		},
@@ -284,10 +300,33 @@
 			}
             var $el = this.element;
             if (self.options.beforeBack) {
-                self.options.beforeBack.call(null, this._settings.activePage, this);
-            }
-            $el.trigger("beforeBack");
-            if(reload){
+                try{
+				  self.options.beforeBack.call(null, this._settings.activePage, this);
+				}catch(e){
+					if(console){
+						console.log(e);
+					}
+				}
+			}
+			try{
+				 $el.trigger("beforeBack");
+			}catch(e){
+				if(console){
+					console.log(e);
+				}
+			}
+			
+            if(self._settings.activePage){
+				try{
+				 self._settings.activePage.trigger("beforeClose",[self._settings.activePage.data("pageData")]);
+				}catch(e){
+					if(console){
+						console.log(e);
+					}
+				}
+			}
+            
+			if(reload){
             	var pageData = $oldPage.data("pageData");
 				this._ajaxLoad($oldPage,pageData.url,pageData.params,function(){
 					self._toggle($oldPage,self._settings.activePage,"right",function(){
@@ -419,7 +458,7 @@
 						$.removeEventHolder($.event_ready,$dom);
 					}
 					
-					$dom.trigger($.event_init,[$dom])
+					$dom.trigger("onOpen",[$dom]);
 					
 					if(success&&$.isFunction(success)){
 						success.call(null,data)

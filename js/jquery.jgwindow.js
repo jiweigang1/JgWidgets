@@ -184,7 +184,7 @@ $.widget( "jgWidgets.jgWindow", {
 				if(this._$contentContainer.data("jgScrollbar")){
 					this._$contentContainer.jgScrollbar("update");
 				}else{
-					this._$contentContainer.addClass("scroll").jgScrollbar({wheelSpeed:15,dragEnable:self.options.jgscrollDragEnable});
+					this._$contentContainer.addClass("scroll").jgScrollbar({dragEnable:self.options.jgscrollDragEnable});
 					this._$contentContainer.on("mouseenter",function(){
 						self._$contentContainer.jgScrollbar("update");
 					})
@@ -262,7 +262,17 @@ $.widget( "jgWidgets.jgWindow", {
 				this._$toolMin.on("click",function(){
 					self.minSize();
 				});
-				
+				$(window).resize(function(){
+					if(self._maxTimeout){
+						clearTimeout(self._maxTimeout);
+					}
+					self._maxTimeout = setTimeout(function(){
+						if(self._$toolMax.hasClass("alternate")){
+							self._maxSize();
+						}
+						self._maxTimeout = null;
+					},20);
+				});
 				
 				
 				
@@ -425,9 +435,15 @@ $.widget( "jgWidgets.jgWindow", {
 			return parseInt(this.element.css("z-index"));
 		}
 	},
-	maxSize:function(fn){ 
+	maxSize:function(fn){
 		var self =  this;
-		this.element.data("oldSize",{left:this._$window.css("left"),top:this._$window.css("top"),width:this._$window.css("width"),height:this._$window.css("height")});
+		this._maxSize({left:this._$window.css("left"),top:this._$window.css("top"),width:this._$window.css("width"),height:this._$window.css("height")},fn);
+	},
+	_maxSize:function(oldSize,fn){
+		var self =  this;
+		if(oldSize){
+			this.element.data("oldSize",oldSize);
+		}
 		var width =  parseInt( this._$window.parent().outerWidth() , 10 ) - 10 + 'px',
             height = parseInt( this._$window.parent().outerHeight() , 10 ) - 10 + 'px';
 		var wsT = $( window ).scrollTop(),
@@ -445,9 +461,6 @@ $.widget( "jgWidgets.jgWindow", {
 			if(self.options.draggable){
 				self.element.draggable("disable")
 			}
-			
-			
-			
 			if(fn){
 				fn.call(self);
 			}

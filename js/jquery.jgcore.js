@@ -116,6 +116,7 @@
 	
 ////////////////////////////////////
 $.JgWidgets = {
+		options:{},
 		g_before:1,
 		g_after:2,
 		
@@ -140,29 +141,50 @@ $.JgWidgets = {
 					return true;
 				}
 				if($.isFunction(v.fn)){
-					v.fn.call(null,$content);
+					//捕获异常，防止插件出现错误
+					try{
+					   v.fn.call(null,$content);
+					}catch(e){
+					   if(window.console){
+						  console.log(e.message);
+					   }
+					}
 				}
 			});
 		},
-		init:function(){
+		init:function(options){
+			if(options){
+			 this.options = options;
+			}
 			this._initPlugins();
 			this._initContent(document);
-			
+			this._initLogin();
 		},
 		_initPlugins:function(){
 			if(this._init){
 				return;
 			}
-			/**
-			$.each(this._plugins,function(k,v){
-				if(typeof v =="object"){
-					if(v.init&&$.isFunction(v.init)){
-						v.init();
-					}
-				}
-			});
-			**/
 			this._init = true;
+		},
+		//处理全局登陆
+		_initLogin:function(){
+		  var loginUrl = this.options.loginUrl;
+		  if(!loginUrl){
+			return false;
+		  }
+		  
+		  $(document).ajaxSuccess(function(event, xhr, settings) {
+			 var result;
+			 try{
+			    result = $.parseJSON(xhr.responseText);
+			 }catch(e){
+			 }
+			 if(result&&result.status==301){
+				window.location.href=loginUrl;
+			 }
+			 
+		  });
+		  
 		}
 	};
 	
