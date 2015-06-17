@@ -1,7 +1,12 @@
 ﻿<div class="panel-content-wrapper">
+
+	<div class="text-content" >
+		这种注册事件的方式是写在标签上的
+	</div>
+
 	<input  class="plate-button" value="打开黑色" target="#test_plate" type="button" pid="black"  >
 	<input  class="plate-button" value="返回"     target="#test_plate" type="button" action="close" >
-	<div  id="test_plate" class="plate" style="width:500px" onOpen="onOpen" >
+	<div  id="test_plate" class="plate" style="width:500px" onOpen="onOpen" onClose="onClose" >
 		<div pid="red" style="background-color:red;height:200px" >
 			这是红色的
 		</div>
@@ -24,4 +29,9 @@
 function onOpen($content){
 	$.jgAlert("打开的plate的pid为"+$content.attr("pid"));
 }
+
+function onClose($content){
+	$.jgAlert("关闭的plate的pid为"+$content.attr("pid"));
+}
+
 </script>

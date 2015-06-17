@@ -516,8 +516,13 @@
 			_resetMap:function(){
 				this._settings.mapGroup.data("valueLable",null);
 				this._settings.mapGroup.attr({"fill":"#F7F7F7"});
-				this._settings.lstartText.attr("text","");
-				this._settings.lendText.attr("text","");
+				if(this._settings.lstartText){
+					this._settings.lstartText.attr("text","");
+				}
+				if(this._settings.lendText){
+					this._settings.lendText.attr("text","");	
+				}
+				
 				if(this._settings.$aggregateValue){
 					this._settings.$aggregateValue.text("");
 				}

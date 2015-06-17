@@ -172,10 +172,18 @@ $.JgWidgets = {
 		  if(!loginUrl){
 			return false;
 		  }
+<<<<<<< HEAD
 		  $(document).ajaxSuccess(function(event, xhr, settings) {
 			 var result;
 			 try{
 			     result =  $.parseJSON(xhr.responseText);
+=======
+		  
+		  $(document).ajaxSuccess(function(event, xhr, settings) {
+			 var result;
+			 try{
+			    result = $.parseJSON(xhr.responseText);
+>>>>>>> 055ddc687b72048567f2d9d94947b927ad1c61d6
 			 }catch(e){
 			 }
 			 if(result&&result.status==301){
