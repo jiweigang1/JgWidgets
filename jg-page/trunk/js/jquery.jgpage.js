@@ -133,18 +133,24 @@
 				
 				
 		},
-		_addBackButton:function($page){
+		_addBackButton:function($page,reloadOnBack){
 			if(this._settings.historyPage.length>0){
-				$page.append('<div class="jg-page-back-button">返回</div>');
+				var r = "";
+				if(reloadOnBack){
+					r = 'reload="true"';
+				}
+				$page.append('<div class="jg-page-back-button" '+r+' >返回</div>');
 			}
 		},
-        openPage: function (url,params,clearCache,direction,animation,pageNo) {
+        openPage: function (url,params,clearCache,direction,animation,pageNo,reloadOnBack) {
 			if(arguments.length==1&&typeof arguments[0]==="object" ){
 				params		= arguments[0].params;
 				clearCache	= arguments[0].clearCache;
 				direction	= arguments[0].direction;
 				animation	= arguments[0].animation;
 				pageNo		= arguments[0].pageNo;
+				//返回时刷新，控制在默认返回按钮上
+				reloadOnBack= arguments[0].reloadOnBack;
 				url 		= arguments[0].url;
 			}
 		
@@ -205,10 +211,6 @@
 							if(clearCache){
 								self._clearCache();
 							}
-							if(self.options.onOpen) {
-                                self.options.onOpen.call(null, $page, this);
-                            }
-                            $el.trigger("onOpen", [$page]);
 							if($.JgWidgets){
 								try{
 									$.JgWidgets._initContent($page,$.JgWidgets.g_after);
@@ -216,6 +218,27 @@
 									if(console){
 										console.log(e);
 									}
+								}
+							}
+							
+							if(self.options.autoShowBackButton){
+								self._addBackButton($page,reloadOnBack);
+							}
+							
+							if(self.options.onOpen) {
+								try{
+									self.options.onOpen.call(null, $page, this);
+								}catch(e){
+									if(console){
+										console.log(e);
+									}
+								}
+                            }
+                            try{
+								$page.trigger("onOpen",[$page]);
+							}catch(e){
+								if(console){
+									console.log(e);
 								}
 							}
 							try{
@@ -226,18 +249,10 @@
 								}
 							}
 							
-							try{
-								$page.trigger("onOpen",[$page]);
-							}catch(e){
-								if(console){
-									console.log(e);
-								}
-							}
+							
 							self._settings.activePage = $page;
 							self._settings.waitting   = false;
-							if(self.options.autoShowBackButton){
-								self._addBackButton($page);
-							}
+							
 						},animation);
 						
 			});
@@ -286,6 +301,12 @@
 		},
 		
         goBack: function (reload,remove) {
+			if(this._settings.waitting){
+				return;
+			}else{
+				this._settings.waitting = true;
+			}
+		
 			if(arguments.length==1&&typeof arguments[0]==="object" ){
 				reload		= arguments[0].reload;
 				remove 		= arguments[0].remove;
@@ -345,7 +366,7 @@
 							if(remove){
 								self._settings.activePage.remove();
 							}
-							
+							self._settings.waitting   = false;
 							self._settings.activePage = $oldPage;
 					});
 				});
@@ -356,6 +377,7 @@
 								self._settings.activePage.remove();
 							}
 							self._settings.activePage = $oldPage;
+							self._settings.waitting   = false;
 				});
 			}
 			
@@ -655,6 +677,7 @@
 					params.push($this.attr("direction"));
 					params.push($this.attr("animation"));
 					params.push($this.attr("pageNo"));
+					params.push($this.attr("reloadOnBack"));
 					
 				}else if(action=="reload"){
 					
