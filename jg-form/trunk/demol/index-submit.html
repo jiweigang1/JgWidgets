@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+        <link href="../css/jquery.jgform.css" rel="stylesheet" media="screen" />
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		 <script src="../../../lib/jquery.validate.js"></script>
+		<script src="../../../jquery-ui/jquery.ui.widget.js"></script>
+		<script src="../js/jquery.jgform.js"></script>
+        <script>
+			var index = 9;
+			$(function(){
+				$(".jgForm").jgForm({onSuceess:function($el,data){
+					alert(data+"提交了");
+				}});
+				$("#add").on("click",function(){
+					index++;
+					$(".jgForm").append('<input name="'+index+'"  type="text" data-rule-submit="true"  errRel="'+index+'-error"   value="222"    ><div id="'+index+'-error"></div>');
+				})
+			});
+			
+			
+		</script>
+    </head>
+    <body>
+		<input id="add" value="add" type="button" >
+    	<form class="jgForm" action="1" method="post" >
+					
+					
+					<input name="8"  type="text" data-rule-submit="true"  errRel="8-error"  action="321" value="222"    >
+					<div id="8-error"></div>
+					
+					<input name="9"  type="text" data-rule-submit="true"  errRel="9-error"   value="222"    >
+					<div id="9-error"></div>
+					
+					<input type="submit" value="提交">
+					
+		</form>
+    </body>
+</html>

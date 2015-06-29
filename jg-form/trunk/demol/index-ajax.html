@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>jg-table</title>
+        <link href="../css/jquery.jgform.css" rel="stylesheet" media="screen" />
+        <script src="../../../lib/jquery-1.10.2.js"></script>
+		 <script src="../../../lib/jquery.validate.js"></script>
+		<script src="../../../jquery-ui/jquery.ui.widget.js"></script>
+		<script src="../js/jquery.jgform.js"></script>
+        <script>
+			$(function(){
+				$(".jgForm").jgForm({onSuccess:function($el,data){
+					alert(data+"提交了");
+				}});
+			});
+			
+			
+		</script>
+    </head>
+    <body>
+    	<form class="jgForm" action="1" method="post" >
+					
+					
+					Ajax<input name="5"  ajax  action="ajax" value="222"  data-msg-ajax="用户名重复2"  >
+					<div id="5-error">1</div>
+					
+					
+					
+					<input name="6" id="6"  type="ajax"  action="ajax" value="222"    >
+					<div id="6-error">1</div>
+					
+					
+					<input type="submit" value="提交">
+					
+		</form>
+    </body>
+</html>
