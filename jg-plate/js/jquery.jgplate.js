@@ -114,7 +114,7 @@
 			 this.element.height(Math.max(h1,h2));
  		  }
 		},
-		close:function(){
+		close:function(onComplete){
 			var self = this;
 			 var $plate = this._getCurrentActivePlate();
 				if($plate.length==0){
@@ -142,7 +142,14 @@
 						self.element.css("height","auto");
 					 }
 					 try{
-						self._fireEvent("onClose",[$plate.attr("pid"),$plate])
+						self._fireEvent("onClose",[$plate])
+					 }catch(e){
+					 
+					 }
+					 try{
+						if(onComplete&&$.isFunction(onComplete)){
+							onComplete.call($plate,$plate);
+						}
 					 }catch(e){
 					 
 					 }
