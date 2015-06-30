@@ -350,10 +350,19 @@
 			if(reload){
             	var pageData = $oldPage.data("pageData");
 				this._ajaxLoad($oldPage,pageData.url,pageData.params,function(){
+					if($.JgWidgets){
+							try{
+								$.JgWidgets._initContent($oldPage,$.JgWidgets.g_before);
+							}catch(e){
+								if(console){
+									console.log(e);
+								}
+							}
+					}
 					self._toggle($oldPage,self._settings.activePage,"right",function(){
 							if($.JgWidgets){
 								try{
-									$.JgWidgets._initContent($oldPage);
+									$.JgWidgets._initContent($oldPage,$.JgWidgets.g_after);
 								}catch(e){
 									if(console){
 										console.log(e);

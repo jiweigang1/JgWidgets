@@ -320,27 +320,29 @@
 				return true;
 			},
 			
-			_creatLegend:function(){
+			_creatLegend:function(lstartText,lendText){
 				if(!this._supportCreatLegend()){
 					return;
 				}
 				this._settings.legendGroup 	= this._settings.paper.set();
-				var lstart  		= " "
-				var lend			= " "
-				var legendOffSetX	= 20;
-				var legendOffSetY	= 5 ; 				
+				var lstart  		= lstartText||" "
+				var lend			= lendText||" "
+				var legendOffSetX	= 0;
+				var legendOffSetY	= 5 ; 
+				var	lstartText = this._settings.lpaper.text(legendOffSetX,legendOffSetY+8,lstart).attr({"font-size":12,"text-anchor":"start"});	
+				    legendOffSetX   =  lstartText.getBBox().width+2;
+								
 				var lwidth  = 12;
 				var lheight = 12;
 				
 				
 				for(var i=0;i<this._settings.map.legendColors.length;i++){
-					 this._settings.legendGroup.push(this._settings.lpaper.rect( legendOffSetX + i*(lwidth+4)+15  ,legendOffSetY,lwidth,lheight).attr(  {"fill":this._settings.map.legendColors[i],"stroke-width":0  } )  );
+					 this._settings.legendGroup.push(this._settings.lpaper.rect( legendOffSetX + i*(lwidth+4)+2  ,legendOffSetY,lwidth,lheight).attr(  {"fill":this._settings.map.legendColors[i],"stroke-width":0  } )  );
 				}
 					
-				var	lstartText = this._settings.lpaper.text(legendOffSetX,legendOffSetY+8,lstart).attr("font-size",12);	
-				var	lendText   = this._settings.lpaper.text(legendOffSetX+(this._settings.map.legendColors.length+1)*(lwidth+4)+10,legendOffSetY+8,lend).attr("font-size",12);
-				this._settings.lstartText = 	lstartText;
-				this._settings.lendText	 = 	lendText;
+				var	lendText   = this._settings.lpaper.text(legendOffSetX+(this._settings.map.legendColors.length)*(lwidth+4)+2,legendOffSetY+8,lend).attr({"font-size":12,"text-anchor":"start"});
+				this._settings.lstartText = lstartText;
+				this._settings.lendText	  = lendText;
 				this._settings.legendGroup.push(lstartText,lendText);
 			},
 			
@@ -348,12 +350,22 @@
 				if(!this._supportCreatLegend()){
 					return;
 				}
+				if(this._settings.legendGroup){
+					this._settings.legendGroup.remove();
+					this._settings.legendGroup=this._settings.paper.set();
+				}
+				
 				if(this._settings.lstartText){
-					this._settings.lstartText.attr("text",lstartText);
+					this._settings.lstartText.remove();
+					this._settings.lstartText=null;
 				}
 				if(this._settings.lendText){
-					this._settings.lendText.attr("text",lendText);
+					this._settings.lendText.remove();
+					this._settings.lstartText=null;
 				}
+				
+				this._creatLegend(lstartText,lendText);
+				
 			},
 	
 			_creatLogo:function(){
