@@ -32,6 +32,9 @@
 			this._initHtml();
 			this._initEvent();
 		},
+		destroy:function(){
+			$(window).off("resize."+this._settings.UUID);
+		},
 		_createTid:function(){
 			return "__tab"+ this._settings.tabIdIndex++
 		},
@@ -177,7 +180,10 @@
 				self._closeTab($(this).closest("li"));
 				e.stopPropagation();
 				return false;
-			})
+			});
+			$(window).on("resize."+this._settings.UUID,function(){
+				self._fixHeadScroll();
+			});
 		},
 		_closeTab:function($li){
 			var $tsl = $li.prev("li");
@@ -395,8 +401,11 @@
 			var hwidth = this.$header.width(); 		
 			if(this.options.scrollable&&bwidth<hwidth){
 				this.$scrollBarL.show();
-				this.$scrollBarR.css("left",bwidth-10).show();
-			}			
+				this.$scrollBarR.css("right",0).show();
+			}else{
+				this.$scrollBarL.hide();
+				this.$scrollBarR.hide();
+			}
 		},
 		_fixActiveHead:function($ali){
 			var bwidth = this.element.width();
@@ -485,7 +494,7 @@
 				getForm:function(group){
 					for(var i=0;i<this.forms.length;i++){
 						if(this.forms[i].group===group){
-							return this.this.forms[i];
+							return this.forms[i];
 						}
 					}
 				},
