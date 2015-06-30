@@ -13,7 +13,14 @@
 		
 		
 		$.validator.methods.ajax = function(value, element, param) {
-			var validator = param.validator;
+			var $form = $(element).closest("form");
+			if($form.length==0){
+			  return false;
+			}
+			var validator = $form.data("validator");
+			if(!validator){
+			  return false;
+			}
 			var previous = validator.previousValue(element);
 			if ( previous.old === value ) {
 				return previous.valid;
@@ -65,8 +72,13 @@
 		
 		//验证表单是否提交过
 		$.validator.methods.submit = function(value, element, param){
-			//alert(param.options.ignoreSubmit);
-			if(param.options.ignoreSubmit){
+			var $from 	= $(element).closest("form");
+			var wg = $from.data("jgWidgets-jgForm")
+			if(!wg){
+			  return false;
+			}
+			var options = wg.options;
+			if(options.ignoreSubmit){
 				return true;
 			}
 			return value === $(element).data("oldValue");
@@ -121,7 +133,7 @@
 			var complete = getFunction($el,"onComplete");
 			if(complete){
 				this.options.onComplete = complete;	
-			}
+			}								
 			var success = getFunction($el,"onSuccess");
 			if(success){
 				this.options.onSuccess = success;	
@@ -149,9 +161,9 @@
 				}
 			});
 			$el.on("submit",function(){
-				self.options.ignoreSubmit = true;
+				self.options.ignoreSubmit = true;	
 				var v = self.element.valid();
-					self.options.ignoreSubmit = false;
+				self.options.ignoreSubmit = false;
 				if(!v){
 					$(":password",this.element).val("");
 					self._validSubmit();
@@ -199,33 +211,10 @@
 					}
 			});
 			
-			this.element.find("[ajax],[data-rule-ajax='true']").each(function(){
-				var $input = $(this);
-					$input.rules("add", {
-						ajax:{
-							  validator : validator
-							}
-					});
-			});
-			
-			this.element.find("[phone],[data-rule-phone='true']").each(function(){
-				var $input = $(this);
-					$input.rules("add", {
-						phone:{
-							
-							}
-					});
-			});
 			
 			
-			this.element.find("[submit] ,[data-rule-submit='true'] ").each(function(){
-				var $input = $(this);
-					$input.rules("add", {
-						submit:{
-							options:self.options
-						}
-					});
-			}).off("focusin focusout keyup").on("focusin focusout keyup",function(event){
+			
+			this.element.off("focusin.submit focusout.submit keyup.submit").on("focusin.submit focusout.submit keyup.submit","[submit],[data-rule-submit='true'],[type='submit']",function(event){
 				validator.element(this);
 				event.stopPropagation();
 				return false;
