@@ -150,7 +150,7 @@
 				var timeOut =  setTimeout(function(){
 						hide.call();
 					},wait);
-				$html.data("timeOut",timeout)	
+				$html.data("timeOut",timeOut)	
 			}
 			
 			$html.on("click",function(){
