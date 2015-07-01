@@ -1,0 +1,48 @@
+﻿ <div class="panel-content-wrapper"  >
+	<div class="text-content">
+		使用自定义的验证的方法，实现验证重复的Input	
+	</div>
+	<form action="" class="form" >
+	 <div class="panel-form-content single">
+	 
+	  <p>
+	   <span class="label">参数1:</span>
+	   <input class="text"  name="name"	errRel="name1Err"  customFu="validate" data-rule-custom="true" group data-msg-custom="有重复字段！" />
+	   <span class="tips" id="name1Err" ></span>	  
+	  </p>
+	  
+	   <p>
+	   <span class="label">参数2:</span>
+	   <input class="text"  name="name2"	errRel="name2Err"  customFu="validate" data-rule-custom="true" group   data-msg-custom="有重复字段！" />
+	   <span class="tips" id="name2Err" ></span>	  
+	  </p>
+	  
+	  <p>
+	   <span class="label">参数3:</span>
+	   <input class="text"  name="name3"	errRel="name3Err" customFu="validate" data-rule-custom="true"  group  data-msg-custom="有重复字段！" />
+	   <span class="tips" id="name3Err" ></span>	  
+	  </p>
+       
+	   <div class="clear"></div>
+       <div class="divider"></div>
+	   <input type="submit" value="提交申请" class="button"/>
+	 </div>	
+	</form>
+</div>
+<script>
+ $.jgInit(function($content){
+	window.validate = function($element,$form){
+		var value = $element.val();
+		console.log(value)
+		var $es = $form.find("[group]").not($element);
+		var ok = true;
+			$es.each(function(){
+				if($(this).val()==value){
+					ok = false;
+					return;
+				}
+			});
+		return ok;
+	}
+ });
+</script>
