@@ -66,7 +66,10 @@
 			$.extend($.jgWidgets.jgWindow.prototype.options,{ajaxType:"get"});
 			$.extend($.jgWidgets.jgHchartHelper.prototype.options,{ajaxType:"get"});
 			$.extend($.jgWidgets.jgSelect.prototype.options,{ajaxType:"get"});
-			$.JgWidgets.init();
+			$.extend($.jgWidgets.ajaxButton.prototype.options,{ajaxType:"get"});
+			$.JgWidgets.init({
+				loginUrl:"http://www.baidu.com"
+			});
 		});  
 	</script>
 	
