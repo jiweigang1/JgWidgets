@@ -196,6 +196,15 @@
 					    if (self._settings.activePage) {
                             self._addHistory(self._settings.activePage);
                         }
+						if($.event_init){
+							try{
+								$page.trigger($.event_init,[$page]);
+							}catch(e){
+								if(console){
+									console.log(e);
+								}
+							}
+						}
 						$page.css("opacity",0).show();
 						if($.JgWidgets){
 							try{

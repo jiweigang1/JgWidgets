@@ -1,5 +1,54 @@
 ﻿(function($){
-
+	 
+	function getValue($el,name,defaultValue,type){
+		if(!type){
+			type = "string";
+		}
+		var value = $el.attr(name);
+		if(!value){
+			return defaultValue;
+		}else{
+			if(type=="string"){
+				return value;
+			}else if(type=="boolean"){
+				if(value=="true"){
+					return true;
+				}else{
+					return false;
+				}
+			}else if(type=="function"){
+				if($.isFunction(value)){
+					return value;
+				}else{
+					var v;
+					try{
+						v = eval(value)
+					}catch(e){}
+					if($.isFunction(v)){
+						return v;
+					}else{
+						return defaultValue;
+					}
+				}
+			}else if(type=="object"){
+					var v;
+					try{
+						v = $.parseJSON(value)
+					}catch(e){
+						if(console){
+							console.log(e+"\n"+value);
+						}
+					}
+					if(v){
+						return v;
+					}else{
+						return defaultValue;
+					}
+			}
+		}
+		return defaultValue;
+	}	
+	
 	(function(){
 		$.validator.methods.phone = function(value, element, param) {
 			if($.trim(value)==""||!value){
@@ -86,6 +135,22 @@
 		
 		$.validator.messages.submit = "未提交！";
 		
+		$.validator.methods.custom = function(value, element, param){
+			var $element = $(element);
+			var f = getValue($element,"customFu",null,"function");
+			if(!f){
+				return true;
+			}
+			var r = false;
+			try{
+				r = f.call(window,$element,$element.closest("form"));
+			}catch(e){
+				if(console){
+					console.log(e);
+				}
+			}
+			return r;
+		}
 		
 	})();
 	
@@ -270,6 +335,9 @@
 		}
 		return;
 	}
+	
+	
+	
 })(jQuery);
 
 (function($){
