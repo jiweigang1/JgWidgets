@@ -778,7 +778,8 @@
 				var boxx	= te.getBBox();
 				var x = se.left-10;
 				if(i>0){
-					x = this.highChart.options.chart.width-x-10;
+					//x = this.highChart.options.chart.width-x-10;
+					x = this.highChart.options.chart.width-boxx.width-10;
 				}
 				if(x<4||isNaN(x)){
 					x = 4;
