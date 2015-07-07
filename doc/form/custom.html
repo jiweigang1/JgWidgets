@@ -2,6 +2,7 @@
 	<div class="text-content">
 		使用自定义的验证的方法，实现验证重复的Input	
 	</div>
+	<input class="addinput" value ="添加"  type="button">
 	<form action="" class="form" >
 	 <div class="panel-form-content single">
 	 
@@ -31,6 +32,18 @@
 </div>
 <script>
  $.jgInit(function($content){
+    var i=4;
+	$content.find(".addinput").on("click",function(){
+		i++;
+		$content.find(".panel-form-content").append('\
+			<p>\
+			   <span class="label">参数'+i+':</span>\
+			   <input class="text"  name="name'+i+'"	errRel="name'+i+'Err" customFu="validate" required  data-rule-submit="true"  data-rule-custom="true"  group  data-msg-custom="有重复字段！" />\
+			   <span class="tips" id="name'+i+'Err" ></span>\
+			</p>\
+		')
+	})
+ 
 	window.validate = function($element,$form){
 		var value = $element.val();
 		console.log(value)

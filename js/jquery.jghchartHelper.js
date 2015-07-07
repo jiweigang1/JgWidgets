@@ -18,6 +18,9 @@
 			global: {
 				useUTC: false
 		}});
+		Highcharts.Tick.prototype.handleOverflow = function(indxex,xy){
+			return true;
+		};
 	}
 	$.widget("jgWidgets.jgHchartHelper",{
 		options:{
@@ -540,6 +543,11 @@
 								}
 								
 						}
+					},
+					ticks:{
+						handleOverflow:function(index, xy){
+							return true;
+						}
 					}
 				}
 			});
@@ -709,7 +717,12 @@
 				unit = "";
 			}
 		}
-		this._settings.aggregateLable.attr("text","平均值:"+value+"("+unit+")");
+		unitText = "";
+		if(unit != undefined){
+			unitText = "("+unit+")"
+		}
+		
+		this._settings.aggregateLable.attr("text","平均值:"+value+unitText);
 		this._resetAggregateLablePosition();
 	},
 	_resetAggregateLablePosition:function(){
@@ -778,7 +791,8 @@
 				var boxx	= te.getBBox();
 				var x = se.left-10;
 				if(i>0){
-					x = this.highChart.options.chart.width-x-10;
+					//x = this.highChart.options.chart.width-x-10;
+					x = this.highChart.options.chart.width-boxx.width-10;
 				}
 				if(x<4||isNaN(x)){
 					x = 4;
