@@ -279,11 +279,7 @@
 			
 			
 			
-			this.element.off("focusin.submit focusout.submit keyup.submit").on("focusin.submit focusout.submit keyup.submit","[submit],[data-rule-submit='true'],[type='submit']",function(event){
-				validator.element(this);
-				event.stopPropagation();
-				return false;
-			});
+			
 			this._resetSubmitRule();
 			
 		},
