@@ -161,7 +161,7 @@
 			action:null,
 			method:"post",
 			onComplete:null,
-			onSuceess:null,
+			onSuccess:null,
 			onError:null,
 			findErrHolder:null,
 			validate:true,

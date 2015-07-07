@@ -18,6 +18,9 @@
 			global: {
 				useUTC: false
 		}});
+		Highcharts.Tick.prototype.handleOverflow = function(indxex,xy){
+			return true;
+		};
 	}
 	$.widget("jgWidgets.jgHchartHelper",{
 		options:{
@@ -540,6 +543,11 @@
 								}
 								
 						}
+					},
+					ticks:{
+						handleOverflow:function(index, xy){
+							return true;
+						}
 					}
 				}
 			});
@@ -709,7 +717,12 @@
 				unit = "";
 			}
 		}
-		this._settings.aggregateLable.attr("text","平均值:"+value+"("+unit+")");
+		unitText = "";
+		if(unit != undefined){
+			unitText = "("+unit+")"
+		}
+		
+		this._settings.aggregateLable.attr("text","平均值:"+value+unitText);
 		this._resetAggregateLablePosition();
 	},
 	_resetAggregateLablePosition:function(){
