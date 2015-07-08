@@ -16,7 +16,8 @@
 			westSize:200,
 			southSize:200,
 			eastSize:200,
-			enableKey:true
+			enableKey:true,
+			enableResizeEvent:true
 		},
 		_create:function(){
 			this.element.addClass("jg-layout-container");
@@ -155,11 +156,17 @@
 			for(var i=0; i<parts.length;i++){
 				this.close(parts[i]);
 			}
+			if(this.options.enableResizeEvent){
+				$(window).trigger("resize");
+			}
 		},
 		exitFullScreen:function(){
 			var parts = ["north","west","south","east"];
 			for(var i=0; i<parts.length;i++){
 				this.open(parts[i]);
+			}
+			if(this.options.enableResizeEvent){
+				$(window).trigger("resize");
 			}
 		}
 		
