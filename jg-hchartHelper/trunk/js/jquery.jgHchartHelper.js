@@ -356,6 +356,7 @@
 							useUTC:false
 					},
 					chart	:{
+						reflow:false,
 						renderTo:$c[0],
 						borderWidth:0,
 						plotBorderWidth:0
