@@ -142,16 +142,20 @@
 						self.element.css("height","auto");
 					 }
 					 try{
-						self._fireEvent("onClose",[$plate])
+						self._fireEvent("onClose",[$plate,$preplate])
 					 }catch(e){
-					 
+						if(console){
+							console.log(e.message)
+						}
 					 }
 					 try{
 						if(onComplete&&$.isFunction(onComplete)){
-							onComplete.call($plate,$plate);
+							onComplete.call($plate,$plate,$preplate);
 						}
 					 }catch(e){
-					 
+						if(console){
+							console.log(e.message)
+						}
 					 }
 				});
 		}
