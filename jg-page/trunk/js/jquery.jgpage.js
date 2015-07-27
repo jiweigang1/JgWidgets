@@ -296,7 +296,7 @@
 							$.JgWidgets._initContent($oldPage);
 						}catch(e){
 							if(console){
-									console.log(e);
+							   console.log(e);
 							}
 						}
 					}
@@ -386,6 +386,9 @@
 							}
 							self._settings.waitting   = false;
 							self._settings.activePage = $oldPage;
+							if(self.options.autoShowBackButton){
+								self._addBackButton($oldPage);
+							}
 					});
 				});
             }else{
