@@ -164,6 +164,7 @@
 					url:url,
 					type:self.options.ajaxType,
 					cache:false,
+					async: false,
 					data:params||{},
 				}).done(function(data){
 					if(self.options.dataFilter){
