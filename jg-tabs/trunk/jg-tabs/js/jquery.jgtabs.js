@@ -149,7 +149,11 @@
 							data.init=false;
 						if($li.hasClass("active")){
 							$li.removeClass("active");
-							$li.data("content").remove();
+							var $content = $li.data("content"); 
+							if($content&&$content.length>0){
+								$content.remove();
+							}
+							
 							self._showTab($li);
 						}
 					})
@@ -447,7 +451,10 @@
 			}else{
 				var $li = this._getHeader(tabId);
 				if($li&&$li.length>0){
-					$li.data("content").remove();
+					var $content = $li.data("content");
+					if($content&&$content.length){
+						$li.data("content").remove();
+					}
 					$li.find("span:first").html(name);
 					$li.removeClass("active");
 					$li.data("data",{ajax:true,init:false,url:url});
