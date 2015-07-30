@@ -182,7 +182,7 @@
             }
 	
 			this.element.append($page);
-            var pageData = {url: url, params: params, pageNo: pageNo};
+            var pageData = {url: url, params: params, pageNo: pageNo,backButton:{reloadOnBack:reloadOnBack}};
             $page.data("pageData",pageData);	
             var $el = this.element;
             if (self.options.beforeOpen) {
@@ -387,7 +387,7 @@
 							self._settings.waitting   = false;
 							self._settings.activePage = $oldPage;
 							if(self.options.autoShowBackButton){
-								self._addBackButton($oldPage);
+								self._addBackButton($oldPage,pageData.button.reloadOnBack);
 							}
 					});
 				});
