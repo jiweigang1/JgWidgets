@@ -42,17 +42,19 @@
 			if(this.options.autoLoad){
 				this._loadOptions({},function(){
 					self._initHtml();
+					var $selected	= this.element.find("option:selected");
 					if(this.options.onComplet){
-						this.options.onComplet.call(this.element,this.element.val());
+						this.options.onComplet.call(this.element,this.element.val(),$selected.clone());
 					}
-					this.element.trigger("onComplet");
+					this.element.trigger("onComplet",[this.element,this.element.val(),$selected.clone()]);
 				});
 			}else{
 				self._initHtml();
+				var $selected	= this.element.find("option:selected");
 				if(this.options.onComplet){
-					this.options.onComplet.call(this.element,this.element.val());
+					this.options.onComplet.call(this.element,this.element.val(),$selected.clone());
 				}
-				this.element.trigger("onComplet");
+				this.element.trigger("onComplet",[this.element,this.element.val(),$selected.clone()]);
 			}
 			
 			
