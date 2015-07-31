@@ -303,7 +303,7 @@
 					$oldPage.trigger("onload",[$oldPage]);
 					$oldPage.trigger("onOpen",[$oldPage]);
 					if(self.options.autoShowBackButton){
-						self._addBackButton($oldPage);
+						self._addBackButton($oldPage,pageData.backButton.reloadOnBack);
 					}
 			},true);
 			
@@ -387,7 +387,7 @@
 							self._settings.waitting   = false;
 							self._settings.activePage = $oldPage;
 							if(self.options.autoShowBackButton){
-								self._addBackButton($oldPage,pageData.button.reloadOnBack);
+								self._addBackButton($oldPage,pageData.backButton.reloadOnBack);
 							}
 					});
 				});
