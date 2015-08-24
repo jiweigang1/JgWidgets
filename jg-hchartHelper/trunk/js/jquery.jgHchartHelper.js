@@ -731,7 +731,7 @@
 			return;
 		}
 		var box	  = this._settings.aggregateLable.getBBox();
-		var _x    = this.highChart.plotBox.width- (box.width==0?30:box.width);
+		var _x    = this.highChart.plotBox.width- (box.width==0?130:box.width);
 		if(!isNaN(_x)){
 			this._settings.aggregateLable.attr({x:_x,y:14});
 		}
