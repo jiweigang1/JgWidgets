@@ -15,9 +15,9 @@
 			 
 			 _initOptions:function(){
 				this.options.timePeriodId = getValue(this.element,"timePeriodId",this.option.timePeriodId);
-				this.options.endTimeId 	  = getValue(this.element,"endTimeId",this.option.endTimeId);
-				this.options.timeZoneId   = getValue(this.element,"timeZoneId",this.option.timeZoneId);
-				this.options.timeTypeId   = getValue(this.element,"timeTypeId",this.option.timeTypeId);
+				this.options.endTimeId = getValue(this.element,"endTimeId",this.option.endTimeId);
+				this.options.timeZoneId = getValue(this.element,"timeZoneId",this.option.timeZoneId);
+				this.options.timeTypeId = getValue(this.element,"timeTypeId",this.option.timeTypeId);
 			 },
 			 _initHtml:function(){
 				this.element.append('<span>最近</span><span class="time-period-holder"></span><span class="end-time-holder"></span><span class="data_icon_down" ></span>');
@@ -27,44 +27,40 @@
 										<td>\
 											<div class="time_font_w">\
 												<input name="timeType" type="hidden">\
-												<span class="time_font01">最近</span>\
+												<span class="time_font01">截止到现在</span>\
 												<div id="time_type" class="time_button01"></div>\
-												<span class="time_font02">指定时间</span>\
+												<span class="time_font02">自定义时间</span>\
 											</div>\
 											<div id="time_close" class="time_selection_close" title="关闭"></div>\
 										</td>\
 									</tr>\
-									<tr class="r-time-panel">\
+									<tr>\
 										<td style="height: 50px" align="center">\
 											<div class="rumslider" style="width: 90%;float: none;position: relative;">\
 												<select id="timeForm_timePeriod" class="time-period" style="display: none;">\
-													<option value="30">30M</option>\
-													<option value="60">1H</option>\
-													<option value="360">6H</option>\
-													<option value="720">12H</option>\
-													<option value="1440">&nbsp;&nbsp;1D</option>\
-													<option value="4320">3D</option>\
-													<option value="10080">7D</option>\
-													<option value="20160">14D</option>\
-													<option value="43200">1M</option>\
-													<option value="86400">2M</option>\
-													<option value="129600">3M</option>\
+													<option value="30">30分</option>\
+													<option value="60">1小时</option>\
+													<option value="360">6小时</option>\
+													<option value="720">12小时</option>\
+													<option value="1440">&nbsp;&nbsp;1天</option>\
+													<option value="4320">3天</option>\
+													<option value="10080">7天</option>\
+													<option value="43200">1月</option>\
+													<option value="86400">2月</option>\
+													<option value="129600">3月</option>\
 												</select>\
 											</div>\
 										</td>\
 									</tr>\
-									<tr class="a-time-panel">\
+									<tr>\
 										<td>\
-										  <table>\
-											<tr>\
-												<td><input id="timeForm_fromTime" type="text" readonly="readonly" class="end_time_input m_top10"></td>\
-												<td><input id="timeForm_endTime" type="text" readonly="readonly" class="end_time_input m_top10"></td>\
-											</tr>\
-											<tr>\
-												<td><div class="end_time_calendar rumdatepicker datapicker-button "></div></td>\
-												<td><div class="end_time_calendar rumdatepicker datapicker-button "></div></td>\
-											</tr>\
-										  </table>\
+											<div id="time_pick_panel" class="end_time" style="display: none">\
+												<div class="end_time_font1">截止时间</div>\
+												<div class="end_time_n">\
+													<input id="timeForm_endTime" type="text" readonly="readonly" class="end_time_input m_top10">\
+													<div class="end_time_calendar rumdatepicker datapicker-button "></div>\
+												</div>\
+											</div>\
 										</td>\
 									</tr>\
 									<tr>\
@@ -141,10 +137,7 @@
 				}
 				
 				this._$timePeriod 		= this._$panel.find(".time-period");
-				
 				this._$endTime 	  		= this._$panel.find("#timeForm_endTime");
-				this._$fromTime 	  	= this._$panel.find("#timeForm_fromTime");
-				
 				this._$timeType			= this._$panel.find('input[name="timeType"]');
 				
 				this._$datapickerButton = this._$panel.find(".datapicker-button");
@@ -152,11 +145,7 @@
 				this._$timeTypeButton	= this._$panel.find('#time_type');
 				this._$closeButton		= this._$panel.find('#time_close');
 				this._$okButton			= this._$panel.find('#time_ok');
-				
-				
-				
-				this._$rTimekPanel		= this._$panel.find(".r-time-panel");
-				this._$aTimekPanel		= this._$panel.find(".a-time-panel");
+				this._$timePickPanel	= this._$panel.find('#time_pick_panel');
 				
 				$("body").append(this._$panel);	
 			 },
@@ -194,18 +183,6 @@
 				});
 				
 				this._$endTime.datetimeEntry({
-					datetimeFormat: "Y-O-D H:M",
-					useMouseWheel: true,
-					spinnerImage:false
-				}).change(
-						function() {
-							var date = new Date(Date.parse($(this).val().replace(/-/g, "/")));
-							if (date && !isNaN(date)) {
-								self._$datapickerButton.datepicker("setDate", date);
-							}
-				});
-				
-				this._$fromTime.datetimeEntry({
 					datetimeFormat: "Y-O-D H:M",
 					useMouseWheel: true,
 					spinnerImage:false
@@ -330,19 +307,13 @@
 						if (self._$timeType.val() == "1") {
 							$(this).removeClass("time_button01");
 							$(this).addClass("time_button02");
-						
-							self._$aTimekPanel.hide();
-							self._$rTimekPanel.slideDown();
-						
+							self._$timePickPanel.slideDown();
 							self._$timeType.val(2);
 							self._$endTime.datetimeEntry("setDatetime",new Date());
 						} else if (self._$timeType.val() == "2") {
 							$(this).removeClass("time_button02");
 							$(this).addClass("time_button01");
-							
-							self._$aTimekPanel.hide();
-							self._$rTimekPanel.slideDown();
-							
+							self._$timePickPanel.slideUp();
 							self._$timeType.val(1);
 							self._$endTime.val("");
 						}
