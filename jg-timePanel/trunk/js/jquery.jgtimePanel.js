@@ -4,7 +4,8 @@
 				timePeriodId:null,
 				endTimeId	:null,
 				timeZoneId	:null,
-				timeTypeId	:null
+				timeTypeId	:null,
+				onChange	:null
 			 },
 			 _create:function(){
 				this._initOptions();
@@ -14,10 +15,12 @@
 			 },
 			 
 			 _initOptions:function(){
-				this.options.timePeriodId = getValue(this.element,"timePeriodId",this.option.timePeriodId);
-				this.options.endTimeId 	  = getValue(this.element,"endTimeId",this.option.endTimeId);
-				this.options.timeZoneId   = getValue(this.element,"timeZoneId",this.option.timeZoneId);
-				this.options.timeTypeId   = getValue(this.element,"timeTypeId",this.option.timeTypeId);
+				this.options.timePeriodId 	= getValue(this.element,"timePeriodId",		this.option.timePeriodId);
+				this.options.endTimeId 		= getValue(this.element,"endTimeId",		this.option.endTimeId);
+				this.options.timeZoneId 	= getValue(this.element,"timeZoneId",		this.option.timeZoneId);
+				this.options.timeTypeId 	= getValue(this.element,"timeTypeId",		this.option.timeTypeId);
+				this.options.onChange 		= getValue(this.element,"onChange",			this.option.onChange,"function");
+				
 			 },
 			 _initHtml:function(){
 				this.element.append('<span>最近</span><span class="time-period-holder"></span><span class="end-time-holder"></span><span class="data_icon_down" ></span>');
@@ -55,14 +58,14 @@
 									</tr>\
 									<tr class="a-time-panel">\
 										<td>\
-										  <table>\
+										  <table width="100%">\
 											<tr>\
 												<td><input id="timeForm_fromTime" type="text" readonly="readonly" class="end_time_input m_top10"></td>\
-												<td><input id="timeForm_endTime" type="text" readonly="readonly" class="end_time_input m_top10"></td>\
+												<td><input id="timeForm_endTime"  type="text"  readonly="readonly" class="end_time_input m_top10"></td>\
 											</tr>\
 											<tr>\
-												<td><div class="end_time_calendar rumdatepicker datapicker-button "></div></td>\
-												<td><div class="end_time_calendar rumdatepicker datapicker-button "></div></td>\
+												<td><div class="end_time_calendar rumdatepicker datapicker-button-from "></div></td>\
+												<td><div class="end_time_calendar rumdatepicker datapicker-button-end "></div></td>\
 											</tr>\
 										  </table>\
 										</td>\
@@ -161,13 +164,26 @@
 				
 				$("body").append(this._$panel);	
 			 },
-			 
+			 _setFromTime(date){
+				this._$fromTime.datetimeEntry("setDatetime" ,date);
+				this._$datapickerButtonFrom.datepicker("setDate",date);
+				this._setEndTime(date);
+			 },
+			 _setEndTime(date){
+				var 
+				this._$endTime.datetimeEntry("setDatetime" ,date);
+				this._$datapickerButtonEnd.datepicker("setDate",date);
+			 },
+			 _setMinEndTime(date){
+				this._$datapickerButtonEnd.datepicker("option","minDate",date);
+				this._$endTime.datetimeEntry('option', 'minDatetime',  date);
+			 },
 			 _initEvent:function(){
 				var self = this;
 				var time = {
 					timeType   : this._$timeTypeValue.val(),
 					timePeriod : this._$timePeriodValue.val(),
-					endTime    : this._$endTimeValue.val()
+					endTimeText: this._$endTimeValue.val()
 				};
 				if(!time.timeType){
 					time.timeType 	= 1;
@@ -178,11 +194,13 @@
 					this._$timePeriodValue.val(30);
 				}
 				
-				this._$panel.data("oldTime", time);
+				var  panelDate	= new PanelDate(time.timeType,time.timePeriod,time.endTimeText);
+				
+				this._$panel.data("oldTime", panelDate);
 				
 				this._$timeType.val(time.timeType);
 				this._$timePeriod.val(time.timePeriod);
-				this._$endTime.val(time.endTime);
+				this._$endTime.val(time.endTimeText);
 				
 				this._initShow()
 				this._$timePeriod.selectToUISlider({
@@ -197,13 +215,14 @@
 				this._$endTime.datetimeEntry({
 					datetimeFormat: "Y-O-D H:M",
 					useMouseWheel: true,
-					spinnerImage:false
+					spinnerImage:false,
+					maxDatetime:new Date()
 				}).change(
-						function() {
-							var date = new Date(Date.parse($(this).val().replace(/-/g, "/")));
-							if (date && !isNaN(date)) {
-								self._$datapickerButtonEnd.datepicker("setDate", date);
-							}
+					function() {
+						var date = new Date(Date.parse($(this).val().replace(/-/g, "/")));
+						if (date && !isNaN(date)) {
+							self._$datapickerButtonEnd.datepicker("setDate", date);
+						}
 				});
 				
 				this._$fromTime.datetimeEntry({
@@ -215,13 +234,33 @@
 							var date = new Date(Date.parse($(this).val().replace(/-/g, "/")));
 							if (date && !isNaN(date)) {
 								self._$datapickerButtonFrom.datepicker("setDate", date);
+								self._setMinEndTime(date);
 							}
 				});
 
-			this._$datapickerButton.datepicker(
+				
+			this._$datapickerButtonFrom.datepicker(
 					{
 						dateFormat : "yy-mm-dd",
 						onSelect : function(dateText) {
+							var e = self._$fromTime.val();
+							if (e.length > 0) {
+								var i = e.indexOf(" ");
+								self._$fromTime.val(dateText + e.substring(i, e.length));
+							} else {
+								self._$fromTime.val(dateText);
+							}
+							self._setMinEndTime(new Date(Date.parse(dateText.replace(/-/g, "/"))));
+						},
+						maxDate:new Date()
+					});
+						
+				
+			this._$datapickerButtonEnd.datepicker(
+					{
+						dateFormat : "yy-mm-dd",
+						onSelect : function(dateText) {
+							alert(1);
 							var e = self._$endTime.val();
 							if (e.length > 0) {
 								var i = e.indexOf(" ");
@@ -229,31 +268,34 @@
 							} else {
 								self._$endTime.val(dateText);
 							}
-						}
+						},
+						minDate:new Date(),
+						maxDate:new Date()
 					});
 					
 					
 			this.element.click(function() {
 				var offset = $(this).offset();
 				var time = self._$panel.data("oldTime");
+				
 				if (time.timeType == "1") {
 					self._$timeType.val(2);
 					self._$timeTypeButton.trigger("click");
 				} else if (time.timeType == "2") {
 					self._$timeType.val(1);
 					self._$timeTypeButton.trigger("click");
-					if (time.endTime && time.endTime.length > 0) {
-						self._$endTime.val(time.endTime);
-						var date = new Date(time.endTime.replace(/-/g,"/"));
-						if (date && !isNaN(date)) {
-							self._$datapickerButton.datepicker("setDate", date);
-						}
-					}
+					
+					self._setFromTime(time.getFromTime());
+					self._setEndTime(time.getEndTime());
+					
+
 				}
 				self._$timePeriod.val(time.timePeriod);
 				self._$panel.find("table").show();
 				self._$panel.css({
-					"border" : "#cccccc 1px solid"
+					"border" : "#cccccc 1px solid",
+					"z-index" : 2000
+						
 				});
                 if (self._$panel.is(":visible")) {
                     self._$panel.hide();
@@ -273,50 +315,22 @@
 				}).css("display","none");
 			});
 			self._$okButton.click(function() {
-						
-								var newTime = {
-									timeType 	: self._$timeType.val(),
-									timePeriod  : self._$timePeriod.val(),
-									endTime 	: self._$endTime.val()
-								};
+								var newTime = new PanelDate(self._$timeType.val(),self._$timePeriod.val(),self._$endTime.val());
 								var oldTime = self._$panel.data("oldTime");
 								var change = false;
-								if (oldTime.timeType != newTime.timeType
-										|| oldTime.timePeriod != newTime.timePeriod
-										|| oldTime.endTime != newTime.endTime) {
+								if (oldTime.equals(newTime)) {
 									change = true;
 								}
-								var type="3";
-								if((type==70 || type==71)){
-									var reportPeriod=3;
-									if(data){
-										reportPeriod=data.reportPeriod;
-									}
-									if(newTime.timeType==2 ){
-										var today=new Date(); // 获取今天时间
-										today.setDate(today.getDate() -reportPeriod); // 系统会自动转换
-										today.setHours(0);
-										today.setMinutes(0);
-										today.setSeconds(0);
-										today.setMilliseconds(0);
-										
-										var date_array=newTime.endTime.split(" ");
-										var str_array1=date_array[0].split("-");
-										var str_array2=date_array[1].split(":");
-										var choosedate=new Date(parseInt(str_array1[0]),parseInt(str_array1[1])-1,parseInt(str_array1[2]),parseInt(str_array2[0]),parseInt(str_array2[1]),0);
-										choosedate.setTime(choosedate.getTime()-newTime.timePeriod*60*1000);
-										if(choosedate.getTime()-today.getTime()<0){
-											alert("选择的日期超出范围");
-											return;
-										}
-									}
-								}
 								if (change) {
-									self._$timeType.val(newTime.timeType);
+									self._$timeTypeValue.val(newTime.timeType);
 									self._$timePeriodValue.val(newTime.timePeriod);
-									self._$endTimeValue.val(newTime.endTime);
+									self._$endTimeValue.val(newTime.endTimeText);
+									
 									self._$panel.data("oldTime", newTime);
-									self._$timePeriodValue.trigger("change");
+									
+									if(self.options.onChange){
+										self.options.onChange.call(self);
+									}
 									self.element.trigger("change");
 									self._initShow();
 								}
@@ -334,10 +348,13 @@
 						
 							self._$rTimekPanel.hide();
 							self._$aTimekPanel.show();
-						
 							self._$timeType.val(2);
-							self._$fromTime.datetimeEntry("setDatetime",new Date());
-							self._$endTime.datetimeEntry("setDatetime",new Date());
+							
+							var panelDate = new PanelDate(2,30,null,new Date());
+						
+							self._setFromTime(panelDate.getFromTime());
+							self._setEndTime(panelDate.getEndTime());
+						
 						} else if (self._$timeType.val() == "2") {
 							$(this).removeClass("time_button02");
 							$(this).addClass("time_button01");
@@ -367,11 +384,45 @@
 		
 		
 		
+	function PanelDate(timeType,timePeriod,endTimeText,endTime){
+			if(timeType){
+				this.timeType		= parseInt(timeType+"");
+			}
+			if(timePeriod){
+				this.timePeriod		= parseInt(timePeriod+"");
+			}
+			if(endTimeText){
+				this.endTimeText	= endTimeText;
+			}
+			if(endTime){
+				this.endTimeText	= dateToText(endTime);
+			}
+	}
+	PanelDate.prototype.getEndTime = function(){
+		if(!this.endTime||this.endTimeText==""){
+			return new Date();
+		}
+		return new Date(this.endTime.replace(/-/g,"/"));	
+	}
+	PanelDate.prototype.getEndTimeText = function(){
+		return this.endTimeText;
+	}
+	PanelDate.prototype.getFromTime = function(){
+		var 	endTime = this.getEndTime();
+				endTime.setTime(endTime.getTime()-this.timePeriod*60*1000);
+		return  endTime;
+	}
+	PanelDate.prototype.getFromTimeText = function(){
+		var 	fromTime = this.getFromTime();
+		return  dateToText(fromTime)
+	}
+	PanelDate.prototype.equals = function(date){
+		return  this.timeType = date.timeType&& this.timePeriod==date.timePeriod&&this.endTimeText==date.endTimeText;
+	}
 		
-		
-		
-		
-		
+	function dateToText(date){
+		return date.getFullYear() + "-" + (date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes();
+	}
 		
 	function getValue($el,name,defaultValue,type){
 		if(!type){
