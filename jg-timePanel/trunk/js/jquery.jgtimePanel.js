@@ -140,18 +140,19 @@
 					this.element.append(this._$timeZoneValue);
 				}
 				
-				this._$timePeriod 		= this._$panel.find(".time-period");
+				this._$timePeriod 			= this._$panel.find(".time-period");
 				
-				this._$endTime 	  		= this._$panel.find("#timeForm_endTime");
-				this._$fromTime 	  	= this._$panel.find("#timeForm_fromTime");
+				this._$endTime 	  			= this._$panel.find("#timeForm_endTime");
+				this._$fromTime 	  		= this._$panel.find("#timeForm_fromTime");
 				
-				this._$timeType			= this._$panel.find('input[name="timeType"]');
+				this._$timeType				= this._$panel.find('input[name="timeType"]');
 				
-				this._$datapickerButton = this._$panel.find(".datapicker-button");
+				this._$datapickerButtonFrom = this._$panel.find(".datapicker-button-from");
+				this._$datapickerButtonEnd  = this._$panel.find(".datapicker-button-end");
 				
-				this._$timeTypeButton	= this._$panel.find('#time_type');
-				this._$closeButton		= this._$panel.find('#time_close');
-				this._$okButton			= this._$panel.find('#time_ok');
+				this._$timeTypeButton		= this._$panel.find('#time_type');
+				this._$closeButton			= this._$panel.find('#time_close');
+				this._$okButton				= this._$panel.find('#time_ok');
 				
 				
 				
@@ -201,7 +202,7 @@
 						function() {
 							var date = new Date(Date.parse($(this).val().replace(/-/g, "/")));
 							if (date && !isNaN(date)) {
-								self._$datapickerButton.datepicker("setDate", date);
+								self._$datapickerButtonEnd.datepicker("setDate", date);
 							}
 				});
 				
@@ -213,7 +214,7 @@
 						function() {
 							var date = new Date(Date.parse($(this).val().replace(/-/g, "/")));
 							if (date && !isNaN(date)) {
-								self._$datapickerButton.datepicker("setDate", date);
+								self._$datapickerButtonFrom.datepicker("setDate", date);
 							}
 				});
 
@@ -331,17 +332,18 @@
 							$(this).removeClass("time_button01");
 							$(this).addClass("time_button02");
 						
-							self._$aTimekPanel.hide();
-							self._$rTimekPanel.slideDown();
+							self._$rTimekPanel.hide();
+							self._$aTimekPanel.show();
 						
 							self._$timeType.val(2);
+							self._$fromTime.datetimeEntry("setDatetime",new Date());
 							self._$endTime.datetimeEntry("setDatetime",new Date());
 						} else if (self._$timeType.val() == "2") {
 							$(this).removeClass("time_button02");
 							$(this).addClass("time_button01");
 							
 							self._$aTimekPanel.hide();
-							self._$rTimekPanel.slideDown();
+							self._$rTimekPanel.show();
 							
 							self._$timeType.val(1);
 							self._$endTime.val("");
