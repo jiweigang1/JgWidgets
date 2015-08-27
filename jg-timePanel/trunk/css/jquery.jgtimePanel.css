@@ -10,7 +10,7 @@
     float: left;
     margin-top: 10px;
     padding: 10px 5px;
-    width: 470px;
+    width: 490px;
 }
 
 .time_font_w {
@@ -127,3 +127,32 @@
 .btn_demo2:hover{
     background: url("./images/btn02.gif") no-repeat scroll 0 -38px rgba(0, 0, 0, 0);
 }
+.time-panel-time-holder{
+	line-height:24px;
+	display:block;
+	font-size:12px;
+}
+
+.time-panel-time-holder .jg-time-panel-r-time{
+	font-size:14px;
+	line-height:36px;
+}
+
+.time-panel-time-holder .jg-time-panel-a-time span{
+	font-size:12px;
+	line-height:12px;
+}
+
+.time-panel-time-holder .jg-time-panel-a-time{
+	font-size:12px;
+	line-height:36px;
+}
+.time-panel-time-holder   .jg-time-panel-a-time div{
+	line-height:18px;
+}
+
+
+.time_selection_w .ui-datepicker-unselectable.ui-state-disabled .ui-state-default{
+	width:22 ! important ;
+	height:22 ! important ;
+} 

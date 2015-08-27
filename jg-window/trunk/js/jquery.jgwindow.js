@@ -29,8 +29,11 @@ $.widget( "jgWidgets.jgWindow", {
 			top		 :null,
 			ajaxType :"post",
 			url		 :null,
+			//是否使用优化后的滚动条
 			jgscroll :true,
 			jgscrollDragEnable:true,
+			//是否使用Iframe 如果是跨域的话使用，使用iframe 只能使用get 方式传递参数
+			iframe	 :false,
 			
 			model		:false,
 			max			:false,
@@ -97,7 +100,11 @@ $.widget( "jgWidgets.jgWindow", {
 				this._$toolContainer	= $(".jg-window-tool-container",this._$window);
 				this._$windowTitle		= $(".jg-window-title",this._$window);
 				this._$contentContainer = $(".jg-window-content-container",this._$window);
+				
 				this._$content 			= $(".jg-window-content",this._$window);
+				if(this.options.iframe){
+					this._$content.addClass("iframe-type")
+				}
 				
 				this._$toolMax			= $(".jg-window-tool-max"  ,this._$window);
 				this._$toolMin			= $(".jg-window-tool-min",this._$window);
@@ -150,7 +157,7 @@ $.widget( "jgWidgets.jgWindow", {
 						this.loadContent(this.options.url,this.options.params);
 					}
 				}
-				if(this.options.jgscroll){
+				if(this.options.jgscroll&&!this.options.iframe){
 					this._enableJgScroll();
 				}
 				if(this.options.max){
@@ -180,7 +187,7 @@ $.widget( "jgWidgets.jgWindow", {
 		},
 		_updateScroll:function(){
 			var self = this;
-			if(this.options.jgscroll&&$.fn.jgScrollbar){
+			if(this.options.jgscroll&&$.fn.jgScrollbar&&!this.options.iframe){
 				if(this._$contentContainer.data("jgScrollbar")){
 					this._$contentContainer.jgScrollbar("update");
 				}else{
@@ -376,34 +383,38 @@ $.widget( "jgWidgets.jgWindow", {
 	loadContent:function(url,params){
 		var self 		= this;
 		var $content	= this._$content;
-		this._ajaxLoad($content,url,params,function(){
-			$content.css("opacity",0);
-			if($.JgWidgets){
-				try{
-					$.JgWidgets._initContent($content,$.JgWidgets.g_before);
-				}catch(e){
-					if(console){
-						console.log(e);
+		if(!this.options.iframe){
+			this._ajaxLoad($content,url,params,function(){
+				$content.css("opacity",0);
+				if($.JgWidgets){
+					try{
+						$.JgWidgets._initContent($content,$.JgWidgets.g_before);
+					}catch(e){
+						if(console){
+							console.log(e);
+						}
 					}
 				}
-			}
-			$content.css("opacity",1);
-			if(self.options.onOpen) {
-				self.options.onOpen.call(null, $content);
-            }
-			if($.JgWidgets){
-				try{
-					$.JgWidgets._initContent($content,$.JgWidgets.g_after);
-				}catch(e){
-					if(console){
-						console.log(e);
+				$content.css("opacity",1);
+				if(self.options.onOpen) {
+					self.options.onOpen.call(null, $content);
+				}
+				if($.JgWidgets){
+					try{
+						$.JgWidgets._initContent($content,$.JgWidgets.g_after);
+					}catch(e){
+						if(console){
+							console.log(e);
+						}
 					}
 				}
-			}
-			$content.trigger("onload",[$content]);
-			$content.trigger("onOpen",[$content]);
-			self._adjustContentContainer();
-		});
+				$content.trigger("onload",[$content]);
+				$content.trigger("onOpen",[$content]);
+				self._adjustContentContainer();
+			});
+		}else{
+			$content.append('<iframe class="jg-window-iframe"  frameborder="0" src="'+this.options.url+'"></iframe>')
+		}
 	},
 	getWid:function(){
 		return this.options._wid;
@@ -638,6 +649,10 @@ $.widget( "jgWidgets.jgWindow", {
 					resizable = false;
 				}
 				
+				var iframe = false;
+				if($this.attr("iframe")==="true"){
+					iframe = true;
+				}
 				
 				
 				var height 	  = getValue($this,"height",	 $.jgWidgets.jgWindow.prototype.options.height,"int");
@@ -646,7 +661,7 @@ $.widget( "jgWidgets.jgWindow", {
 				var minHeight = getValue($this,"minHeight",  $.jgWidgets.jgWindow.prototype.options.minHeight,"int");
 				
 				
-				$.jgWindow({url:url,draggable:draggable,resizable:resizable,height:height,width:width,minHeight:minHeight,minWidth:minWidth,max:max,title:title,maxAble:maxAble,closeAble:closeAble,miniAble:miniAble,fullScreen:fullScreen,model:model,jgscrollDragEnable:jgscrollDragEnable});
+				$.jgWindow({url:url,draggable:draggable,resizable:resizable,height:height,width:width,minHeight:minHeight,minWidth:minWidth,max:max,title:title,maxAble:maxAble,closeAble:closeAble,miniAble:miniAble,fullScreen:fullScreen,model:model,jgscrollDragEnable:jgscrollDragEnable,iframe:iframe});
 				return false;
 			})
 		}

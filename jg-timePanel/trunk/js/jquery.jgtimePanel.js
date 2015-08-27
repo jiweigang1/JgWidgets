@@ -23,7 +23,10 @@
 				
 			 },
 			 _initHtml:function(){
-				this.element.append('<span>最近</span><span class="time-period-holder"></span><span class="end-time-holder"></span><span class="data_icon_down" ></span>');
+				this.element.append('<span class="time-panel-time-holder"></span><span class="data_icon_down" ></span>');
+				
+				this._$timeHolder = this.element.find(".time-panel-time-holder");
+				
 				var html = '<div class="time_selection_w" style="z-index: 500;position: absolute;display: none;">\
 								<table style="width: 100%; float:left;">\
 									<tr>\
@@ -41,17 +44,17 @@
 										<td style="height: 50px" align="center">\
 											<div class="rumslider" style="width: 90%;float: none;position: relative;">\
 												<select id="timeForm_timePeriod" class="time-period" style="display: none;">\
-													<option value="30">30M</option>\
-													<option value="60">1H</option>\
-													<option value="360">6H</option>\
-													<option value="720">12H</option>\
-													<option value="1440">&nbsp;&nbsp;1D</option>\
-													<option value="4320">3D</option>\
-													<option value="10080">7D</option>\
-													<option value="20160">14D</option>\
-													<option value="43200">1M</option>\
-													<option value="86400">2M</option>\
-													<option value="129600">3M</option>\
+													<option value="30"  desc="30分钟" >30M</option>\
+													<option value="60"  desc="1小时">1H</option>\
+													<option value="360" desc="6小时" >6H</option>\
+													<option value="720" desc="12小时">12H</option>\
+													<option value="1440" desc="1天">&nbsp;&nbsp;1D</option>\
+													<option value="4320" desc="3天">3D</option>\
+													<option value="10080" desc="7天">7D</option>\
+													<option value="20160" desc="14天">14D</option>\
+													<option value="43200" desc="1月">1M</option>\
+													<option value="86400" desc="2月">2M</option>\
+													<option value="129600" desc="3月">3M</option>\
 												</select>\
 											</div>\
 										</td>\
@@ -60,12 +63,12 @@
 										<td>\
 										  <table width="100%">\
 											<tr>\
-												<td><input id="timeForm_fromTime" type="text" readonly="readonly" class="end_time_input m_top10"></td>\
-												<td><input id="timeForm_endTime"  type="text"  readonly="readonly" class="end_time_input m_top10"></td>\
+												<td width="50%"  valign="middle" ><input id="timeForm_fromTime" type="text" readonly="readonly" class="end_time_input m_top10"></td>\
+												<td width="50%"  valign="middle"><input id="timeForm_endTime"  type="text"  readonly="readonly" class="end_time_input m_top10"></td>\
 											</tr>\
 											<tr>\
-												<td><div class="end_time_calendar rumdatepicker datapicker-button-from "></div></td>\
-												<td><div class="end_time_calendar rumdatepicker datapicker-button-end "></div></td>\
+												<td width="50%"  valign="middle"><div class="end_time_calendar rumdatepicker datapicker-button-from "></div></td>\
+												<td width="50%"  valign="middle"><div class="end_time_calendar rumdatepicker datapicker-button-end "></div></td>\
 											</tr>\
 										  </table>\
 										</td>\
@@ -95,9 +98,6 @@
 								</table>\
 							</div>';
 				this._$panel = $(html);
-				
-				this._$timePeriodHolder = this.element.find(".time-period-holder");
-				this._$endTimeHolder	= this.element.find(".end-time-holder");
 				
 				if(this.options.timePeriodId){
 					this._$timePeriodValue = $("#"+this.options.timePeriodId);
@@ -164,45 +164,152 @@
 				
 				$("body").append(this._$panel);	
 			 },
-			 _setFromTime(date){
+			 _setFromTime:function(date){
 				this._$fromTime.datetimeEntry("setDatetime" ,date);
 				this._$datapickerButtonFrom.datepicker("setDate",date);
 				this._setEndTime(date);
 			 },
-			 _setEndTime(date){
-				var 
+			 _setEndTime:function(date){
 				this._$endTime.datetimeEntry("setDatetime" ,date);
 				this._$datapickerButtonEnd.datepicker("setDate",date);
 			 },
-			 _setMinEndTime(date){
+			 _setMinEndTime:function(odate){
+				var date = new Date()
+					date.setTime(odate.getTime());
+					date.setHours(0,0);
 				this._$datapickerButtonEnd.datepicker("option","minDate",date);
 				this._$endTime.datetimeEntry('option', 'minDatetime',  date);
 			 },
-			 _initEvent:function(){
-				var self = this;
+			 _setMaxEndTime:function(odate){
+				var date = new Date()
+					date.setTime(odate.getTime());
+					date.setHours(23,59);
+				this._$datapickerButtonEnd.datepicker("option","maxDate",date);
+				this._$endTime.datetimeEntry('option', 'maxDatetime',  date);
+			 },
+			 _setMaxFromTime:function(odate){
+				var date = new Date();
+					date.setTime(odate.getTime());
+					date.setHours(23,59);
+				this._$datapickerButtonFrom.datepicker("option","maxDate",date);
+				this._$fromTime.datetimeEntry('option', 'maxDatetime',  date);
+			 },
+			 //获取TimePeriod 转换为分钟
+			 _getTimePeriod:function(){
+				var timeType = this._getTimeType();
+				if(timeType==1){
+				   return  parseInt(this._$timePeriod.val());
+				}else{
+				   var fromTime = this._$fromTime.datetimeEntry('getDatetime');
+				   var endTime  = this._$endTime.datetimeEntry('getDatetime');			
+				   return (endTime.getTime() - fromTime.getTime())/1000/60;
+				}
+			 },
+			 _getTimeType:function(){
+				return parseInt(this._$timeType.val());
+			 },
+			 _getEndTime:function(){
+				if(this._getTimeType()==1){
+				   return null;
+				}
+				return this._$endTime.datetimeEntry('getDatetime');	
+			 },
+			 _getFromTime:function(){
+				if(this._getTimeType()==1){
+				   return null;
+				}
+				return this._$fromTime.datetimeEntry('getDatetime');
+			 },
+			 _createFromTime:function(endTime,timePeriod){
+				var date = new Date();
+					date.setTime(endTime.getTime()-timePeriod*60*1000);
+				return date;	
+			 },
+			 _setValueFromLocal:function(){
+				var timeType = this._getTimeType();
+				this._$timeTypeValue.val(timeType);
+				this._$timePeriodValue.val(this._getTimePeriod());
+				if(timeType==2){
+				  this._$endTimeValue.val(dateToText(this._getEndTime()));
+				}else{
+				  this._$endTimeValue.val("");
+				}
+			 },
+			 _setValue:function(){
+				var time = this._$panel.data("oldTime");
+				this._$timeTypeValue.val(time.timeType);
+				this._$timePeriodValue.val(time.timePeriod);
+				if(time.timeType==2){
+				  this._$endTimeValue.val(dateToText(time.endTime));
+				}else{
+				  this._$endTimeValue.val("");
+				}
+			 },
+			 //从表单中获取数据
+			 _getValue:function(){
 				var time = {
-					timeType   : this._$timeTypeValue.val(),
-					timePeriod : this._$timePeriodValue.val(),
-					endTimeText: this._$endTimeValue.val()
+					timeType   		: this._$timeTypeValue.val(),
+					timePeriod 		: this._$timePeriodValue.val(),
+					endTime			: null,
+					fromTime		: null
 				};
 				if(!time.timeType){
 					time.timeType 	= 1;
-					this._$timeTypeValue.val(1);
+				}else{
+					time.timeType	= parseInt(time.timeType);
 				}
 				if(!time.timePeriod){
 					time.timePeriod = 30;
-					this._$timePeriodValue.val(30);
+				}
+				if(time.timeType==2){
+					var endTimeText  = this._$endTimeValue.val();
+					if(endTimeText){
+						time.endTime = textToDate(endTimeText);
+					}
 				}
 				
-				var  panelDate	= new PanelDate(time.timeType,time.timePeriod,time.endTimeText);
+				if(time.timeType==2){
+					time.fromTime = this._createFromTime(time.endTime,time.timePeriod);
+				}
+				return time;
+			 },
+			 _getLocalValue:function(){
+				var time ={}
+					time.timeType 	= this._getTimeType();
+					time.timePeriod = this._getTimePeriod();
+				if(time.timeType==2){
+					time.fromTime	= this._getFromTime();
+					time.endTime	= this._getEndTime();
+				}	
+				return time;
+			 },
+			 _checkChange:function(oldDate,newDate){
+				if(oldDate.timeType!=newDate.timeType){
+					return true;
+				}
+				if(oldDate.timePeriod!=newDate.timePeriod){
+					return true;
+				}
+				if(oldDate.timeType==2){
+					if(oldDate.endTime.getTime()!=newDate.endTime.getTime()){
+					  return true;
+					}
+				}
 				
-				this._$panel.data("oldTime", panelDate);
+			 },
+			 _initEvent:function(){
+				var self = this;
+				var time = this._getValue();
+				this._$panel.data("oldTime", time);
+				this._setValue();
 				
 				this._$timeType.val(time.timeType);
-				this._$timePeriod.val(time.timePeriod);
-				this._$endTime.val(time.endTimeText);
+				if(time.timeType==1){
+				   this._$timePeriod.val(time.timePeriod);		
+				}else{
+				   this._$timePeriod.find("option:first").attr("selected",true);
+				}
 				
-				this._initShow()
 				this._$timePeriod.selectToUISlider({
 					labels : 10,
 					tooltip : false,
@@ -211,6 +318,8 @@
 						range : false
 					}
 				});
+				
+				var now = new Date();
 				
 				this._$endTime.datetimeEntry({
 					datetimeFormat: "Y-O-D H:M",
@@ -230,12 +339,12 @@
 					useMouseWheel: true,
 					spinnerImage:false
 				}).change(
-						function() {
-							var date = new Date(Date.parse($(this).val().replace(/-/g, "/")));
-							if (date && !isNaN(date)) {
-								self._$datapickerButtonFrom.datepicker("setDate", date);
-								self._setMinEndTime(date);
-							}
+					function() {
+						var date = new Date(Date.parse($(this).val().replace(/-/g, "/")));
+						if (date && !isNaN(date)) {
+							self._$datapickerButtonFrom.datepicker("setDate", date);
+							self._setMinEndTime(date);
+						}
 				});
 
 				
@@ -251,8 +360,7 @@
 								self._$fromTime.val(dateText);
 							}
 							self._setMinEndTime(new Date(Date.parse(dateText.replace(/-/g, "/"))));
-						},
-						maxDate:new Date()
+						}
 					});
 						
 				
@@ -260,7 +368,6 @@
 					{
 						dateFormat : "yy-mm-dd",
 						onSelect : function(dateText) {
-							alert(1);
 							var e = self._$endTime.val();
 							if (e.length > 0) {
 								var i = e.indexOf(" ");
@@ -268,77 +375,66 @@
 							} else {
 								self._$endTime.val(dateText);
 							}
-						},
-						minDate:new Date(),
-						maxDate:new Date()
+						}
 					});
-					
+			
+			if(time.timeType==2){
+				this._setEndTime(time.endTime)
+				this._setFromTime(time.fromTime)	
+			}
+				
+			this._initShow()
+			
+			this._setMaxFromTime(now);
+			this._setMinEndTime(now);
+			this._setMaxEndTime(now);
 					
 			this.element.click(function() {
+				
 				var offset = $(this).offset();
 				var time = self._$panel.data("oldTime");
 				
-				if (time.timeType == "1") {
-					self._$timeType.val(2);
-					self._$timeTypeButton.trigger("click");
-				} else if (time.timeType == "2") {
-					self._$timeType.val(1);
-					self._$timeTypeButton.trigger("click");
-					
-					self._setFromTime(time.getFromTime());
-					self._setEndTime(time.getEndTime());
-					
-
+				if(time.timeType==1){
+					self._$rTimekPanel.show();
+					self._$aTimekPanel.hide();
+					self._$timeTypeButton.addClass("time_button01").removeClass("time_button02");
+				}else{
+					self._$aTimekPanel.show();
+					self._$rTimekPanel.hide();
+					self._$timeTypeButton.addClass("time_button02").removeClass("time_button01");
 				}
-				self._$timePeriod.val(time.timePeriod);
-				self._$panel.find("table").show();
-				self._$panel.css({
-					"border" : "#cccccc 1px solid",
-					"z-index" : 2000
-						
-				});
+				
                 if (self._$panel.is(":visible")) {
                     self._$panel.hide();
                 }else{
-                    self._$panel.show().css({
+					self._$panel.css({
                         "top" : offset.top + 20,
-                        "left" : offset.left - (self._$panel.width()- $(this).width() - 20)
-                    });
+                        "left" : offset.left - (self._$panel.width()- $(this).width()+20),
+                    })
+					var $cson = closestSon(self.element,"body");
+					if($cson.css("z-index")!="auto"){
+					  self._$panel.css("z-index", parseInt($cson.css("z-index"))+1);
+					}
+					self._$panel.show();
                 }
                 
 			});
 			this._$closeButton.click(function() {
-				self._$panel.css("display", "none");
-				self._$panel.css({
-					"border" : "0",
-					"border-top" : "#cccccc 1px solid"
-				}).css("display","none");
+				self._$panel.hide();
 			});
 			self._$okButton.click(function() {
-								var newTime = new PanelDate(self._$timeType.val(),self._$timePeriod.val(),self._$endTime.val());
 								var oldTime = self._$panel.data("oldTime");
-								var change = false;
-								if (oldTime.equals(newTime)) {
-									change = true;
-								}
-								if (change) {
-									self._$timeTypeValue.val(newTime.timeType);
-									self._$timePeriodValue.val(newTime.timePeriod);
-									self._$endTimeValue.val(newTime.endTimeText);
-									
+								var newTime = self._getLocalValue()
+								if (self._checkChange(oldTime,newTime)) {
 									self._$panel.data("oldTime", newTime);
-									
+									self._setValue();
 									if(self.options.onChange){
 										self.options.onChange.call(self);
 									}
 									self.element.trigger("change");
 									self._initShow();
 								}
-								self._$panel.find("table").css("display", "none");
-								self._$panel.css({
-									"border" : "0",
-									"border-top" : "#cccccc 1px solid"
-								}).css("display","none");
+								self._$panel.hide();
 							});
 			self._$timeTypeButton.click(
 					function() {
@@ -350,10 +446,10 @@
 							self._$aTimekPanel.show();
 							self._$timeType.val(2);
 							
-							var panelDate = new PanelDate(2,30,null,new Date());
+							var endTime = new Date();
 						
-							self._setFromTime(panelDate.getFromTime());
-							self._setEndTime(panelDate.getEndTime());
+							self._setFromTime(self._createFromTime(endTime,30));
+							self._setEndTime(endTime);
 						
 						} else if (self._$timeType.val() == "2") {
 							$(this).removeClass("time_button02");
@@ -368,62 +464,53 @@
 					});
 			 },
 			 _initShow:function(){
-				var self = this;
-				self._$timePeriodHolder.text(self._$timePeriod.find("option:selected").text());
-				if (self._$timeType.val() == "2") {
-					 self._$endTimeHolder.text("(" + self._$endTime.val() + ")");
-				} else {
-					self._$endTimeHolder.text("");
+				var time = this._$panel.data("oldTime")
+				var html = "";
+				if(time.timeType==2){
+					html = '<div class="jg-time-panel-a-time">\
+								<div><span>开始时间</span><span>'+dateToText(time.fromTime)+'</span></div>\
+								<div><span>结束时间</span><span>'+dateToText(time.endTime)+'</span></div>\
+							</div>'	
+				}else{
+					html = '<div class="jg-time-panel-r-time">\
+								<span>最近</span><span>'+this._$timePeriod.find("option:selected").attr("desc")+'</span>\
+							</div>'	
 				}
+				this._$timeHolder.empty().append(html);
 			 },
 			 _destroy:function(){
 				this._$panel.remove();
 			 }
 		});
 		
-		
-		
-		
-	function PanelDate(timeType,timePeriod,endTimeText,endTime){
-			if(timeType){
-				this.timeType		= parseInt(timeType+"");
-			}
-			if(timePeriod){
-				this.timePeriod		= parseInt(timePeriod+"");
-			}
-			if(endTimeText){
-				this.endTimeText	= endTimeText;
-			}
-			if(endTime){
-				this.endTimeText	= dateToText(endTime);
-			}
-	}
-	PanelDate.prototype.getEndTime = function(){
-		if(!this.endTime||this.endTimeText==""){
-			return new Date();
-		}
-		return new Date(this.endTime.replace(/-/g,"/"));	
-	}
-	PanelDate.prototype.getEndTimeText = function(){
-		return this.endTimeText;
-	}
-	PanelDate.prototype.getFromTime = function(){
-		var 	endTime = this.getEndTime();
-				endTime.setTime(endTime.getTime()-this.timePeriod*60*1000);
-		return  endTime;
-	}
-	PanelDate.prototype.getFromTimeText = function(){
-		var 	fromTime = this.getFromTime();
-		return  dateToText(fromTime)
-	}
-	PanelDate.prototype.equals = function(date){
-		return  this.timeType = date.timeType&& this.timePeriod==date.timePeriod&&this.endTimeText==date.endTimeText;
-	}
-		
 	function dateToText(date){
-		return date.getFullYear() + "-" + (date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes();
+		return date.getFullYear() + "-" + fixNo(date.getMonth()+1)+"-"+ fixNo(date.getDate())+" "+fixNo(date.getHours())+":"+fixNo(date.getMinutes());
 	}
-		
+	
+	function textToDate(dateText){
+		return new Date(dateText.replace(/-/g, "/"));
+	}
+	
+	function fixNo(no){
+		if(no<10){
+		  return "0"+no;
+		}else{
+		  return no;
+		}
+	}
+	
+	function closestSon($el,selector){
+		var $parent = $el.parent();
+		if(!$parent){
+			return null;
+		}
+		if($parent.is(selector)){
+			return $el;
+		}else{
+			return closestSon($parent,selector);
+		}
+	}
+	
 	function getValue($el,name,defaultValue,type){
 		if(!type){
 			type = "string";

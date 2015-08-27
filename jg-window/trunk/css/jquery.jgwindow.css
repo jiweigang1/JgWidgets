@@ -194,6 +194,11 @@
 .jg-window.sizzing 	.jg-window-content{
 	display:none;
 }
+.jg-window .jg-window-content.iframe-type{
+	width:100%;
+	height:100%;
+	overflow:hidden;
+}
 
 .jg-window-min-container p{
 	padding:0xp;
@@ -226,4 +231,9 @@
   top:0px;
   width:100%;
   height:30px;
-}	
+}
+.jg-window .jg-window-iframe{
+  width:100%;
+  height:100%;
+}
+
