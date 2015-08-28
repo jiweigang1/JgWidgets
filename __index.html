@@ -1,0 +1,202 @@
+﻿<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery UI  JgWidgets</title>
+    <script type="text/javascript"  src="./lib/jquery-1.10.2.js" ></script>
+	<script type="text/javascript"  src="./lib/jquery-ui.js" ></script>
+	<script type="text/javascript"  src="./lib/jquery.validate.js" ></script>
+	<script type="text/javascript"  src="./lib/highcharts.src.js" ></script>
+	<script type="text/javascript"  src="./lib/phaser.js" ></script>
+	<script type="text/javascript"  src="./lib/raphael.js" ></script>
+	
+	
+	<script type="text/javascript"  src="./js/jquery.jgpage.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgtabs.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgaccordion.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgscrollbar.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgtable.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgwindow.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgform.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.mousewheel.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgalertify.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgselect.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgcard.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgplate.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jghchartHelper.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgchart.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jgupload.js" ></script>
+	<script type="text/javascript"  src="./js/jquery.jglayout.js" ></script>
+	
+	<script type="text/javascript"  src="./js/jquery.jgmap.js" ></script>
+	<script type="text/javascript"  src="./js/map/nb_name_zh_cn.js" ></script>
+	
+	<script type="text/javascript"  src="./js/map/china.js" ></script>
+	<script type="text/javascript"  src="./js/map/word.js" ></script>
+	
+	
+	<script type="text/javascript"  src="./lib/chosen/chosen.jquery.js" ></script>
+	<link   type="text/css" rel="stylesheet" href="./lib/chosen/chosen.css">
+	
+	<script type="text/javascript"  src="./lib/ddlist/service.ddlist.jquery.js" ></script>
+	<link   type="text/css" rel="stylesheet" href="./lib/ddlist/service.ddlist.jquery.css">
+	
+	
+	<script type="text/javascript"  src="./js/jquery.jgcore.js" ></script>
+
+	
+	<link type="text/css" rel="stylesheet" href="./css/style.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgcore.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgpage.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgtabs.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgaccordion.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgscrollbar.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgtable.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgwindow.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgalertify.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jghchartHelper.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgselect.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgcard.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jgplate.css">
+	<link type="text/css" rel="stylesheet" href="./css/jquery.jglayout.css">
+	
+	
+	<script type="text/javascript" >
+		$(function(){
+			$.extend($.jgWidgets.jgPage.prototype.options,{ajaxType:"get"});
+			$.extend($.jgWidgets.jgTabs.prototype.options,{ajaxType:"get"});
+			$.extend($.jgWidgets.jgWindow.prototype.options,{ajaxType:"get"});
+			$.extend($.jgWidgets.jgHchartHelper.prototype.options,{ajaxType:"get"});
+			$.extend($.jgWidgets.jgSelect.prototype.options,{ajaxType:"get"});
+			$.extend($.jgWidgets.ajaxButton.prototype.options,{ajaxType:"get"});
+			$.JgWidgets.init({
+				loginUrl:"http://www.baidu.com"
+			});
+			$("body").jgLayout({
+				northSize:130,
+				westSize:200,
+				southSize:80,
+			});
+		});  
+	</script>
+	
+  </head>
+  <body>
+		<div class="jg-layout-north">
+			<div class="widgets" >
+				<ul>
+					<li><a cardId="Jg-Page"		class="card-button" 	target="#leftMainCard" >Jg-Page</a></li>
+					<li><a cardId="Jg-Tabs"		class="card-button" 	target="#leftMainCard" >Jg-Tabs</a></li>
+					<li><a href="./doc/table/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Table</a></li>
+					<li><a href="./doc/form/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-From</a></li>
+					<li><a href="./doc/window/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Window</a></li>
+					<li><a href="./doc/alert/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Alert</a></li>
+					<li><a href="./doc/scrollbar/index.html"	action="openPage"		class="page-button" 	target="#mainPage" >Jg-Scrollbar</a></li>
+					<li><a href="./doc/select/index.html"		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Select</a></li>
+					<li><a href="./doc/hchartHelper/index.html" action="openPage"		class="page-button" 	target="#mainPage" >Jg-HchartHelper</a></li>
+					<li><a href="./doc/button/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Button</a></li>
+					<li><a href="./doc/loader/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Loader</a></li>
+					<li><a href="./doc/card/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Card</a></li> 
+
+					
+					<li><a href="./doc/upload/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Upload</a></li>
+					
+
+					<li><a href="./doc/plate/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Plate</a></li> 
+					<li><a href="./doc/layout/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Layout</a></li>
+					
+					<li><a href="./doc/restful/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Restful</a></li> 
+
+					<li><a href="./doc/chart/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-Charts</a></li> 
+					<li><a href="./doc/pchart/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >Jg-P-Charts</a></li>
+					
+					<li><a href="./doc/thd/index.html" 			action="openPage"		class="page-button" 	target="#mainPage" >第三方插件库</a></li>
+					<li><a href="./doc/teach/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >教程说明</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="jg-layout-south">
+			<div class="footer">
+				<div>
+					<ul>
+						<li><a href="./doc/dev/index.html" 		action="openPage"		class="page-button" 	target="#mainPage" >开发者</a></li>
+						<li><a href="./doc/case/index.html" 	action="openPage"		class="page-button" 	target="#mainPage" >使用案例</a></li>
+					</ul>
+					Copyright  2013-2014 
+				</div>
+			</div>
+		</div>
+		<div class="jg-layout-west" >
+			<div class="card" id="leftMainCard" >
+				 <div cardId="Jg-Page" >
+					 <div class="accordion jg-accordion" style="width:200px" >
+							<h2>介绍</h2>
+							<div>
+								<ul>
+									<li><a href="./doc/page/info.html" action="openPage" target="#mainPage" class="page-button" >插件使用</a></li>
+								</ul>
+							</div>
+							<h2>方法</h2>
+							<div>
+								<ul>
+									<li><a href="./doc/page/methods.html" action="openPage" target="#mainPage" class="page-button" >方法说明</a></li>
+								</ul>
+							</div>
+							<h2>事件</h2>
+							<div>
+								<ul>
+									<li><a href="./doc/page/onOpen.html" action="openPage"  target="#mainPage" class="page-button" >异步绑定事件-OnOpen</a></li>
+									<li><a href="./doc/event/init.html"  action="openPage" 	target="#mainPage" class="page-button" title="全局事件-Init"  relId="全局事件-Init" >全局事件-Init</a></li>
+									<li><a href="./doc/event/ready.html" action="openPage" 	target="#mainPage" class="page-button" title="全局事件-Ready" relId="全局事件-Ready">全局事件-Ready</a></li>
+								</ul>
+							</div>
+							<h2>例子</h2>
+							<div>
+								<ul>
+									<li><a href="./doc/page/user/listUser.html" action="openPage" target="#mainPage" class="page-button" >用户管理</a></li>
+									<li><a href="./doc/page/nest/nest.html" 	action="openPage" target="#mainPage" class="page-button" >多层嵌套</a></li>
+								</ul>
+							</div>
+						</div>	
+					</div>
+					
+					<div cardId="Jg-Tabs">
+						 <div class="accordion jg-accordion" style="width:200px" >
+								<h2>参数</h2>
+								<div>
+									<ul>
+										<li><a href="./doc/tabs/options.html" action="add" target="#mainPage" class="tabs-button" title="参数说明" relId="tabs-options" >参数说明</a></li>
+									</ul>
+								</div>
+								<h2>方法</h2>
+								<div>
+									<ul>
+										<li><a href="./doc/tabs/methods.html" action="add" target="#mainPage" class="tabs-button" title="方法说明" relId="tabs-methods" >方法说明</a></li>
+									</ul>
+								</div>
+								<h2>事件</h2>
+								<div>
+									<ul>
+										<li><a href="./doc/tabs/event/onOpen.html"  action="add" target="#mainPage" class="tabs-button" title="异步事件-OnOpen"  relId="异步绑定事件-OnOpen" >异步绑定事件-OnOpen</a></li>
+										<li><a href="./doc/event/init.html"  		action="add" target="#mainPage" class="tabs-button" title="全局事件-Init" 	 relId="全局事件-Init" >全局异步绑定事件-Init</a></li>
+										<li><a href="./doc/event/ready.html" 		action="add" target="#mainPage" class="tabs-button" title="全局事件-Ready"   relId="全局事件-Ready" >全局异步绑定事件-Ready</a></li>
+									</ul>
+								</div>
+								<h2>例子</h2>
+								<div>
+									<ul>
+										<li><a href="./doc/tabs/demol/scrollable.html" action="add" target="#mainPage" class="tabs-button" title="Srolllable" relId="Srolllable" >Srolllable</a></li>
+										<li><a href="./doc/tabs/demol/listUser.html"   action="add" target="#mainPage" class="tabs-button" title="listUser" relId="listUser" >用户列表</a></li>
+									</ul>
+								</div>
+							</div>
+					</div>
+			</div>
+		</div>
+		<div class="jg-layout-centor" >
+			<div id="mainPage" class="page"  url="./doc/page/info.html" >
+			</div>
+		</div>
+  </body>
+</html>

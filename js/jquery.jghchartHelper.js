@@ -356,6 +356,7 @@
 							useUTC:false
 					},
 					chart	:{
+						reflow:false,
 						renderTo:$c[0],
 						borderWidth:0,
 						plotBorderWidth:0
@@ -729,11 +730,7 @@
 		if(!this._settings.aggregateLable){
 			return;
 		}
-		var box	  = this._settings.aggregateLable.getBBox();
-		var _x    = this.highChart.plotBox.width- (box.width==0?30:box.width);
-		if(!isNaN(_x)){
-			this._settings.aggregateLable.attr({x:_x,y:14});
-		}
+		this._settings.aggregateLable.attr({x:this.highChart.plotBox.width-2,y:14,"text-anchor":"end"});
 	},
 	
 	_creatWaterMark:function(){

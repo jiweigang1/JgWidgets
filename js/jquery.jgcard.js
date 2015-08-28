@@ -39,6 +39,11 @@
 			 
 			 this.options.onShow  	 = getValue(this.element,"onShow"	,this.options.onShow,"function");
 		},
+		/**
+		  cardId  	: 打开的card 的 id
+		  trigger 	：是否触发事件
+		  direction	：动画的方向
+		**/
 		open:function(cardId,trigger,direction){
 			if(!cardId){
 				return false;
@@ -60,9 +65,9 @@
 			}
 			this._toggle($toShow,$toHide,direction||this.options.direction,function(){
 				
-			});
+			},trigger);
 		},
-		_toggle:function($toShow,$toHide,direction,fn){
+		_toggle:function($toShow,$toHide,direction,fn,trigger){
 			var self = this;
 			
 		
@@ -75,9 +80,20 @@
 				if($toShow.length>0){
 					$toShow.slideDown(function(){
 						if(self.options.onShow&&$.isFunction(self.options.onShow)){
-							self.options.onShow.call(null,$toShow);
 							if(trigger){
-							   self.element.trigger("onShow",[$toShow]);
+							  try{
+								self.options.onShow.call(null,$toShow);
+							  }catch(e){
+								console.log(e);
+							  }	
+								
+							}
+							if(trigger){
+							  try{
+								self.element.trigger("onShow",[$toShow]);
+							  }catch(e){
+								console.log(e);
+							  } 	
 							}
 						}
 					});
@@ -94,6 +110,21 @@
 						}
 						delete fn.__time;
 						fn.call(self);
+						if(trigger){
+							  try{
+								self.options.onShow.call(null,$toShow);
+							  }catch(e){
+								console.log(e);
+							  }	
+								
+							}
+							if(trigger){
+							  try{
+								self.element.trigger("onShow",[$toShow]);
+							  }catch(e){
+								console.log(e);
+							  } 	
+							}
 					}
 					if($toHide&&$toHide.length>0){
 						$toHide.addClass("animation").css({"position":"absolute"});

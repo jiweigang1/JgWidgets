@@ -20,6 +20,7 @@
 			selectionIndex:-1,
 			holderId:null,
 			autoLoad:true,
+			autoHolderChange:true,
 			
 			//数据的过滤器
 			dataFilter:null,
@@ -41,17 +42,19 @@
 			if(this.options.autoLoad){
 				this._loadOptions({},function(){
 					self._initHtml();
+					var $selected	= this.element.find("option:selected");
 					if(this.options.onComplet){
-						this.options.onComplet.call(this.element,this.element.val());
+						this.options.onComplet.call(this.element,this.element.val(),$selected.clone());
 					}
-					this.element.trigger("onComplet");
+					this.element.trigger("onComplet",[this.element,this.element.val(),$selected.clone()]);
 				});
 			}else{
 				self._initHtml();
+				var $selected	= this.element.find("option:selected");
 				if(this.options.onComplet){
-					this.options.onComplet.call(this.element,this.element.val());
+					this.options.onComplet.call(this.element,this.element.val(),$selected.clone());
 				}
-				this.element.trigger("onComplet");
+				this.element.trigger("onComplet",[this.element,this.element.val(),$selected.clone()]);
 			}
 			
 			
@@ -62,6 +65,8 @@
 			this.options.maxDropHeight 	  = getValue(this.element,"maxDropHeight",this.options.maxDropHeight,"int");
 			this.options.holderId 	  	  = getValue(this.element,"holderId",	  this.options.holderId);
 			this.options.autoLoad	  	  = getValue(this.element,"autoLoad", 	  this.options.autoLoad,	"boolean");	
+			this.options.autoHolderChange = getValue(this.element,"autoHolderChange",this.options.autoHolderChange,	"boolean");	
+			
 			this.options.onComplet	  	  = getValue(this.element,"onComplet", 	  this.options.onComplet,	"function");	
 			this.options.beforeChange	  = getValue(this.element,"beforeChange", this.options.beforeChange,"function");
 			this.options.dataFilter	  	  = getValue(this.element,"dataFilter",   this.options.dataFilter,	"function");			
@@ -88,6 +93,9 @@
 		},
 		
 		_triggerHolderChange:function(force){
+			if(!this.options.autoHolderChange){
+			   return;
+			}
 			if(typeof force ==="undefined" ){
 				force = true;
 			}
@@ -158,6 +166,7 @@
 					url:url,
 					type:self.options.ajaxType,
 					cache:false,
+					async: false,
 					data:params||{},
 				}).done(function(data){
 					if(self.options.dataFilter){

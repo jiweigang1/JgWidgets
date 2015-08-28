@@ -207,7 +207,20 @@ $.JgWidgets = {
 					}
 				});
 		}
-		
+		//自动识别是哪个控件，进行相应的操作
+		window.onFormCallBack = function($form,respons){
+				var data = $.parseJSON(respons);
+				jgAlertify.alert(data.message,function(){
+					if(data.status==200){
+						var $component = $form.parents(".jg-component:first");
+						if($component.is(".jg-page-doc")){
+							$component.jgPage("goBack");
+						}else if($component.is(".jg-window")){
+							$component.jgWindow("destroy");
+						}
+					}
+				});
+		}
 	//---
 	})();
 	

@@ -28,13 +28,17 @@
 			this._initOptions();
 			this._loadContent();
 		},
-		_loadContent:function(params){
+		_loadContent:function(params,url){
+			var toUrl = this.options.url;
+			if(url){
+			    toUrl = url;	
+			}
 			var self = this;
 			var $content = $("<div><div>");
 				$content.css({"opacity":0,width:"100%","margin":"0px","padding":"0px"});
 			this.element.append($content);
-			if(this.options.url){
-				this._ajaxLoad($content,this.options.url,params||{},function(){
+			if(toUrl){
+				this._ajaxLoad($content,toUrl,params||{},function(){
 						if($.JgWidgets){
 							try{
 								$.JgWidgets._initContent($content);
@@ -107,9 +111,9 @@
 				 }
 			});
 		},
-		reload:function(params){
+		reload:function(params,url){
 			this.element.empty();
-			this._loadContent(params);
+			this._loadContent(params,url);
 		}
 	});
 	
