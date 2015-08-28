@@ -67,8 +67,8 @@
 												<td width="50%"  valign="middle"><input id="timeForm_endTime"  type="text"  readonly="readonly" class="end_time_input m_top10"></td>\
 											</tr>\
 											<tr>\
-												<td width="50%"  valign="middle"><div class="end_time_calendar rumdatepicker datapicker-button-from "></div></td>\
-												<td width="50%"  valign="middle"><div class="end_time_calendar rumdatepicker datapicker-button-end "></div></td>\
+												<td width="50%"  valign="top"><div class="end_time_calendar rumdatepicker datapicker-button-from "></div></td>\
+												<td width="50%"  valign="top"><div class="end_time_calendar rumdatepicker datapicker-button-end "></div></td>\
 											</tr>\
 										  </table>\
 										</td>\
@@ -350,6 +350,7 @@
 				
 			this._$datapickerButtonFrom.datepicker(
 					{
+						autoSize:false,
 						dateFormat : "yy-mm-dd",
 						onSelect : function(dateText) {
 							var e = self._$fromTime.val();
@@ -365,7 +366,8 @@
 						
 				
 			this._$datapickerButtonEnd.datepicker(
-					{
+					{	
+						autoSize:false,
 						dateFormat : "yy-mm-dd",
 						onSelect : function(dateText) {
 							var e = self._$endTime.val();
@@ -379,14 +381,15 @@
 					});
 			
 			if(time.timeType==2){
+				this._setFromTime(time.fromTime)
+				this._setMinEndTime(time.fromTime);
 				this._setEndTime(time.endTime)
-				this._setFromTime(time.fromTime)	
 			}
 				
 			this._initShow()
 			
 			this._setMaxFromTime(now);
-			this._setMinEndTime(now);
+			
 			this._setMaxEndTime(now);
 					
 			this.element.click(function() {

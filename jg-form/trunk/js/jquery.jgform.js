@@ -350,9 +350,8 @@
 			this._initOptions();
 			var self 	= this;
 			var $this   = this.element;
-			var title   = $this.attr("title");
-			if(title){
-				$this.attr("message",title).removeAttr("title");
+			if(typeof($this.attr("message"))=="undefined"){
+				$this.attr("message",$this.attr("title")||"");
 			}
 			$this.on("click",function(){
 				var url ;

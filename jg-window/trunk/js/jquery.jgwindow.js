@@ -70,7 +70,7 @@ $.widget( "jgWidgets.jgWindow", {
 				if(this.options.model){
 					this._showCover();
 				}
-				this.element.addClass("jg-window").css("z-index",this.options._zindex);
+				this.element.addClass("jg-window jg-component").css("z-index",this.options._zindex);
 				var html = this.element.text();
 				this.element.empty();
 				var content = '<div class="jg-window-tool-bar">\
@@ -423,6 +423,9 @@ $.widget( "jgWidgets.jgWindow", {
 		this.element.remove();
 		this._resetFront();
 		this._removeCover();
+	},
+	_destroy:function(){
+		//this.close();
 	},
 	_resetFront:function(){
 		this.GLOBE._front = this._frontWindow();

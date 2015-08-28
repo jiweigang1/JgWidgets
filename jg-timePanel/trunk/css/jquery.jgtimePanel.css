@@ -153,6 +153,6 @@
 
 
 .time_selection_w .ui-datepicker-unselectable.ui-state-disabled .ui-state-default{
-	width:22 ! important ;
-	height:22 ! important ;
+	width:22px 	! important ;
+	height:22px ! important ;
 } 
