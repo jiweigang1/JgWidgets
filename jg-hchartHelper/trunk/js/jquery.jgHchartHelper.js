@@ -46,7 +46,8 @@
 			showWaitting	  :true,
 			windowResize	  :true,		
 			onReceiveData	  :null,
-			showApdexT        :false
+			showApdexT        :false,
+			animation		  :true
 			
 			
 		},
@@ -116,6 +117,8 @@
 		  this.options.onComplete			 = getValue(this.element,"onComplete",	 this.options.onComplete,"function");
 		  this.options.onReceiveData		 = getValue(this.element,"onReceiveData",this.options.onReceiveData,"function");
 		  this.options.showApdexT		 	 = getValue(this.element,"showApdexT",	 this.options.showApdexT,"boolean");
+		  this.options.animation		 	 = getValue(this.element,"animation",	 this.options.animation,"boolean");
+		  
 		},
 		//初始化url
 		_initUrl:function(){
@@ -490,6 +493,15 @@
 		if(opts.chartType){
 			os.chart.type   = opts.chartType;
 		} 
+		
+		os = $.extend(true,os,{
+			plotOptions:{
+					series:{
+						animation:opts.animation
+					}
+			}
+		});
+		
 		if(os.chart.type&&os.chart.type.toLowerCase()=="area"){
 			os = $.extend(true,{},os,{
 				 plotOptions:{
