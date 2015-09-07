@@ -867,7 +867,7 @@
 							}
 							return;
 						}
-						if(!chart.series||chart.series.length==0){
+						if((!chart.series||chart.series.length==0)||(chart.series.length==1&&(!chart.series[0].data||chart.series[0].data.length==0) )){
 							self._showErr("暂无数据！");	
 							return;
 						}
