@@ -10,7 +10,7 @@
  $(function(){
   $.widget("jgWidgets.jgScrollbar", {
         options: {
-				wheelSpeed: 10,
+				wheelSpeed: 2,
 				wheelPropagation: false,
 				//Ê¹ÓÃ¹öÂÖ
 				usemouseWheel:true,
@@ -444,7 +444,7 @@
 	  
 	 _bindMouseWheelHandler : function () {
         var self = this;
-        this._opts.wheelSpeed /= 10;
+        
 
         var shouldPrevent = false;
         this._$this.bind('mousewheel', function (e, deprecatedDelta, deprecatedDeltaX, deprecatedDeltaY) {
