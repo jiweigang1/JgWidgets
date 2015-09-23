@@ -14,6 +14,8 @@
         options: {
 			direction:"top",
 			autoShowFirst:true,
+			//默认打开的card
+			defaultShow:null,
             onShow:null
         },
 		_create:function(){
@@ -23,21 +25,24 @@
 			this.element.addClass("jg-card-doc");
 			this._initOptions();
 			var $cards = this.element.find(">div").addClass("jg-card");
-				
-			if(this.options.autoShowFirst){
-				$cards.hide();
-				this.open($cards.eq(0).attr("cardId"));
+			if(!this.options.defaultShow){	
+				if(this.options.autoShowFirst){
+					$cards.hide();
+					this.open($cards.eq(0).attr("cardId"));
+				}else{
+					$cards.eq(0).addClass("jg-card-open").show();
+					$cards.not(":first").hide();
+				}
 			}else{
-				$cards.eq(0).addClass("jg-card-open").show();
-				$cards.not(":first").hide();
+				$cards.hide();
+				this.open(this.options.defaultShow,false);
 			}
-			
 		},
 		_initOptions:function(){
 			 this.options.direction 	 = getValue(this.element,"direction"	,this.options.direction);
 			 this.options.autoShowFirst  = getValue(this.element,"autoShowFirst",this.options.autoShowFirst,"boolean");
-			 
-			 this.options.onShow  	 = getValue(this.element,"onShow"	,this.options.onShow,"function");
+			 this.options.defaultShow    = getValue(this.element,"defaultShow"	,this.options.defaultShow);	
+			 this.options.onShow  	 	 = getValue(this.element,"onShow"		,this.options.onShow,"function");
 		},
 		/**
 		  cardId  	: 打开的card 的 id
