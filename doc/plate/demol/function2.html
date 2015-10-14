@@ -6,7 +6,7 @@
 
 	<input  class="plate-button" value="打开黑色" target="#test_plate" type="button" pid="black"  >
 	<input  class="plate-button" value="返回"     target="#test_plate" type="button" action="close" >
-	<div  id="test_plate" class="plate" style="width:500px" onOpen="onOpen" onClose="onClose" >
+	<div  id="test_plate" class="plate" style="width:500px" >
 		<div pid="red" style="background-color:red;height:200px" >
 			这是红色的
 		</div>
@@ -22,15 +22,31 @@
 		
 	</div>
 	<div>
-		上面的哥们要自适应高度
+		移动的时候自动保持原有的高度
+	</div>
+	<div class="text-content" >
+		 <div>源码</div>
+		 <textarea class="code" type="text" style="height:600px" >
+<div  id="test_plate" class="plate" style="width:500px" >
+	......
+</div>
+
+$.jgInit(function($content){
+	$content.find("#test_plate").on("onOpen",function(event,$openPanel,$closePanel){
+		$.jgAlert("打开的plate的pid为"+$openPanel.attr("pid"));
+	}).on("onClose",function(event,$closePanel,$openPanel){
+		$.jgAlert("关闭的plate的pid为"+$closePanel.attr("pid"));
+	})
+});
+		 </textarea>	
 	</div>
 </div>
 <script>
-$.jgReady(function($page){
-	$page.find("#test_plate").on("onOpen",function(event,$content){
-		$.jgAlert("打开的plate的pid为"+$content.attr("pid"));
-	}).on("onClose",function(event,$content){
-		$.jgAlert("关闭的plate的pid为"+$content.attr("pid"));
+$.jgInit(function($content){
+	$content.find("#test_plate").on("onOpen",function(event,$openPanel,$closePanel){
+		$.jgAlert("打开的plate的pid为"+$openPanel.attr("pid"));
+	}).on("onClose",function(event,$closePanel,$openPanel){
+		$.jgAlert("关闭的plate的pid为"+$closePanel.attr("pid"));
 	})
 });
 </script>

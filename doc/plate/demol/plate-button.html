@@ -1,0 +1,71 @@
+﻿<div class="panel-content-wrapper">
+
+	<div class="text-content" >
+		这种注册事件的方式是写在标签上的
+	</div>
+
+	<input  class="plate-button" value="打开黑色" target="#test_plate" type="button" pid="black"  >
+	<input  class="plate-button" value="返回"     target="#test_plate" type="button" action="close" >
+	<div  id="test_plate" class="plate" style="width:500px" onOpen="onOpen" onClose="onClose" >
+		<div pid="red" style="background-color:red;height:200px" >
+			这是红色的
+		</div>
+		<div pid="black" style="background-color:black;height:400px;display:none">
+			<input class="plate-button"  value="返回" type="button"  action="close" >
+			<input class="plate-button"  value="打开blue" type="button"  action="open" pid="blue" ></br>
+			这是黑色的
+		</div>
+		<div pid="blue" style="background-color:blue;height:200px;display:none" >
+			<input class="plate-button"  value="返回" type="button"  action="close" ></br>
+			这是蓝色的
+		</div>
+		
+	</div>
+	<div>
+		移动的时候自动保持原有的高度
+	</div>
+	<div class="text-content" >
+		 <div>源码</div>
+		 <textarea class="code" type="text" style="height:700px" >
+
+<input  class="plate-button" value="打开黑色" target="#test_plate" type="button" pid="black"  >
+<input  class="plate-button" value="返回"     target="#test_plate" type="button" action="close" >
+<div  id="test_plate" class="plate" style="width:500px" onOpen="onOpen" onClose="onClose" >
+	<div pid="red" style="background-color:red;height:200px" >
+		这是红色的
+	</div>
+	<div pid="black" style="background-color:black;height:400px;display:none">
+		<input class="plate-button"  value="返回" type="button"  action="close" >
+		<input class="plate-button"  value="打开blue" type="button"  action="open" pid="blue" ></br>
+		这是黑色的
+	</div>
+	<div pid="blue" style="background-color:blue;height:200px;display:none" >
+		<input class="plate-button"  value="返回" type="button"  action="close" ></br>
+		这是蓝色的
+	</div>
+	
+</div>
+		 
+		 </textarea>
+		 
+		 
+	</br>
+	</br>
+	</br>
+	例子标签</br> 
+	 < input  class="plate-button"  value="打开黑色" target="#test_plate" type="button" pid="black"  ></br> 
+	</br> 
+     控制一个Plate可以直接通过标签控制，减少代码的编写</br></br>
+	 对一个元素加上 class="plate-button" 属性，UI会自动识别这个元素为 plate button</br>
+	 
+	 </br>
+	 指定 target="" 例子 target="#test_plate" target内容指定控制的plate，为css选择器。</br>
+	 如果 plate button 的标签是在一个 plate 标签里可以不配置target属性，其会查找父标签指定其为target </br>	
+	 </br>
+	 指定 action=(open,close)  指定其操作行为打开指定 plate选项卡。</br>
+	 &nbsp&nbsp&nbsp 如果是使用open 方法 指定pid="" 打开某个plate选项卡</br>  	
+	 
+			 
+	</div>
+	
+</div>

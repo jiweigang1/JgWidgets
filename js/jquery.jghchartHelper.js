@@ -46,7 +46,9 @@
 			showWaitting	  :true,
 			windowResize	  :true,		
 			onReceiveData	  :null,
-			showApdexT        :false
+			showApdexT        :false,
+			animation		  :true,
+			forceLoadForm	  :false  	
 			
 			
 		},
@@ -116,6 +118,9 @@
 		  this.options.onComplete			 = getValue(this.element,"onComplete",	 this.options.onComplete,"function");
 		  this.options.onReceiveData		 = getValue(this.element,"onReceiveData",this.options.onReceiveData,"function");
 		  this.options.showApdexT		 	 = getValue(this.element,"showApdexT",	 this.options.showApdexT,"boolean");
+		  this.options.animation		 	 = getValue(this.element,"animation",	 this.options.animation,"boolean");
+		  this.options.forceLoadForm		 = getValue(this.element,"forceLoadForm",this.options.forceLoadForm,"boolean");
+		  
 		},
 		//初始化url
 		_initUrl:function(){
@@ -127,32 +132,25 @@
 			}
 		},
 		
-		//初始化参数
+		//初始化Form 的绑定事件
 		_initParams:function(r){
 			var self = this;
-			//防止重绘时重复表单
-			if(r){
-				this.setting.data=[];
-			}
-			if(this.options.params){
-				this.setting.data = serializeArrayObject(this.options.params);
-			}
 			if(this.options.forms){
-			var $fs = this._getForms();
-				if($fs.length>0){
-					this.setting.data  = $.merge(this.setting.data,$fs.serializeArray());
-					if(this.options.autoRefresh&&!r){
-						$fs.on("change."+this._UUID,function(e,type){
-							if(self.$el.is(":visible")){
-								if("updateChartData"==type){
-									self.updateChartData();
-								}else{
-									self.reDraw();
+				var $fs = this._getForms();
+					if($fs.length>0){
+						if(this.options.autoRefresh&&!r){
+							$fs.off("change."+this._UUID);
+							$fs.on("change."+this._UUID,function(e,type){
+								if(self.$el.is(":visible")){
+									if("updateChartData"==type){
+										self.updateChartData();
+									}else{
+										self.reDraw();
+									}
 								}
-							}
-						});
+							});
+						}
 					}
-				}
 			}
 	},
 	_getFromByGroup:function(group){
@@ -176,7 +174,9 @@
 					group:""
 				]
 				*/
-				
+				if(this.options.forceLoadForm){
+					this._settings.forms = null;
+				}
 				if(!this._settings.forms){
 					this._settings.forms = [];
 					$.each(this.element[0].attributes,function(){
@@ -490,6 +490,15 @@
 		if(opts.chartType){
 			os.chart.type   = opts.chartType;
 		} 
+		
+		os = $.extend(true,os,{
+			plotOptions:{
+					series:{
+						animation:opts.animation
+					}
+			}
+		});
+		
 		if(os.chart.type&&os.chart.type.toLowerCase()=="area"){
 			os = $.extend(true,{},os,{
 				 plotOptions:{
@@ -855,7 +864,7 @@
 							}
 							return;
 						}
-						if(!chart.series||chart.series.length==0){
+						if((!chart.series||chart.series.length==0)||(chart.series.length==1&&(!chart.series[0].data||chart.series[0].data.length==0) )){
 							self._showErr("暂无数据！");	
 							return;
 						}
@@ -935,7 +944,7 @@
 		});
 	},
 	getDataString:function(){
-		var data = this.setting.data;
+		var data = this._getData();
 		var r  = {};
 		if(data&&data.length>0){
 			$.each(data,function(k,v){

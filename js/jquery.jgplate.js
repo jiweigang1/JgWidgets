@@ -65,9 +65,9 @@
 				   self.element.css("height","auto");
 				}
 				self._addActivePlate($plate.attr("plateNo"));
-				self._fireEvent("onOpen",[$plate]);
+				self._fireEvent("onOpen",[$plate,$activePlate]);
 				if(onComplete&&$.isFunction(onComplete)){
-					onComplete.call($plate,$plate);
+					onComplete.call($plate,$plate,$activePlate);
 				}
 			});
 			
@@ -142,13 +142,13 @@
 						self.element.css("height","auto");
 					 }
 					 try{
-						self._fireEvent("onClose",[$plate])
+						self._fireEvent("onClose",[$plate,$preplate])
 					 }catch(e){
 					 
 					 }
 					 try{
 						if(onComplete&&$.isFunction(onComplete)){
-							onComplete.call($plate,$plate);
+							onComplete.call($plate,$plate,$preplate);
 						}
 					 }catch(e){
 					 

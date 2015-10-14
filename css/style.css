@@ -183,6 +183,14 @@ ul{
 	padding:10px;
 	margin:10px;
 }
+.text-content textarea.code{
+    width:100%;
+	background:#fafafa;
+	font-size:16px;
+	line-height:150%;
+	border-width:0px;
+}
+
 .footer ul li{
 	display: block;
     float: left;
