@@ -65,9 +65,9 @@
 				   self.element.css("height","auto");
 				}
 				self._addActivePlate($plate.attr("plateNo"));
-				self._fireEvent("onOpen",[$plate]);
+				self._fireEvent("onOpen",[$plate,$activePlate]);
 				if(onComplete&&$.isFunction(onComplete)){
-					onComplete.call($plate,$plate);
+					onComplete.call($plate,$plate,$activePlate);
 				}
 			});
 			
