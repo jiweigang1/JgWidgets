@@ -19,7 +19,8 @@
 			this._settings={
 				//自定义高度
 				autoHeight	:true,
-				activePlates:[]
+				activePlates:[],
+				commands	:[]//{type:open|close,}
 			};
 			this._initOptions();
 			this.element.addClass("jg-plate-doc");
@@ -30,8 +31,34 @@
 			.addClass("jg-plate").not(":first").hide();
 			this._addActivePlate(0);
 		},
+		_addCommand:function(command){
+			this._settings.commands.push(command);
+			if(this._settings.commands,length==1){
+			  this._doCommand();
+			}
+		},
+		_doCommand:function(){
+		  	var command = this._settings.commands.shift();
+			if(!command){
+			   return;
+			}
+			if(command.type=="open"){
+				this._open(command.pid,command.onComplete);		
+			}else if(command.type=="close"){
+				this._close(command.onComplete)	
+			}
+		},
+		_stopAnimate:function(){
+		  var $divs = this.element.find('>div[pid]');
+		  if($.fn.velocity){
+			 $divs.velocity("finish");
+		  }else{
+			 $divs.stop(false,true);
+		  }
+		},
 		open:function(pid,onComplete){
-			var self = this;
+			this._stopAnimate();
+			var self   = this;
 			var $plate = this.element.find('>div[pid="'+pid+'"]');
 			if($plate.length==0){
 				return;
@@ -43,9 +70,6 @@
 				}
 				return;
 			}
-			
-			
-			
 			var $activePlate = this._getCurrentActivePlate();
 			var ewidth = this.element.width();
 			var method = "animate";
@@ -115,7 +139,8 @@
  		  }
 		},
 		close:function(onComplete){
-			var self = this;
+			 this._stopAnimate();
+			 var self 	= this;
 			 var $plate = this._getCurrentActivePlate();
 				if($plate.length==0){
 					return;
@@ -144,14 +169,18 @@
 					 try{
 						self._fireEvent("onClose",[$plate,$preplate])
 					 }catch(e){
-					 
+						if(console){
+							console.log(e.message)
+						}
 					 }
 					 try{
 						if(onComplete&&$.isFunction(onComplete)){
 							onComplete.call($plate,$plate,$preplate);
 						}
 					 }catch(e){
-					 
+						if(console){
+							console.log(e.message)
+						}
 					 }
 				});
 		}
