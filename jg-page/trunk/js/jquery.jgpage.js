@@ -326,6 +326,7 @@
 			remove	= toBoolean(remove,true);
 			var $oldPage = this._settings.historyPage.pop();
 			if(!$oldPage||$oldPage.length==0){
+				this._settings.waitting = false;
 				return;
 			}
             var $el = this.element;

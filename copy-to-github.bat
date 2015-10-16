@@ -5,6 +5,11 @@ copy F:\ApacheDocs\JgWidgets\jg-accordion\trunk\js	F:\Svn\Github\Javascript\JgWi
 copy F:\ApacheDocs\JgWidgets\jg-accordion\trunk\css	F:\Svn\Github\Javascript\JgWidgets\css\
 copy F:\ApacheDocs\JgWidgets\jg-accordion\trunk\css\images	F:\Svn\Github\Javascript\JgWidgets\css\images
 
+copy F:\ApacheDocs\JgWidgets\jg-plate\js	F:\Svn\Github\Javascript\JgWidgets\js\
+copy F:\ApacheDocs\JgWidgets\jg-plate\css	F:\Svn\Github\Javascript\JgWidgets\css\
+
+
+
 copy F:\ApacheDocs\JgWidgets\jg-tabs\trunk\jg-tabs\js\jquery.jgtabs.js	F:\Svn\Github\Javascript\JgWidgets\js\
 copy F:\ApacheDocs\JgWidgets\jg-tabs\trunk\jg-tabs\css					F:\Svn\Github\Javascript\JgWidgets\css\
 copy F:\ApacheDocs\JgWidgets\jg-tabs\trunk\jg-tabs\css\images			F:\Svn\Github\Javascript\JgWidgets\css\images
@@ -16,7 +21,7 @@ copy F:\ApacheDocs\JgWidgets\jg-hchartHelper\trunk\css\images			F:\Svn\Github\Ja
 
 copy F:\ApacheDocs\JgWidgets\jg-select\trunk\js\jquery.jgselect.js		F:\Svn\Github\Javascript\JgWidgets\js\
 copy F:\ApacheDocs\JgWidgets\jg-select\trunk\css							F:\Svn\Github\Javascript\JgWidgets\css\
-copy F:\ApacheDocs\JgWidgets\jg-select\trunk\css\images					F:\Svn\Github\Javascript\JgWidgets\css\images\
+
 
 copy F:\ApacheDocs\JgWidgets\jg-window\trunk\js\jquery.jgwindow.js		F:\Svn\Github\Javascript\JgWidgets\js\
 copy F:\ApacheDocs\JgWidgets\jg-window\trunk\css							F:\Svn\Github\Javascript\JgWidgets\css\
@@ -26,7 +31,7 @@ copy F:\ApacheDocs\JgWidgets\jg-card\trunk\js\jquery.jgcard.js			F:\Svn\Github\J
 
 copy F:\ApacheDocs\JgWidgets\jg-loader\trunk\js\jquery.jgloader.js		F:\Svn\Github\Javascript\JgWidgets\js\
 
-copy F:\ApacheDocs\JgWidgets\jgchart\jquery.jgchart.js					F:\Svn\Github\Javascript\JgWidgets\js\
+copy F:\ApacheDocs\JgWidgets\jg-chart				F:\Svn\Github\Javascript\JgWidgets\js\
 
 
 

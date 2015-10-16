@@ -214,7 +214,11 @@ $.JgWidgets = {
 					if(data.status==200){
 						var $component = $form.parents(".jg-component:first");
 						if($component.is(".jg-page-doc")){
-							$component.jgPage("goBack");
+							if($form.attr("reloadUrl")) {
+								$component.jgPage("reload", {url: $form.attr("reloadUrl")});
+							}else{
+								$component.jgPage("goBack");
+							}
 						}else if($component.is(".jg-window")){
 							$component.jgWindow("destroy");
 						}
