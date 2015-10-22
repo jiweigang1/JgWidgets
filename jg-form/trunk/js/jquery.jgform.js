@@ -173,6 +173,9 @@
 			if(this.options.validate){
 				this._initValidata();
 			}
+			this._settings = {
+				waitting:false
+			}
 		},
 		_initParams:function(){
 			var $el = this.element;
@@ -208,19 +211,19 @@
 				this.options.onError = error;	
 			}
 			
-			$el.bind("complete",function(event,data){
+			$el.on("complete",function(event,data){
 				if(self.options.onComplete){
 					self.options.onComplete.call(null,$el,data);
 				}
 			});
 			
-			$el.bind("success",function(event,data){
+			$el.on("success",function(event,data){
 				if(self.options.onSuccess){
 					self.options.onSuccess.call(null,$el,data);
 				}
 			});
 			
-			$el.bind("error",function(event,data){
+			$el.on("error",function(event,data){
 				if(self.options.onError){
 					self.options.onError.call(null,$el,data);
 				}
@@ -234,19 +237,24 @@
 					self._validSubmit();
 					return false;
 				}
+				if(self._settings.waitting){
+				   return false;	
+				}else{
+					self._settings.waitting = true;
+				}
 				
 				$.ajax({
 					type:self.options.method,
 					url:self.options.action,
 					data:$el.serializeArray(),
 					cache:false,
-					success:function(data, textStatus, jqXHR){
-						self._resetSubmitRule();
-						$el.trigger("success",[data])
-					},
-					error:function(){
-						self._validSubmit();
-					}
+				}).done(function(data, textStatus, jqXHR){
+					self._resetSubmitRule();
+					$el.trigger("success",[data])
+				}).fail(function(){
+				    self._validSubmit();
+				}).always(function(){
+					self._settings.waitting = false;
 				});
 				return false;
 			});

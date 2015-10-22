@@ -14,25 +14,31 @@
 				},opened:function($page){
 						$page.find(".pageButton").jgPageButton();
 				}});
+				/**
 				$("#open").on("click",function(){
 					$(".jgpage").jgPage("openPage","1.html",null,false);
 				})
+				**/
+				
 				$("#goBack").on("click",function(){
 					$(".jgpage").jgPage("goBack");
 				});
 				$("#goBackReload").on("click",function(){
 					$(".jgpage").jgPage("goBack",true);
 				})
+				
+				$(".page-button").jgPageButton();
+				
 			});
 			
 			
 		</script>
     </head>
     <body>
-		<input id="open" clearCache="false"	 type="button" value="打开" >
+		<input id="open" clearCache="false" class="page-button"	target="#mainPage" action="openPage" type="button" url="1.html" value="打开" autoShowBackButton="false" >
 		<input id="goBack" 		 type="button" value="返回" >
 		<input id="goBackReload" type="button" value="返回重新加载" >
-    	<div  class="jgpage" style="width:400px;height:200px"  >
+    	<div  class="jgpage" style="width:400px;height:200px" id="mainPage" >
 				<div>adasdasdadas</div>
 		</div>
 		

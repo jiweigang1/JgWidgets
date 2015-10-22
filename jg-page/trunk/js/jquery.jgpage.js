@@ -39,6 +39,7 @@
 			this.options.ajaxType	 	= getValue(this.element,"ajaxType"   			,this.options.ajaxType);
 			this.options.loaddingTimeout= getValue(this.element,"loaddingTimeout"   	,this.options.loaddingTimeout,"int");
 			this.options.toggleTime		= getValue(this.element,"toggleTime"   			,this.options.toggleTime	 ,"int");
+			this.options.autoShowBackButton		= getValue(this.element,"autoShowBackButton"   			,this.options.autoShowBackButton	 ,"boolean");
 			
 		},
 		_fireEvent:function(name,params){
@@ -142,7 +143,7 @@
 				$page.append('<div class="jg-page-back-button" '+r+' >返回</div>');
 			}
 		},
-        openPage: function (url,params,clearCache,direction,animation,pageNo,reloadOnBack) {
+        openPage: function (url,params,clearCache,direction,animation,pageNo,reloadOnBack,autoShowBackButton) {
 			if(arguments.length==1&&typeof arguments[0]==="object" ){
 				params		= arguments[0].params;
 				clearCache	= arguments[0].clearCache;
@@ -151,7 +152,12 @@
 				pageNo		= arguments[0].pageNo;
 				//返回时刷新，控制在默认返回按钮上
 				reloadOnBack= arguments[0].reloadOnBack;
+				autoShowBackButton=arguments[0].autoShowBackButton;
 				url 		= arguments[0].url;
+			}
+			
+			if(typeof autoShowBackButton ==="undefined"){
+			   autoShowBackButton = this.options.autoShowBackButton; 	
 			}
 		
 			if(this._settings.waitting){
@@ -182,7 +188,7 @@
             }
 	
 			this.element.append($page);
-            var pageData = {url: url, params: params, pageNo: pageNo,backButton:{reloadOnBack:reloadOnBack}};
+            var pageData = {url: url, params: params, pageNo: pageNo,autoShowBackButton:autoShowBackButton,backButton:{reloadOnBack:reloadOnBack}};
             $page.data("pageData",pageData);	
             var $el = this.element;
             if (self.options.beforeOpen) {
@@ -230,7 +236,7 @@
 								}
 							}
 							
-							if(self.options.autoShowBackButton){
+							if(autoShowBackButton){
 								self._addBackButton($page,reloadOnBack);
 							}
 							
@@ -302,7 +308,9 @@
 					}
 					$oldPage.trigger("onload",[$oldPage]);
 					$oldPage.trigger("onOpen",[$oldPage]);
-					if(self.options.autoShowBackButton){
+					var oldPageData = $oldPage.data("pageData");
+					
+					if(oldPageData.autoShowBackButton){
 						self._addBackButton($oldPage,pageData.backButton.reloadOnBack);
 					}
 			},true);
@@ -387,7 +395,8 @@
 							}
 							self._settings.waitting   = false;
 							self._settings.activePage = $oldPage;
-							if(self.options.autoShowBackButton){
+							var oldData = $oldPage.data("pageData");
+							if(oldData.autoShowBackButton){
 								self._addBackButton($oldPage,pageData.backButton.reloadOnBack);
 							}
 					});
@@ -399,12 +408,44 @@
 								self._settings.activePage.remove();
 							}
 							self._settings.activePage = $oldPage;
+							var oldData = $oldPage.data("pageData");
+							if(oldData.autoShowBackButton){
+								self._addBackButton($oldPage,pageData.backButton.reloadOnBack);
+							}
 							self._settings.waitting   = false;
 				});
 			}
 			
         },
-		
+		_triggerEvent:function($el,params){
+			try{
+				$el.trigger($el,params);
+			}catch(e){
+				if(console){
+				   console.log(e.message)	
+				}
+			}
+		},
+		_fireEvent:function(eventType,context,params){
+			
+			if(this.options[eventType]){
+				try{
+					this.options[eventType].apply(context,params);
+				}catch(e){
+					if(console){
+					   console.log(e.message)	
+					}
+				}
+			}
+			
+		    try{
+				 this.element.trigger(eventType,params);
+			}catch(e){
+				if(console){
+				   console.log(e.message)	
+				}
+			}
+		},
 		_toggle:function(toShow,toHide,direction,fn,animation){
 			var self = this;
 			if(!direction){
@@ -700,6 +741,15 @@
 					params.push($this.attr("animation"));
 					params.push($this.attr("pageNo"));
 					params.push($this.attr("reloadOnBack"));
+					var autoShowBackButton ;
+					var at = $this.attr("autoShowBackButton");
+					if(at ==="true" ){
+						autoShowBackButton = true;
+					}else if(at === "false"){
+						autoShowBackButton = false;
+					}
+					params.push(autoShowBackButton);
+					
 					
 				}else if(action=="reload"){
 					
