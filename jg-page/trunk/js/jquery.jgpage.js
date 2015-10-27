@@ -410,14 +410,14 @@
 							self._settings.activePage = $oldPage;
 							var oldData = $oldPage.data("pageData");
 							if(oldData.autoShowBackButton){
-								self._addBackButton($oldPage,pageData.backButton.reloadOnBack);
+								self._addBackButton($oldPage,oldData.backButton.reloadOnBack);
 							}
 							self._settings.waitting   = false;
 				});
 			}
 			
         },
-		_triggerEvent:function($el,params){
+		_triggerEvent:function($el,eventType,params){
 			try{
 				$el.trigger($el,params);
 			}catch(e){
