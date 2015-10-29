@@ -293,10 +293,10 @@
 			//this._showLoading(true);
 			this._ajaxLoad($oldPage,url,params,function(){
 					//self._hideLoading();
-					self.element.trigger("onOpen",$oldPage);
-					if (self.options.onOpen) {
-						self.options.onOpen.call(null, $oldPage);
+					if($.event_init){
+					   self._triggerEvent($oldPage,$.event_init,[$oldPage]);	
 					}
+					
 					if($.JgWidgets){
 						try{
 							$.JgWidgets._initContent($oldPage);
@@ -306,10 +306,18 @@
 							}
 						}
 					}
-					$oldPage.trigger("onload",[$oldPage]);
-					$oldPage.trigger("onOpen",[$oldPage]);
-					var oldPageData = $oldPage.data("pageData");
 					
+					if($.event_ready){
+					   self._triggerEvent($oldPage,$.event_ready,[$oldPage]);	
+					}
+					
+					self._triggerEvent(self.element,"onOpen",[$oldPage)]);
+					
+					self._fireEvent("onOpen",self.element,[$oldPage]);
+					
+					self._triggerEvent($oldPage,"onOpen",[$oldPage]);
+					
+					var oldPageData = $oldPage.data("pageData");
 					if(oldPageData.autoShowBackButton){
 						self._addBackButton($oldPage,pageData.backButton.reloadOnBack);
 					}
