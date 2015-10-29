@@ -311,7 +311,7 @@
 					   self._triggerEvent($oldPage,$.event_ready,[$oldPage]);	
 					}
 					
-					self._triggerEvent(self.element,"onOpen",[$oldPage)]);
+					self._triggerEvent(self.element,"onOpen",[$oldPage]);
 					
 					self._fireEvent("onOpen",self.element,[$oldPage]);
 					
