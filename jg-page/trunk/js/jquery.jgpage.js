@@ -42,12 +42,6 @@
 			this.options.autoShowBackButton		= getValue(this.element,"autoShowBackButton"   			,this.options.autoShowBackButton	 ,"boolean");
 			
 		},
-		_fireEvent:function(name,params){
-			if(this.options[name]){
-				this.options[name].apply(this,params);
-			}
-			this.element.trigger(name,params);
-		},
 		enableAutoShowBackButton:function(){
 			var self = this;
 			this.element.off("click.jg-page-auto-show-back-button").on("click.jg-page-auto-show-back-button",".jg-page-back-button",function(){
@@ -310,9 +304,7 @@
 					if($.event_ready){
 					   self._triggerEvent($oldPage,$.event_ready,[$oldPage]);	
 					}
-					
-					self._triggerEvent(self.element,"onOpen",[$oldPage]);
-					
+							
 					self._fireEvent("onOpen",self.element,[$oldPage]);
 					
 					self._triggerEvent($oldPage,"onOpen",[$oldPage]);
@@ -376,6 +368,11 @@
 			if(reload){
             	var pageData = $oldPage.data("pageData");
 				this._ajaxLoad($oldPage,pageData.url,pageData.params,function(){
+					
+					if($.event_init){
+					   self._triggerEvent($oldPage,$.event_init,[$oldPage]);	
+					}	
+				
 					if($.JgWidgets){
 							try{
 								$.JgWidgets._initContent($oldPage,$.JgWidgets.g_before);
@@ -395,9 +392,17 @@
 									}
 								}
 							}
-							$oldPage.trigger("onload",[$oldPage]);
-							$oldPage.trigger("onOpen",[$oldPage]);
-							$el.trigger("onBack", [$(this).data("pageData")]);
+							
+							if($.event_ready){
+								self._triggerEvent($oldPage,$.event_ready,[$oldPage]);	
+							}
+							
+							self._fireEvent("onOpen",self.element,[$oldPage]);
+							
+							self._triggerEvent($oldPage,"onOpen",[$oldPage]);
+							
+							self._triggerEvent("onBack",[$(this).data("pageData")]);
+							
 							if(remove){
 								self._settings.activePage.remove();
 							}
@@ -427,7 +432,7 @@
         },
 		_triggerEvent:function($el,eventType,params){
 			try{
-				$el.trigger($el,params);
+				$el.trigger(eventType,params);
 			}catch(e){
 				if(console){
 				   console.log(e.message)	
