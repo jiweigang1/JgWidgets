@@ -273,17 +273,23 @@
 				url 		= arguments[0].url;
 			}
 			
-			
-			
 			var self = this;
 			var $oldPage =  this._settings.activePage;
 			if(!$oldPage||$oldPage.length==0){
 				return;
 			}
 			var pageData = $oldPage.data("pageData");
+			
 			if(!url){
 				url = pageData.url;
+			}else{
+				pageData.url = url;
 			}
+			
+			if(params){
+			    pageData.params = params;
+			}
+			
 			//this._showLoading(true);
 			this._ajaxLoad($oldPage,url,params,function(){
 					//self._hideLoading();
@@ -401,7 +407,7 @@
 							
 							self._triggerEvent($oldPage,"onOpen",[$oldPage]);
 							
-							self._triggerEvent("onBack",[$(this).data("pageData")]);
+							self._triggerEvent($oldPage,"onBack",[$(this).data("pageData")]);
 							
 							if(remove){
 								self._settings.activePage.remove();
