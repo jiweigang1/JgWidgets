@@ -909,8 +909,8 @@
 						
 						self._doSetEqMaxYValue();
 						self._setOtherChartsEqMaxYValue();
-								
-						
+					},
+					complete:function(){
 						if(self.setting.events.onComplete){
 							setTimeout(function(){
 							    try{	
@@ -919,10 +919,7 @@
 								
 								}
 							},1000);
-					   }
-					},
-					complete:function(){
-						
+					    }
 					}
 			   });
 	},
