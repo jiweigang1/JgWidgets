@@ -118,12 +118,21 @@
 		_removeCurrentActivePlate:function(){
 		  this._settings.activePlates.pop();
 		},
-		_getPreActivePlate:function(){
-		  if(this._settings.activePlates.length>1){
-			return this.element.find('>div[plateNo="'+this._settings.activePlates[this._settings.activePlates.length-2]+'"]');
-		  }else{
-			return $([]);
-		  }
+		_getPreActivePlate:function(plateId){
+			if(!plateId){
+				if(this._settings.activePlates.length>1){
+					return this.element.find('>div[plateNo="'+this._settings.activePlates[this._settings.activePlates.length-2]+'"]');
+			    }else{
+					return $([]);
+			    }
+			}else{
+				var $plate = this.element.find('>div[pid="'+plateId+'"]');
+				if($plate.length>0){
+					return $plate;
+				}else{
+					return $([]);
+				}
+			}
 		},
 		_adjustHeight:function($p1,$p2){
 		  if(this._settings.autoHeight){
@@ -138,7 +147,7 @@
 			 this.element.height(Math.max(h1,h2));
  		  }
 		},
-		close:function(onComplete){
+		close:function(onComplete,pid){
 			 this._stopAnimate();
 			 var self 	= this;
 			 var $plate = this._getCurrentActivePlate();
@@ -151,18 +160,23 @@
 						method = "velocity";
 					}
 				$plate.css({left:0});
-				var $preplate = this._getPreActivePlate();
+				var $preplate = this._getPreActivePlate(pid);
+					//alert($preplate.attr("pid"));
 				
 				this.element.addClass("jg-plate-animate")
 				if($preplate&&$preplate.length>0){
 					$preplate.show();
 				}
 				this._adjustHeight($plate,$preplate);
-				
+				//alert($plate.attr("pid"));
 				$plate[method].call($plate,{left:ewidth},this.options.toggleTime,function(){
 					 $plate.hide();
 					 self.element.removeClass("jg-plate-animate");
 					 self._removeCurrentActivePlate();
+					 if($preplate.length>0){
+						self._addActivePlate($preplate.attr("plateNo"));
+					 }
+					 
 					 if(self._settings.autoHeight){
 						self.element.css("height","auto");
 					 }
