@@ -361,13 +361,17 @@ $.widget( "jgWidgets.jgWindow", {
 					}
 					$.jgWindow[EVENT_HOLDER]=$dom;
 					if($.addEventHolder){
-						$.addEventHolder("onload",$dom);
+						$.addEventHolder($.event_init,$dom);
+						$.addEventHolder($.event_ready,$dom);
 					}
 					$dom.empty().append(data);
 					$.jgWindow[EVENT_HOLDER]=null;
+					
 					if($.removeEventHolder){
-						$.removeEventHolder("onload");
+						$.removeEventHolder($.event_init,$dom);
+						$.removeEventHolder($.event_ready,$dom);
 					}
+					
 					if(success&&$.isFunction(success)){
 						success.call(null,data)
 					}
@@ -386,6 +390,9 @@ $.widget( "jgWidgets.jgWindow", {
 		if(!this.options.iframe){
 			this._ajaxLoad($content,url,params,function(){
 				$content.css("opacity",0);
+				if($.event_init){
+				    self._triggerEvent($content,$.event_init,[$content]);	
+				}
 				if($.JgWidgets){
 					try{
 						$.JgWidgets._initContent($content,$.JgWidgets.g_before);
@@ -408,12 +415,43 @@ $.widget( "jgWidgets.jgWindow", {
 						}
 					}
 				}
-				$content.trigger("onload",[$content]);
-				$content.trigger("onOpen",[$content]);
+				if($.event_ready){
+				    self._triggerEvent($content,$.event_init,[$content]);	
+				}
+				self._triggerEvent($content,"onOpen",[$content]);
 				self._adjustContentContainer();
 			});
 		}else{
 			$content.append('<iframe class="jg-window-iframe"  frameborder="0" src="'+this.options.url+'"></iframe>')
+		}
+	},
+	_triggerEvent:function($el,eventType,params){
+			try{
+				$el.trigger(eventType,params);
+			}catch(e){
+				if(console){
+				   console.log(e.message)	
+				}
+			}
+	},
+	_fireEvent:function(eventType,context,params){
+		
+		if(this.options[eventType]){
+			try{
+				this.options[eventType].apply(context,params);
+			}catch(e){
+				if(console){
+				   console.log(e.message)	
+				}
+			}
+		}
+		
+		try{
+			 this.element.trigger(eventType,params);
+		}catch(e){
+			if(console){
+			   console.log(e.message)	
+			}
 		}
 	},
 	getWid:function(){
