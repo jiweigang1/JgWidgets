@@ -581,32 +581,39 @@
 		}
 	},
 	//设置几个图相等的Y轴最大值
-	setEqMaxYValue:function(id,y){
-		this.setting.eqValues[id] = y;
+	//data {ymax:,ytickInterval:}
+	setEqMaxYValue:function(id,data){
+		this.setting.eqValues[id] = data;
 		if(this.highChart){
 		   this._doSetEqMaxYValue();
 		}
 	},
 	_setOtherChartsEqMaxYValue:function(){
+	 var okkk = this.highChart.yAxis[0];
 	  if(this.highChart){
 		var group = this.options.eqYGroup;
 		if(group){
 			var $charts =  $('div.chart[eqYGroup="'+group+'"]').not(this.element).jgHchartHelper();
-				$charts.jgHchartHelper("setEqMaxYValue",this._UUID,this.highChart.yAxis[0].max)
+				$charts.jgHchartHelper("setEqMaxYValue",this._UUID,{ymax:this.highChart.yAxis[0].max,ytickInterval:this.highChart.yAxis[0].tickInterval})
 		}
 	  }
 	},
 	_doSetEqMaxYValue:function(){
 		if(this.highChart){
 			var oldMaxY = this.highChart.yAxis[0].max;
-			var maxY = 0;
+			var data;
 			for(var id in this.setting.eqValues){
-				if(this.setting.eqValues[id]>this.highChart.yAxis[0].max){
-					maxY = this.setting.eqValues[id];
+				if(this.setting.eqValues[id].ymax>this.highChart.yAxis[0].max){
+					data = this.setting.eqValues[id];
 				}
 			}
-			if(maxY > oldMaxY){
-				this.highChart.yAxis[0].setExtremes(this.highChart.yAxis[0].min,maxY,true,false);
+			if(data&& data.ymax > oldMaxY){
+				//alert(data.ytickInterval+10)
+				this.highChart.yAxis[0].update({
+												 tickInterval:data.ytickInterval
+											   });
+				this.highChart.yAxis[0].setExtremes(this.highChart.yAxis[0].min,data.ymax,true,false);
+				
 			}
 		}
 	},
