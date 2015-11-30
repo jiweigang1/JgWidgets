@@ -603,11 +603,11 @@
 			var oldMaxY = this.highChart.yAxis[0].max;
 			var data;
 			for(var id in this.setting.eqValues){
-				if(this.setting.eqValues[id].ymax>this.highChart.yAxis[0].max){
+				if(this.setting.eqValues[id].ymax>this.highChart.yAxis[0].max ||(this.setting.eqValues[id].ymax==this.highChart.yAxis[0].max && this.setting.eqValues[id].ytickInterval!= this.highChart.yAxis[0].tickInterval ) ){
 					data = this.setting.eqValues[id];
 				}
 			}
-			if(data&& data.ymax > oldMaxY){
+			if(data&& data.ymax >= oldMaxY){
 				//alert(data.ytickInterval+10)
 				this.highChart.yAxis[0].update({
 												 tickInterval:data.ytickInterval
