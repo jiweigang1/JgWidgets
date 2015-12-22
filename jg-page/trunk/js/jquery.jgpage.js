@@ -113,6 +113,7 @@
 			var $page = this._createPage(pageNo);
 				this.element.append($page);
 				$page.append(html);
+				$page.data("pageData",{orginPage:true})
 				if (self._settings.activePage) {
                     self._addHistory(self._settings.activePage);
                 }
@@ -182,13 +183,17 @@
             }
 	
 			this.element.append($page);
-            var pageData = {url: url, params: params, pageNo: pageNo,autoShowBackButton:autoShowBackButton,backButton:{reloadOnBack:reloadOnBack}};
+            var pageData = {url: url, params: params, pageNo: pageNo,autoShowBackButton:autoShowBackButton,backButton:{reloadOnBack:reloadOnBack},orginPage:false};
             $page.data("pageData",pageData);	
             var $el = this.element;
-            if (self.options.beforeOpen) {
-                self.options.beforeOpen.call(null, $page, this);
-            }
-            $el.trigger("beforeOpen", pageData);
+           
+			this._fireEvent("beforeOpen",this,[$page]);
+			this._triggerEvent($el,"beforeOpen",[$el,pageData]);
+			if(self._settings.activePage&&self._settings.activePage.length>0){
+				this._triggerEvent(self._settings.activePage,"beforeClose",[self._settings.activePage]);
+			} 
+			
+			
             if (!params) {
                 params = {};
             }
@@ -370,9 +375,8 @@
 					}
 				}
 			}
-            
-			if(reload){
-            	var pageData = $oldPage.data("pageData");
+            var pageData = $oldPage.data("pageData");
+			if(reload&&!pageData.orginPage){
 				this._ajaxLoad($oldPage,pageData.url,pageData.params,function(){
 					
 					if($.event_init){
