@@ -57,7 +57,8 @@
 				logoUrl	   : null,
 				location   : "china",
 				chartAlign : null,
-				windowResize:true
+				windowResize:true,
+				onComplete : null
 			 },
 			 _create:function(){
 				var self = this;
@@ -77,6 +78,10 @@
 				this.options.logoUrl 	 = getValue(this.element,"logoUrl",this.options.logoUrl);
 				this.options.location 	 = getValue(this.element,"location",this.options.location);
 				this.options.chartAlign  = getValue(this.element,"chartAlign",this.options.chartAlign);
+				
+				this.options.onComplete	 = getValue(this.element,"onComplete",	 this.options.onComplete,"function");
+				
+				
 				
 				this._settings = {};
 				this._settings.UUID  = "JgMap"+new Date().getTime();
@@ -495,10 +500,12 @@
 								if(fn&&$.isFunction(fn)){
 									fn.call(null,true);
 								}	 
+								self._fireEvent("onComplete",self,[self]);
 						}).fail(function(){
 							if(fn&&$.isFunction(fn)){
-									fn.call(null,false);
+								fn.call(null,false);
 							}
+							self._fireEvent("onComplete",self,[self]);
 						});
 				}else{
 					if(self._settings.dataGroup){
@@ -544,6 +551,37 @@
 					this._settings.tooltip = new Tooltip();
 				}
 				this._settings.tooltip.init(this._settings.$elc);
+			},
+	
+	
+			_triggerEvent:function($el,eventType,params){
+				try{
+					$el.trigger(eventType,params);
+				}catch(e){
+					if(console){
+					   console.log(e.message)	
+					}
+				}
+			},
+			
+			_fireEvent:function(eventType,context,params){
+				if(this.options[eventType]){
+					try{
+						this.options[eventType].apply(context,params);
+					}catch(e){
+						if(console){
+						   console.log(e.message)	
+						}
+					}
+				}
+				
+				try{
+					 this.element.trigger(eventType,params);
+				}catch(e){
+					if(console){
+					   console.log(e.message)	
+					}
+				}
 			},
 	
 			//缩放控制

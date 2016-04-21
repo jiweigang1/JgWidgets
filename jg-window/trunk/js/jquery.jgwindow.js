@@ -416,7 +416,7 @@ $.widget( "jgWidgets.jgWindow", {
 					}
 				}
 				if($.event_ready){
-				    self._triggerEvent($content,$.event_init,[$content]);	
+				    self._triggerEvent($content,$.event_ready,[$content]);
 				}
 				self._triggerEvent($content,"onOpen",[$content]);
 				self._adjustContentContainer();

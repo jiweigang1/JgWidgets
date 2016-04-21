@@ -373,19 +373,47 @@
 				if(self.options.conform){
 					jgAlertify.confirm(message,function(e){
 						if(e){
-						    $.post(url,{},function(response){
-							  if(self.options.callBack){
-								  self.options.callBack.call($this,$this,response);
-								}
+						
+						    $.ajax({
+								 url : url,
+								 cache:false,
+								 type:"post",
+								 dataType:"text",
+								 globalRequest:true,
+								 success:function(response){
+									 if(self.options.callBack){
+										self.options.callBack.call($this,$this,response);
+									}
+								 },
+								 //请求失败
+								 error:function(){
+									
+								 }
+								 
 							});
+						
+							
 						}
 					});
 				}else{
-					$.post(url,{},function(response){
-					   if(self.options.callBack){
-						  self.options.callBack.call($this,$this,response);
-						}
-					});
+				
+					$.ajax({
+							 url : url,
+							 cache:false,
+							 type:"post",
+							 dataType:"text",
+							 globalRequest:true,
+							 success:function(response){
+								 if(self.options.callBack){
+									self.options.callBack.call($this,$this,response);
+								}
+							 },
+							 //请求失败
+							 error:function(){
+								
+							 }
+						});
+					
 				}
 				return false;
 			});

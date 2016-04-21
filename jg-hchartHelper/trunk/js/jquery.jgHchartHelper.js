@@ -931,6 +931,37 @@
 			   });
 	},
 	
+	
+	_triggerEvent:function($el,eventType,params){
+			try{
+				$el.trigger(eventType,params);
+			}catch(e){
+				if(console){
+				   console.log(e.message)	
+				}
+			}
+	},
+	_fireEvent:function(eventType,context,params){
+		
+		if(this.options[eventType]){
+			try{
+				this.options[eventType].apply(context,params);
+			}catch(e){
+				if(console){
+				   console.log(e.message)	
+				}
+			}
+		}
+		
+		try{
+			 this.element.trigger(eventType,params);
+		}catch(e){
+			if(console){
+			   console.log(e.message)	
+			}
+		}
+	},
+	
 	draw:function(){
 		this._draw(false);
 	},
