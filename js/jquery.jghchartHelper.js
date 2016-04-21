@@ -48,7 +48,9 @@
 			onReceiveData	  :null,
 			showApdexT        :false,
 			animation		  :true,
-			forceLoadForm	  :false  	
+			forceLoadForm	  :false,
+			//group相同的Chart的最大值为最大值那个chart
+			eqYGroup		  :null,	
 			
 			
 		},
@@ -68,7 +70,8 @@
 				events	:{
 						seriesClick :null,
 						pointClick	:null
-				}
+				},
+				eqValues:{}
 			}
 			
 			this._settings = {};
@@ -120,6 +123,7 @@
 		  this.options.showApdexT		 	 = getValue(this.element,"showApdexT",	 this.options.showApdexT,"boolean");
 		  this.options.animation		 	 = getValue(this.element,"animation",	 this.options.animation,"boolean");
 		  this.options.forceLoadForm		 = getValue(this.element,"forceLoadForm",this.options.forceLoadForm,"boolean");
+		  this.options.eqYGroup		 		 = getValue(this.element,"eqYGroup",this.options.eqYGroup);
 		  
 		},
 		//初始化url
@@ -576,6 +580,43 @@
 			}
 		}
 	},
+	//设置几个图相等的Y轴最大值
+	//data {ymax:,ytickInterval:}
+	setEqMaxYValue:function(id,data){
+		this.setting.eqValues[id] = data;
+		if(this.highChart){
+		   this._doSetEqMaxYValue();
+		}
+	},
+	_setOtherChartsEqMaxYValue:function(){
+	 var okkk = this.highChart.yAxis[0];
+	  if(this.highChart){
+		var group = this.options.eqYGroup;
+		if(group){
+			var $charts =  $('div.chart[eqYGroup="'+group+'"]').not(this.element).jgHchartHelper();
+				$charts.jgHchartHelper("setEqMaxYValue",this._UUID,{ymax:this.highChart.yAxis[0].max,ytickInterval:this.highChart.yAxis[0].tickInterval})
+		}
+	  }
+	},
+	_doSetEqMaxYValue:function(){
+		if(this.highChart){
+			var oldMaxY = this.highChart.yAxis[0].max;
+			var data;
+			for(var id in this.setting.eqValues){
+				if(this.setting.eqValues[id].ymax>this.highChart.yAxis[0].max ||(this.setting.eqValues[id].ymax==this.highChart.yAxis[0].max && this.setting.eqValues[id].ytickInterval!= this.highChart.yAxis[0].tickInterval ) ){
+					data = this.setting.eqValues[id];
+				}
+			}
+			if(data&& data.ymax >= oldMaxY){
+				//alert(data.ytickInterval+10)
+				this.highChart.yAxis[0].update({
+												 tickInterval:data.ytickInterval
+											   });
+				this.highChart.yAxis[0].setExtremes(this.highChart.yAxis[0].min,data.ymax,true,false);
+				
+			}
+		}
+	},
 	_createYRangeBar:function(){
 		var self = this;
 		if(this.options.showYRangeBar){
@@ -870,21 +911,55 @@
 						}
 						chart = self._initChartSetting(chart);
 						self._drawChart(chart);
+						
+						
+						
+						self._doSetEqMaxYValue();
+						self._setOtherChartsEqMaxYValue();
 					},
 					complete:function(){
-						
+						if(self.setting.events.onComplete){
+							setTimeout(function(){
+							    try{	
+									self.setting.events.onComplete.call(self);
+								}catch(e){
+								
+								}
+							},1000);
+					    }
 					}
 			   });
-			   if(this.setting.events.onComplete){
-					setTimeout(function(){
-						try{
-							self.setting.events.onComplete.call(self);
-						}catch(e){
-						
-						}
-						
-					},1000);
-			   }
+	},
+	
+	
+	_triggerEvent:function($el,eventType,params){
+			try{
+				$el.trigger(eventType,params);
+			}catch(e){
+				if(console){
+				   console.log(e.message)	
+				}
+			}
+	},
+	_fireEvent:function(eventType,context,params){
+		
+		if(this.options[eventType]){
+			try{
+				this.options[eventType].apply(context,params);
+			}catch(e){
+				if(console){
+				   console.log(e.message)	
+				}
+			}
+		}
+		
+		try{
+			 this.element.trigger(eventType,params);
+		}catch(e){
+			if(console){
+			   console.log(e.message)	
+			}
+		}
 	},
 	
 	draw:function(){
